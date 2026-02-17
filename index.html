@@ -423,6 +423,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
       <span class="splash-feature">🌍 Rankings</span><span class="splash-feature">🏅 30+ Medals</span>
     </div>
     <button class="start-btn" id="newGameBtn">New Game</button>
+    <button class="start-btn" id="continueBtn" style="display:none;margin-top:10px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);box-shadow:0 4px 20px rgba(59,130,246,0.4);">▶ Continue</button>
     <div class="version-tag">v3.1 · ULTIMATE EDITION</div>
   </div>
   <!-- SETUP -->
@@ -828,6 +829,90 @@ function calcPrestige(){return Math.floor(G.economy*2+G.happiness*2+G.military*1
 function getPrestigeRank(p){if(p<500)return'Emerging State';if(p<1500)return'Regional Power';if(p<3000)return'Major Power';if(p<6000)return'Great Power';if(p<10000)return'Superpower';return'World Hegemon';}
 function getGdpTotal(){return Math.floor(G.gdpPerCapita*G.population/1e6);}
 function getEra(){if(G.year<10)return'Foundation Era';if(G.year<25)return'Growth Era';if(G.year<50)return'Industrial Era';if(G.year<75)return'Modern Era';if(G.year<100)return'Information Age';return'Space Age';}
+
+// ---- SAVE / LOAD / EXPORT / IMPORT ----
+const SAVE_KEY='nationforge_v31_save';
+function autoSave(){
+  if(!G||!G.name)return;
+  try{localStorage.setItem(SAVE_KEY,JSON.stringify({v:'3.1',ts:Date.now(),state:G}));}catch(e){}
+}
+function saveGame(){
+  autoSave();
+  toast('💾','Game saved to browser!','success');
+  updateContinueBtn();
+}
+function loadGame(silent){
+  try{
+    const raw=localStorage.getItem(SAVE_KEY);
+    if(!raw){if(!silent)toast('❌','No save found.','error');return false;}
+    const data=JSON.parse(raw);
+    if(!data.state){if(!silent)toast('❌','Corrupted save.','error');return false;}
+    G=data.state;updateRelationLabels();
+    if(!silent){
+      closeModal();
+      document.getElementById('splashScreen').classList.add('hidden-left');
+      document.getElementById('setupScreen').classList.add('hidden');
+      document.getElementById('setupScreen').classList.remove('hidden-left');
+      document.getElementById('gameOverScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden-left');
+      _processingTurn=false;renderGame();
+      toast('📂','Game loaded! Year '+G.year,'success');
+    }
+    return true;
+  }catch(e){if(!silent)toast('❌','Load failed.','error');return false;}
+}
+function exportSave(){
+  if(!G||!G.name){toast('❌','Start a game first.','error');return;}
+  try{
+    const saveData=JSON.stringify({v:'3.1',ts:Date.now(),state:G},null,2);
+    const blob=new Blob([saveData],{type:'application/json'});
+    const url=URL.createObjectURL(blob);
+    const a=document.createElement('a');a.href=url;
+    a.download=(G.name||'NationForge').replace(/[^a-z0-9]/gi,'_')+'_yr'+G.year+'_save.json';
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    URL.revokeObjectURL(url);toast('📤','Save exported!','success');
+  }catch(e){toast('❌','Export failed.','error');}
+}
+function importSave(){document.getElementById('importFileInput').click();}
+function handleImport(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=function(e){
+    try{
+      const data=JSON.parse(e.target.result);
+      if(!data.state){toast('❌','Invalid save file.','error');return;}
+      G=data.state;updateRelationLabels();closeModal();
+      document.getElementById('splashScreen').classList.add('hidden-left');
+      document.getElementById('setupScreen').classList.add('hidden');
+      document.getElementById('setupScreen').classList.remove('hidden-left');
+      document.getElementById('gameOverScreen').classList.add('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden');
+      document.getElementById('gameScreen').classList.remove('hidden-left');
+      _processingTurn=false;renderGame();
+      toast('📂','Save imported! Welcome back, '+G.name+'!','success');
+      autoSave();updateContinueBtn();
+    }catch(err){toast('❌','Import failed — invalid file.','error');}
+  };
+  reader.readAsText(file);
+}
+function updateContinueBtn(){
+  const btn=document.getElementById('continueBtn');
+  if(!btn)return;
+  const raw=localStorage.getItem(SAVE_KEY);
+  if(raw){
+    try{
+      const data=JSON.parse(raw);
+      if(data.state&&data.state.name){
+        const ts=new Date(data.ts);
+        const d=ts.toLocaleDateString('en',{month:'short',day:'numeric'});
+        btn.textContent='▶ Continue — '+data.state.name+' · Yr '+data.state.year+' ('+d+')';
+        btn.style.display='';return;
+      }
+    }catch(e){}
+  }
+  btn.style.display='none';
+}
 
 // ---- SETUP ----
 function showSetup(){
@@ -1549,6 +1634,7 @@ function nextTurn(){
   // Process after brief visual delay
   setTimeout(()=>{
     processTurn();
+    autoSave();
     const net=G.treasuryIncome-G.treasuryExpense;
     const gdpChange=G.gdpPerCapita-prevGdp;
     document.getElementById('turnSummary').innerHTML=`
@@ -1783,7 +1869,10 @@ function showSettings(){
     <div class="info-row"><span class="info-label">Government</span><span class="info-val">${(GOVTS.find(g=>g.id===G.govt)||{}).name}</span></div>
     <div class="info-row"><span class="info-label">Prestige</span><span class="info-val" style="color:var(--accent-gold)">${fmt(G.prestige)} · ${getPrestigeRank(G.prestige)}</span></div>
     <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">
-      <div class="event-choice" onclick="closeModal();showSetup();">🔄 New Game</div>
+      <div class="event-choice" onclick="saveGame()">💾 Save to Browser</div>
+      <div class="event-choice" onclick="exportSave()">📤 Export Save File</div>
+      <div class="event-choice" onclick="importSave()">📂 Import Save File</div>
+      <div class="event-choice" style="border-color:rgba(239,68,68,0.3);color:var(--accent-red);" onclick="closeModal();showSetup();">🔄 New Game</div>
       <div class="event-choice" onclick="closeModal()">❌ Close</div>
     </div>
     <div style="margin-top:24px;text-align:center;font-size:10px;color:var(--text-muted);letter-spacing:1px;">NATIONFORGE v3.1 · ULTIMATE EDITION</div>
@@ -1809,7 +1898,11 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('prestigeChip').onclick=()=>{switchNav('stats');};
   // showSetup() now handles hiding all screens and resetting state correctly
   document.getElementById('tryAgainBtn').onclick=showSetup;
+  document.getElementById('continueBtn').onclick=()=>loadGame(false);
+  document.getElementById('importFileInput').onchange=function(e){handleImport(e.target.files[0]);e.target.value='';};
+  updateContinueBtn();
 });
 </script>
+<input type="file" id="importFileInput" accept=".json" style="display:none">
 </body>
 </html>
