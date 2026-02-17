@@ -831,10 +831,19 @@ function getEra(){if(G.year<10)return'Foundation Era';if(G.year<25)return'Growth
 
 // ---- SETUP ----
 function showSetup(){
+  // Slide splash off-screen (works whether it's currently visible or already hidden)
   document.getElementById('splashScreen').classList.add('hidden-left');
-  document.getElementById('setupScreen').classList.remove('hidden');
+  // Hide game screen (needed when called from in-game settings "New Game")
+  document.getElementById('gameScreen').classList.add('hidden');
+  document.getElementById('gameScreen').classList.remove('hidden-left');
+  // Hide game over screen
   document.getElementById('gameOverScreen').classList.add('hidden');
   document.getElementById('gameOverScreen').classList.remove('hidden-left');
+  // Show setup screen — must remove BOTH hidden classes so it slides in correctly
+  document.getElementById('setupScreen').classList.remove('hidden');
+  document.getElementById('setupScreen').classList.remove('hidden-left');
+  // Reset turn lock in case a turn was mid-processing
+  _processingTurn=false;
   // Reset selections
   selectedGovt='democracy';selectedCont='as';selectedDiff='normal';
   document.getElementById('nationNameInput').value='';
@@ -1479,8 +1488,9 @@ function updateRelationLabels(){
 function resolveEvent(choiceIdx){
   if(!G.pendingEvent)return;
   const choice=G.pendingEvent.choices[choiceIdx];
-  if(choice.cost){
-    // FIX: replace ALL commas in number string before parsing
+  const hasCostString=!!choice.cost;
+  if(hasCostString){
+    // Parse the labeled cost string and charge treasury once
     const match=choice.cost.match(/\$([\d,]+)([BMK]?)/);
     if(match){
       let amt=parseFloat(match[1].replace(/,/g,''));
@@ -1489,7 +1499,12 @@ function resolveEvent(choiceIdx){
     }
   }
   if(G.pendingEvent.type==='disaster')G.disastersSurvived++;
-  applyEffects(choice.effects,true);
+  // When a cost string already charged treasury, skip treasury in effects to avoid double-charging.
+  // Event data has both cost:'$Xm' display labels AND effects.treasury for the same expense.
+  const effectsToApply=hasCostString
+    ? Object.fromEntries(Object.entries(choice.effects).filter(([k])=>k!=='treasury'))
+    : choice.effects;
+  applyEffects(effectsToApply,true);
   addLog('📢',G.pendingEvent.title+': '+choice.text.substring(0,40)+'...',G.year);
   toast('📢','Decision made: '+G.pendingEvent.title.substring(0,30)+'...','success');
   G.lastEventId=G.pendingEvent.id;G.pendingEvent=null;
@@ -1792,16 +1807,8 @@ document.addEventListener('DOMContentLoaded',()=>{
   document.getElementById('achBtn').onclick=showAchievements;
   document.getElementById('settingsBtn').onclick=showSettings;
   document.getElementById('prestigeChip').onclick=()=>{switchNav('stats');};
-  document.getElementById('tryAgainBtn').onclick=()=>{
-    // Reset screens properly
-    document.getElementById('gameOverScreen').classList.add('hidden');
-    document.getElementById('gameScreen').classList.add('hidden');
-    document.getElementById('gameScreen').classList.remove('hidden-left');
-    // Go to setup
-    document.getElementById('splashScreen').classList.remove('hidden');
-    document.getElementById('splashScreen').classList.remove('hidden-left');
-    showSetup();
-  };
+  // showSetup() now handles hiding all screens and resetting state correctly
+  document.getElementById('tryAgainBtn').onclick=showSetup;
 });
 </script>
 </body>
