@@ -434,6 +434,31 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .milestone-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;background:linear-gradient(135deg,rgba(240,180,41,0.1),rgba(240,180,41,0.03));border:1px solid rgba(240,180,41,0.25);border-radius:var(--radius-xs);margin-bottom:10px;animation:fadeUp 0.4s ease both;}
 .milestone-banner .mb-icon{font-size:20px;}.milestone-banner .mb-text{font-size:12px;font-weight:700;color:var(--accent-gold);}
 .milestone-banner .mb-sub{font-size:10px;color:var(--text-muted);margin-top:1px;}
+/* Golden Age glow */
+@keyframes goldenGlow{0%,100%{box-shadow:0 0 8px rgba(240,180,41,0.2);}50%{box-shadow:0 0 20px rgba(240,180,41,0.4);}}
+.golden-age-active .top-bar{animation:goldenGlow 2s ease-in-out infinite;}
+/* Demographics cards */
+.demo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.demo-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--radius-xs);padding:10px;text-align:center;}
+.demo-card .demo-val{font-size:16px;font-weight:800;font-family:'Space Mono',monospace;margin-top:2px;}
+.demo-card .demo-label{font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;}
+/* Resource badges */
+.resource-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 8px;border-radius:8px;background:rgba(240,180,41,0.08);border:1px solid rgba(240,180,41,0.15);font-size:10px;font-weight:700;color:var(--accent-gold);}
+/* Speed indicator */
+.speed-indicator{font-size:9px;font-weight:800;padding:2px 6px;border-radius:6px;background:rgba(59,130,246,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);letter-spacing:0.5px;}
+/* Confetti */
+.confetti-piece{position:fixed;width:8px;height:8px;z-index:999;pointer-events:none;animation:confettiFall var(--fall-dur,3s) linear forwards;}
+@keyframes confettiFall{0%{transform:translateY(-20px) rotate(0deg);opacity:1;}100%{transform:translateY(100vh) rotate(720deg);opacity:0;}}
+/* Enhanced stat card hover */
+.stat-card:hover{border-color:rgba(255,255,255,0.12);transform:translateY(-1px);}
+/* Smooth page transitions */
+.game-content{transition:opacity 0.2s ease;}
+/* Better button press */
+.event-choice:active{transform:scale(0.97);transition:transform 0.1s;}
+/* Natural resource panel */
+.resource-panel{background:linear-gradient(145deg,rgba(240,180,41,0.06),transparent);border:1px solid rgba(240,180,41,0.15);border-radius:var(--radius-xs);padding:12px;margin-bottom:10px;}
+.resource-panel .rp-title{font-size:11px;font-weight:700;color:var(--accent-gold);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
+.resource-panel .rp-grid{display:flex;gap:6px;flex-wrap:wrap;}
 </style>
 </head>
 <body>
@@ -460,11 +485,13 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
     <div class="splash-features">
       <span class="splash-feature">🔬 Tech Tree</span><span class="splash-feature">🏆 Prestige</span>
       <span class="splash-feature">🌋 Disasters</span><span class="splash-feature">⚖️ Budget</span>
-      <span class="splash-feature">🌍 Rankings</span><span class="splash-feature">🏅 30+ Medals</span>
+      <span class="splash-feature">🌍 Rankings</span><span class="splash-feature">🏅 40+ Medals</span>
+      <span class="splash-feature">✨ Golden Ages</span><span class="splash-feature">🏙️ Demographics</span>
+      <span class="splash-feature">🎭 Culture</span><span class="splash-feature">🏛️ Govt Change</span>
     </div>
     <button class="start-btn" id="newGameBtn">New Game</button>
     <button class="start-btn" id="continueBtn" style="display:none;margin-top:10px;background:linear-gradient(135deg,#3b82f6,#1d4ed8);box-shadow:0 4px 20px rgba(59,130,246,0.4);">▶ Continue</button>
-    <div class="version-tag">v3.1 · ULTIMATE EDITION</div>
+    <div class="version-tag">v4.0 · MEGA EDITION</div>
   </div>
   <!-- SETUP -->
   <div class="screen hidden" id="setupScreen">
@@ -472,6 +499,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
     <div class="setup-section"><label>Nation Name</label><input class="setup-input" id="nationNameInput" placeholder="Republic of..." maxlength="24"></div>
     <div class="setup-section"><label>Flag Symbol</label><input class="setup-input" id="flagInput" placeholder="🏴 Enter an emoji" maxlength="4" style="font-size:24px;text-align:center;"></div>
     <div class="setup-section"><label>Leader Name</label><input class="setup-input" id="leaderInput" placeholder="President / Prime Minister..." maxlength="20"></div>
+    <div class="setup-section"><label>National Motto</label><input class="setup-input" id="mottoInput" placeholder="In Unity We Rise..." maxlength="40"></div>
     <div class="setup-section"><label>Government Type</label><div class="govt-grid" id="govtGrid"></div></div>
     <div class="setup-section"><label>Continent</label><div class="continent-grid" id="contGrid"></div></div>
     <div class="setup-section"><label>Difficulty</label><div class="diff-grid" id="diffGrid"></div></div>
@@ -551,6 +579,18 @@ const AI_NATIONS=[
   {name:'Lunara',flag:'🌙',personality:'diplomatic',strength:45},
   {name:'Drakonia',flag:'🐉',personality:'aggressive',strength:80},
 ];
+const NATURAL_RESOURCES = [
+  {id:'oil',name:'Oil Reserves',icon:'⛽',effects:{economy:8,trade:6,environment:-5}},
+  {id:'gold_res',name:'Gold Deposits',icon:'🥇',effects:{treasury:10,economy:5}},
+  {id:'diamonds',name:'Diamond Mines',icon:'💎',effects:{treasury:8,trade:5,economy:3}},
+  {id:'uranium',name:'Uranium Deposits',icon:'☢️',effects:{energy:10,military:5,research:3}},
+  {id:'fertile',name:'Fertile Lands',icon:'🌾',effects:{health:5,economy:4,population:3}},
+  {id:'fish',name:'Rich Fisheries',icon:'🐟',effects:{health:4,trade:3,economy:2}},
+  {id:'timber',name:'Vast Forests',icon:'🌲',effects:{economy:4,environment:5,production:3}},
+  {id:'silicon',name:'Silicon Deposits',icon:'💻',effects:{research:6,economy:4,production:3}},
+  {id:'lithium',name:'Lithium Reserves',icon:'🔋',effects:{research:5,economy:6,trade:4}},
+  {id:'coal',name:'Coal Deposits',icon:'⚫',effects:{energy:8,production:5,environment:-8}},
+];
 const TECHNOLOGIES=[
   {id:'agri',name:'Modern Agriculture',icon:'🌾',tier:1,cost:400,turns:2,desc:'Advanced farming techniques.',effects:{health:5,economy:4,environment:-3},requires:[]},
   {id:'steel',name:'Advanced Metallurgy',icon:'⚙️',tier:1,cost:450,turns:2,desc:'Superior alloy manufacturing.',effects:{production:8,military:5},requires:[]},
@@ -572,6 +612,8 @@ const SPY_MISSIONS=[
   {id:'assassinate',name:'Political Assassination',icon:'🗡️',desc:'Remove key officials.',cost:2500,risk:'high',success:0.40,effects:{military:10,stability:5},failEffects:{diplomacy:-30,stability:-10}},
   {id:'double_agent',name:'Turn Double Agent',icon:'🕵️',desc:'Plant a mole in enemy intel.',cost:1000,risk:'med',success:0.60,effects:{espionage:15,military:5},failEffects:{espionage:-10}},
   {id:'cyber_op',name:'Cyber Operation',icon:'💻',desc:'Hack critical infrastructure.',cost:900,risk:'low',success:0.75,effects:{research:8,espionage:8},failEffects:{diplomacy:-10}},
+  {id:'deep_cover',name:'Deep Cover Agent',icon:'🎭',desc:'Establish long-term sleeper agent in rival government.',cost:1500,risk:'high',success:0.45,effects:{espionage:20,diplomacy:5},failEffects:{diplomacy:-25,espionage:-15}},
+  {id:'economic_intel',name:'Economic Intelligence',icon:'📊',desc:'Steal economic forecasts and trade secrets.',cost:700,risk:'low',success:0.80,effects:{economy:8,trade:5,research:3},failEffects:{diplomacy:-5,trade:-3}},
 ];
 
 // ---- MEGA PROJECTS (global, fixes onclick bug) ----
@@ -582,6 +624,9 @@ const MEGA_PROJECTS=[
   {id:'hyperloop',name:'Hyperloop Network',icon:'🔗',cost:7000,desc:'Connect all cities via 700mph vacuum transport.',effects:{economy:18,happiness:12,trade:15,environment:8}},
   {id:'giga_dam',name:'Giga Dam & Reservoir',icon:'💧',cost:4500,desc:'Massive hydroelectric powering the entire nation.',effects:{energy:30,environment:8,economy:10}},
   {id:'ai_city',name:'AI Megacity',icon:'🤖',cost:12000,desc:'Fully autonomous AI-governed smart metropolis.',effects:{research:25,economy:20,happiness:15,espionage:10}},
+  {id:'quantum_net',name:'Quantum Internet',icon:'🔮',cost:9000,desc:'Unhackable quantum communication network spanning the nation.',effects:{research:20,espionage:20,economy:12,military:10}},
+  {id:'climate_shield',name:'Climate Shield',icon:'🛡️',cost:11000,desc:'Atmospheric engineering to control regional climate patterns.',effects:{environment:25,health:15,happiness:10,research:15}},
+  {id:'sea_colony',name:'Deep Sea Colony',icon:'🌊',cost:13000,desc:'Self-sustaining underwater city for 500,000 residents.',effects:{research:20,population:15,happiness:12,environment:10}},
 ];
 
 const POLICIES={
@@ -763,6 +808,56 @@ const EVENTS=[
     {text:'🔄 Gradual Phase-Out',effects:{environment:12,economy:5,energy:15},tags:[{t:'Sustainable',p:true}]},
     {text:'💰 Export Green Technology',effects:{trade:15,economy:12,diplomacy:8,environment:8},tags:[{t:'Trade +15',p:true}]},
   ]},
+  {id:'social_media',type:'opportunity',title:'Social Media Revolution',desc:'A new social platform born in your nation has 500 million users worldwide.',choices:[
+    {text:'📱 Embrace & Regulate',effects:{economy:12,culture:10,happiness:5,mediaFreedom:5},tags:[{t:'Culture +10',p:true}]},
+    {text:'🔒 State Control of Platform',effects:{economy:8,espionage:10,mediaFreedom:-15,happiness:-8},tags:[{t:'Espionage +10',p:true}]},
+    {text:'💰 Tax Revenue Focus',effects:{treasury:20,economy:5},tags:[{t:'Treasury +$200M',p:true}]},
+  ]},
+  {id:'water_crisis',type:'crisis',title:'National Water Crisis',desc:'Aquifers depleting fast — 30% of population facing water shortage within 2 years.',choices:[
+    {text:'💧 Desalination Mega-Project',effects:{treasury:-30,health:10,environment:5,happiness:5},cost:'$300M',tags:[{t:'Health +10',p:true}]},
+    {text:'🚿 Water Rationing',effects:{happiness:-12,health:5,stability:-5},tags:[{t:'Health +5',p:true}]},
+    {text:'🌊 Import Water Deal',effects:{treasury:-15,diplomacy:5,trade:3},cost:'$150M',tags:[{t:'Diplomacy +5',p:true}]},
+  ]},
+  {id:'border_dispute',type:'diplomacy',title:'Border Dispute Escalation',desc:'Neighboring Valdoria claims sovereignty over a strategic mountain pass. Troops massing.',choices:[
+    {text:'⚔️ Military Deployment',effects:{military:5,diplomacy:-10,stability:5},tags:[{t:'Military +5',p:true}]},
+    {text:'🏛️ International Court',effects:{diplomacy:8,stability:3,treasury:-5},cost:'$50M',tags:[{t:'Diplomacy +8',p:true}]},
+    {text:'🤝 Joint Administration',effects:{diplomacy:12,trade:5,happiness:-3},tags:[{t:'Diplomacy +12',p:true}]},
+  ]},
+  {id:'currency_crisis',type:'crisis',title:'Currency Crisis',desc:'Your national currency lost 40% value in 48 hours. Capital flight accelerating.',choices:[
+    {text:'🏦 Emergency Rate Hike',effects:{economy:-8,stability:8,treasury:-10},cost:'$100M',tags:[{t:'Stability +8',p:true}]},
+    {text:'🔒 Capital Controls',effects:{trade:-10,stability:5,economy:-5,diplomacy:-8},tags:[{t:'Stability +5',p:true}]},
+    {text:'🌍 IMF Bailout Request',effects:{treasury:15,economy:5,diplomacy:5,equality:-8},tags:[{t:'Treasury +$150M',p:true}]},
+  ]},
+  {id:'terror_attack',type:'crisis',title:'Terrorist Attack',desc:'Coordinated bombings in 3 major cities. 200+ casualties. Nation in shock.',choices:[
+    {text:'🛡️ Full Security Crackdown',effects:{stability:10,military:5,happiness:-10,mediaFreedom:-8,crime:-5},tags:[{t:'Stability +10',p:true}]},
+    {text:'🕊️ Unity & Resilience',effects:{happiness:5,diplomacy:8,stability:3},tags:[{t:'Diplomacy +8',p:true}]},
+    {text:'🔍 Intelligence Overhaul',effects:{espionage:12,treasury:-15,crime:-8},cost:'$150M',tags:[{t:'Espionage +12',p:true}]},
+  ]},
+  {id:'ai_fears',type:'opportunity',title:'AI Ethics Debate',desc:'Advanced AI systems raise ethical concerns. Tech leaders demand regulation.',choices:[
+    {text:'🤖 Embrace AI Freedom',effects:{research:15,economy:10,happiness:-5,stability:-3},tags:[{t:'Research +15',p:true}]},
+    {text:'⚖️ Careful Regulation Framework',effects:{research:8,economy:5,stability:5,diplomacy:5},tags:[{t:'Balanced',p:true}]},
+    {text:'🚫 Strict AI Moratorium',effects:{stability:8,research:-10,economy:-5,happiness:3},tags:[{t:'Stability +8',p:true}]},
+  ]},
+  {id:'climate_summit',type:'diplomacy',title:'Global Climate Summit',desc:'Your nation is hosting the landmark Global Climate Accord conference.',choices:[
+    {text:'🌱 Lead Aggressive Targets',effects:{environment:15,diplomacy:12,economy:-8,treasury:-10},cost:'$100M',tags:[{t:'Environment +15',p:true}]},
+    {text:'⚖️ Moderate Commitments',effects:{environment:8,diplomacy:8,economy:-3},tags:[{t:'Balanced',p:true}]},
+    {text:'🏭 Protect Industry First',effects:{economy:8,environment:-5,diplomacy:-10},tags:[{t:'Economy +8',p:true}]},
+  ]},
+  {id:'asteroid_mine',type:'opportunity',title:'Asteroid Mining Opportunity',desc:'Private company proposes joint asteroid mining mission worth trillions.',choices:[
+    {text:'🚀 Full Government Partnership',effects:{research:15,economy:12,treasury:-25},cost:'$250M',tags:[{t:'Research +15',p:true}]},
+    {text:'📋 Licensing & Regulation',effects:{economy:8,treasury:10,research:5},tags:[{t:'Treasury +$100M',p:true}]},
+    {text:'❌ Too Risky — Decline',effects:{stability:3,treasury:5},tags:[{t:'Cautious',p:true}]},
+  ]},
+  {id:'energy_blackout',type:'crisis',title:'Nationwide Power Blackout',desc:'Critical grid failure plunges 80% of the nation into darkness for 72 hours.',choices:[
+    {text:'⚡ Emergency Grid Overhaul',effects:{energy:15,treasury:-25,economy:-5},cost:'$250M',tags:[{t:'Energy +15',p:true}]},
+    {text:'🔋 Deploy Backup Generators',effects:{energy:5,treasury:-10,happiness:-5},cost:'$100M',tags:[{t:'Quick fix',p:true}]},
+    {text:'☀️ Fast-Track Renewables',effects:{energy:10,environment:8,treasury:-20,research:5},cost:'$200M',tags:[{t:'Long-term',p:true}]},
+  ]},
+  {id:'migration_wave',type:'crisis',title:'Mass Emigration Wave',desc:'Skilled workers leaving en masse for better opportunities abroad. Brain drain accelerating.',choices:[
+    {text:'💰 Competitive Salary Reform',effects:{treasury:-20,happiness:8,research:5,economy:5},cost:'$200M',tags:[{t:'Retain talent',p:true}]},
+    {text:'🏗️ Build Innovation Hubs',effects:{research:10,economy:8,treasury:-15},cost:'$150M',tags:[{t:'Research +10',p:true}]},
+    {text:'🔒 Exit Restrictions',effects:{stability:-8,happiness:-10,diplomacy:-10,mediaFreedom:-5},tags:[{t:'Controversial',p:false}]},
+  ]},
 ];
 
 const ACHIEVEMENTS=[
@@ -797,6 +892,18 @@ const ACHIEVEMENTS=[
   {id:'survived_disaster',name:'Crisis Survivor',desc:'Survive 5 disasters',icon:'🌋',check:s=>s.disastersSurvived>=5},
   {id:'great_power',name:'Great Power',desc:'All major stats above 70',icon:'👑',check:s=>s.economy>=70&&s.happiness>=70&&s.military>=70&&s.research>=70&&s.diplomacy>=70},
   {id:'spy_legend',name:'Intel Legend',desc:'Run 15 successful missions',icon:'🕵️‍♂️',check:s=>s.spySuccesses>=15},
+  {id:'urbanite',name:'Megacity',desc:'Urbanization exceeds 80%',icon:'🏙️',check:s=>(s.urbanization||0)>=80},
+  {id:'scholar_nation',name:'Scholar Nation',desc:'Literacy rate exceeds 95%',icon:'📖',check:s=>(s.literacy||0)>=95},
+  {id:'crime_buster',name:'Safe Haven',desc:'Crime rate below 10',icon:'🔒',check:s=>(s.crime||20)<=10},
+  {id:'golden_era',name:'Golden Era',desc:'Trigger 3 golden ages',icon:'✨',check:s=>(s.goldenAgeCount||0)>=3},
+  {id:'old_leader',name:'Immortal Leader',desc:'Leader survives 40 years in power',icon:'👴',check:s=>((s.leaderAge||45)-(45+s.year))>40||s.year>=40},
+  {id:'trade_mogul',name:'Trade Mogul',desc:'Have 5+ trade agreements',icon:'🚢',check:s=>s.aiNations.filter(n=>n.tradeAgreement).length>=5},
+  {id:'pacifist',name:'Eternal Peace',desc:'Survive 50 years without war',icon:'🕊️',check:s=>s.year>=50&&s.warsWon===0&&s.warsLost===0},
+  {id:'renaissance',name:'Renaissance',desc:'All major stats above 50',icon:'🎨',check:s=>s.economy>=50&&s.happiness>=50&&s.military>=50&&s.research>=50&&s.health>=50&&s.education>=50&&s.diplomacy>=50},
+  {id:'cultural_icon',name:'Cultural Icon',desc:'Culture score exceeds 80',icon:'🎭',check:s=>(s.culture||0)>=80},
+  {id:'free_press',name:'Free Press',desc:'Media Freedom exceeds 85',icon:'📰',check:s=>(s.mediaFreedom||0)>=85},
+  {id:'resource_king',name:'Resource King',desc:'Have 3+ natural resources',icon:'⛏️',check:s=>s.naturalResources&&s.naturalResources.length>=3},
+  {id:'mega_builder',name:'Mega Builder',desc:'Complete 3 mega projects',icon:'🏗️',check:s=>{const megas=['wonder','arcology','orbital','hyperloop','giga_dam','ai_city','quantum_net','climate_shield','sea_colony'];return megas.filter(id=>s.activePolicies.includes(id)).length>=3;}},
 ];
 
 const VICTORY_CONDITIONS=[
@@ -844,6 +951,11 @@ function initState(name,flag,govt,cont,diff,leaderName){
     equality:clamp(50+(gm.equality||0)),trade:clamp(40),
     production:clamp(45+(trait.modifiers.production||0)),energy:clamp(40),
     tourism:20,espionage:clamp(10+(trait.modifiers.espionage||0)),
+    crime:20,urbanization:35,literacy:60,mediaFreedom:55,culture:30,
+    leaderAge:45+Math.floor(Math.random()*15),
+    goldenAge:0,goldenAgeCount:0,
+    motto:'',totalImmigration:0,consecutiveHighApproval:0,
+    turnSpeed:1,naturalResources:[],revolutionCooldown:0,
     approval:55,prestige:0,
     activePolicies:[],researchedTechs:[],activeTech:null,
     policiesEnacted:0,warsWon:0,warsLost:0,hasNukes:false,hasSpace:false,
@@ -862,18 +974,31 @@ function initState(name,flag,govt,cont,diff,leaderName){
     currentEra:'Foundation Era',
   };
   updateRelationLabels();
+  // Assign natural resources
+  const numRes = 2 + Math.floor(Math.random()*2);
+  const shuffled = [...NATURAL_RESOURCES].sort(()=>Math.random()-0.5);
+  G.naturalResources = shuffled.slice(0, numRes).map(r=>r.id);
+  G.naturalResources.forEach(rid => {
+    const r = NATURAL_RESOURCES.find(x=>x.id===rid);
+    if(r) Object.entries(r.effects).forEach(([k,v])=>{
+      if(k==='treasury') G.treasury += v*100;
+      else if(k==='population') G.population = Math.floor(G.population*(1+v/100));
+      else if(G[k]!==undefined) G[k] = clamp((G[k]||0)+v);
+    });
+  });
 }
 
 function fmtMoney(n){const a=Math.abs(n),s=n<0?'-':'';if(a>=1e9)return s+'$'+(a/1e9).toFixed(2)+'T';if(a>=1e3)return s+'$'+(a/1e3).toFixed(1)+'B';return s+'$'+a.toFixed(0)+'M';}
 function fmtMoneyShort(n){const a=Math.abs(n),s=n<0?'-':'';if(a>=1e9)return s+'$'+(a/1e9).toFixed(1)+'T';if(a>=1e3)return s+'$'+(a/1e3).toFixed(1)+'B';return s+'$'+a.toFixed(0)+'M';}
 function fmt(n){if(n>=1e9)return(n/1e9).toFixed(1)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return String(n);}
-function calcPrestige(){return Math.floor(G.economy*2+G.happiness*2+G.military*1.5+G.research*2+G.diplomacy*1.5+G.health*1+G.education*1+G.environment*0.5+G.equality*0.5+(100-G.corruption)*1+G.trade*1+G.warsWon*50+G.allies*30+G.spySuccesses*10+G.unlockedAchievements.length*25+G.researchedTechs.length*40+Math.floor(G.population/1000000)*5+G.year*3);}
+function calcPrestige(){return Math.floor(G.economy*2+G.happiness*2+G.military*1.5+G.research*2+G.diplomacy*1.5+G.health*1+G.education*1+G.environment*0.5+G.equality*0.5+(100-G.corruption)*1+G.trade*1+G.warsWon*50+G.allies*30+G.spySuccesses*10+G.unlockedAchievements.length*25+G.researchedTechs.length*40+Math.floor(G.population/1000000)*5+G.year*3+(G.culture||0)*1+(G.literacy||0)*0.5+(G.urbanization||0)*0.3+(100-(G.crime||20))*0.5+(G.mediaFreedom||0)*0.3+(G.goldenAgeCount||0)*100);}
 function getPrestigeRank(p){if(p<500)return'Emerging State';if(p<1500)return'Regional Power';if(p<3000)return'Major Power';if(p<6000)return'Great Power';if(p<10000)return'Superpower';return'World Hegemon';}
 function getGdpTotal(){return Math.floor(G.gdpPerCapita*G.population/1e6);}
 function getEra(){if(G.year<10)return'Foundation Era';if(G.year<25)return'Growth Era';if(G.year<50)return'Industrial Era';if(G.year<75)return'Modern Era';if(G.year<100)return'Information Age';return'Space Age';}
 
 // ---- SAVE / LOAD / EXPORT / IMPORT ----
-const SAVE_KEY='nationforge_v31_save';
+const SAVE_KEY='nationforge_v40_save';
+const SAVE_KEY_OLD='nationforge_v31_save';
 function autoSave(){
   if(!G||!G.name)return;
   try{localStorage.setItem(SAVE_KEY,JSON.stringify({v:'3.1',ts:Date.now(),state:G}));}catch(e){}
@@ -885,7 +1010,7 @@ function saveGame(){
 }
 function loadGame(silent){
   try{
-    const raw=localStorage.getItem(SAVE_KEY);
+    let raw=localStorage.getItem(SAVE_KEY)||localStorage.getItem(SAVE_KEY_OLD);
     if(!raw){if(!silent)toast('❌','No save found.','error');return false;}
     const data=JSON.parse(raw);
     if(!data.state){if(!silent)toast('❌','Corrupted save.','error');return false;}
@@ -941,7 +1066,7 @@ function handleImport(file){
 function updateContinueBtn(){
   const btn=document.getElementById('continueBtn');
   if(!btn)return;
-  const raw=localStorage.getItem(SAVE_KEY);
+  const raw=localStorage.getItem(SAVE_KEY)||localStorage.getItem(SAVE_KEY_OLD);
   if(raw){
     try{
       const data=JSON.parse(raw);
@@ -976,6 +1101,7 @@ function showSetup(){
   document.getElementById('nationNameInput').value='';
   document.getElementById('flagInput').value='🇮🇳';
   document.getElementById('leaderInput').value='';
+  document.getElementById('mottoInput').value='';
   renderSetup();
 }
 function renderSetup(){
@@ -1004,6 +1130,7 @@ function startGame(){
   if(!selectedCont){toast('⚠️','Select a continent','warn');return;}
   if(!selectedDiff){toast('⚠️','Select difficulty','warn');return;}
   initState(name,flag,selectedGovt,selectedCont,selectedDiff,leader);
+  G.motto = document.getElementById('mottoInput').value.trim() || 'Forward Together';
   currentNavTab='home';currentTab='economy';
   document.getElementById('setupScreen').classList.add('hidden-left');
   document.getElementById('gameScreen').classList.remove('hidden');
@@ -1043,7 +1170,7 @@ function renderLeaderBar(){
   // Apply war glow to top bar
   const topBar=document.getElementById('gameScreen').querySelector('.top-bar');
   if(topBar){topBar.classList.toggle('at-war',!!G.warState);}
-  document.getElementById('leaderBar').innerHTML=`<div class="leader-avatar">${trait?trait.icon:'👤'}</div><div class="leader-info"><div class="leader-name">${G.leaderName}</div><div class="leader-trait">${trait?trait.name+' · '+GOVTS.find(g=>g.id===G.govt).name:''}</div></div><div class="leader-approval" style="color:${ac}">${Math.round(G.approval)}%</div><div class="mood-badge" style="background:${mood.bg};color:${mood.color};border:1px solid ${mood.color}33;">${mood.emoji} ${mood.label}</div>${G.govt==='democracy'&&G.electionYear>G.year?`<div class="election-badge">Elect ${G.electionYear-G.year}yr</div>`:''}`;
+  document.getElementById('leaderBar').innerHTML=`<div class="leader-avatar">${trait?trait.icon:'👤'}</div><div class="leader-info"><div class="leader-name">${G.leaderName}</div><div class="leader-trait">${trait?trait.name+' · '+GOVTS.find(g=>g.id===G.govt).name:''}</div></div><div class="leader-approval" style="color:${ac}">${Math.round(G.approval)}%</div><div style="font-size:9px;color:var(--text-muted);margin-left:4px;">Age ${G.leaderAge||45}</div><div class="mood-badge" style="background:${mood.bg};color:${mood.color};border:1px solid ${mood.color}33;">${mood.emoji} ${mood.label}</div>${G.govt==='democracy'&&G.electionYear>G.year?`<div class="election-badge">Elect ${G.electionYear-G.year}yr</div>`:''}`;
 }
 function renderNewsTicker(){
   const items=G.newsItems.slice(-8);
@@ -1060,6 +1187,8 @@ function renderResourceBar(){
     {icon:'⚔️',val:String(Math.round(G.military)),positive:true,critical:G.military<10},
     {icon:'🔬',val:String(Math.round(G.research)),positive:true,critical:false},
     {icon:'🌍',val:String(Math.round(G.diplomacy)),positive:G.diplomacy>30,critical:G.diplomacy<10},
+    {icon:'🎭',val:String(Math.round(G.culture||0)),positive:(G.culture||0)>30,critical:(G.culture||0)<10},
+    {icon:'🔒',val:String(Math.round(G.crime||20)),positive:(G.crime||20)<30,critical:(G.crime||20)>60},
   ];
   let h='';items.forEach(i=>{h+=`<div class="res-chip ${i.critical?'critical':i.positive?'positive':'negative'}"><span class="res-icon">${i.icon}</span><span class="res-val">${i.val}</span>${i.delta?`<span class="res-delta" style="color:${i.positive?'var(--accent-green)':'#f87171'}">${i.delta}</span>`:''}</div>`;});
   document.getElementById('resourceBar').innerHTML=h;
@@ -1082,6 +1211,7 @@ function renderGameContent(){
 }
 
 function renderGame(){
+  document.getElementById('gameScreen').classList.toggle('golden-age-active', (G.goldenAge||0) > 0);
   document.getElementById('gameFlag').textContent=G.flag;
   document.getElementById('gameName').textContent=G.name;
   document.getElementById('gameYear').textContent='Year '+G.year+' · '+getEra();
@@ -1107,6 +1237,11 @@ function renderHome(){
   if(G.health>60)factors.push({label:'💊 Good Healthcare',color:'rgba(16,185,129,0.12)',border:'rgba(16,185,129,0.25)',text:'#34d399'});
   if(G.education>60)factors.push({label:'📚 Well Educated',color:'rgba(59,130,246,0.12)',border:'rgba(59,130,246,0.25)',text:'#60a5fa'});
   if(G.researchedTechs.length>3)factors.push({label:'🔬 Tech Leader',color:'rgba(139,92,246,0.12)',border:'rgba(139,92,246,0.25)',text:'#a78bfa'});
+  if((G.crime||20) > 50) factors.push({label:'🔒 High Crime', color:'rgba(239,68,68,0.12)', border:'rgba(239,68,68,0.25)', text:'#f87171'});
+  if((G.goldenAge||0) > 0) factors.push({label:'✨ Golden Age', color:'rgba(240,180,41,0.12)', border:'rgba(240,180,41,0.25)', text:'var(--accent-gold)'});
+  if((G.culture||0) > 60) factors.push({label:'🎭 Rich Culture', color:'rgba(139,92,246,0.12)', border:'rgba(139,92,246,0.25)', text:'#a78bfa'});
+  if((G.mediaFreedom||0) > 70) factors.push({label:'📰 Free Press', color:'rgba(6,182,212,0.12)', border:'rgba(6,182,212,0.25)', text:'#22d3ee'});
+  if((G.literacy||0) > 80) factors.push({label:'📖 High Literacy', color:'rgba(59,130,246,0.12)', border:'rgba(59,130,246,0.25)', text:'#60a5fa'});
   let warnings='';
   if(G.treasury<0)warnings+=`<div class="warning-banner">⚠️ National deficit — ${fmtMoneyShort(Math.abs(G.treasuryIncome-G.treasuryExpense))}/yr in the red</div>`;
   if(G.stability<25)warnings+=`<div class="warning-banner">🚨 Critical instability — civil unrest risk</div>`;
@@ -1129,6 +1264,25 @@ function renderHome(){
     if(t){const total=t.turns,done=total-G.activeTech.turnsLeft,pct=Math.round((done/Math.max(1,total))*100);
       techWidgetHtml=`<div class="research-widget fade-up"><div class="rw-icon">${t.icon}</div><div class="rw-info"><div class="rw-name">🔬 Researching: ${t.name}</div><div class="rw-bar-track"><div class="rw-bar-fill" style="width:${pct}%"></div></div><div class="rw-meta">${G.activeTech.turnsLeft} yr remaining · ${t.desc}</div></div><div class="rw-pct">${pct}%</div></div>`;}
   }
+  // Golden Age banner
+  let goldenAgeHtml = '';
+  if((G.goldenAge||0) > 0) {
+    goldenAgeHtml = `<div class="milestone-banner" style="background:linear-gradient(135deg,rgba(240,180,41,0.15),rgba(240,180,41,0.05));border-color:rgba(240,180,41,0.3);">
+      <div class="mb-icon">✨</div>
+      <div><div class="mb-text">Golden Age Active!</div><div class="mb-sub">${G.goldenAge} years remaining · +Economy, +Happiness, +Research, +Culture, +Treasury</div></div>
+    </div>`;
+  }
+  // Natural Resources panel
+  let resourcePanelHtml = '';
+  if(G.naturalResources && G.naturalResources.length > 0) {
+    resourcePanelHtml = `<div class="resource-panel fade-up">
+      <div class="rp-title">⛏️ Natural Resources</div>
+      <div class="rp-grid">${G.naturalResources.map(rid=>{
+        const r = NATURAL_RESOURCES.find(x=>x.id===rid);
+        return r ? `<span class="resource-badge">${r.icon} ${r.name}</span>` : '';
+      }).join('')}</div>
+    </div>`;
+  }
   // War strength bar
   let warHtml='';
   if(G.warState){
@@ -1140,7 +1294,7 @@ function renderHome(){
       warHtml=`<div class="event-card disaster fade-up" style="margin-bottom:10px;"><div class="event-type">⚔️ ACTIVE WAR · YEAR ${G.warState.turns}</div><div class="event-title">War with ${enemy.flag} ${enemy.name}</div><div class="event-desc">The conflict continues — resolve quickly to minimize economic damage.</div><div class="battle-strength-bar"><div class="bsb-labels"><span style="color:#60a5fa">🛡️ ${G.name} (${myPow})</span><span style="color:#f87171">${enemy.name} ${enemy.flag} (${enPow})</span></div><div class="bsb-track"><div class="bsb-player" style="width:${myPct}%"></div><div class="bsb-enemy" style="width:${enPct}%"></div></div></div><div style="font-size:10px;color:var(--text-muted);margin-top:6px;">⚠️ War costs ${fmtMoneyShort(500)}/yr · Economy -2 · Happiness -3 per turn</div></div>`;
     }
   }
-  return `${warnings}${techWidgetHtml}${warHtml}
+  return `${warnings}${techWidgetHtml}${goldenAgeHtml}${warHtml}
   <div class="prestige-panel fade-up">
     <div class="prestige-title">⭐ National Prestige</div>
     <div class="prestige-score">${fmt(G.prestige)}</div>
@@ -1153,6 +1307,7 @@ function renderHome(){
       <div class="prestige-item"><div class="pi-val">${G.allies}</div><div class="pi-label">Allies</div></div>
     </div>
   </div>
+  ${resourcePanelHtml}
   <div class="approval-section fade-up">
     <div class="approval-header"><span class="approval-title">🗳️ Public Approval</span><span class="approval-pct" style="color:${ac}">${Math.round(G.approval)}%</span></div>
     <div class="approval-bar-track"><div class="approval-bar-fill" style="width:${G.approval}%;background:${ac}"></div></div>
@@ -1214,6 +1369,22 @@ function renderHome(){
       ${renderProgressBar('Environment','environment','var(--accent-cyan)')}
       ${renderProgressBar('Social Equality','equality','var(--accent-orange)')}
       ${renderProgressBar('Corruption Index','corruption','var(--accent-red)',true)}
+    </div>
+  </div>
+  <div class="sector-content fade-up fade-up-d3">
+    <div class="sector-header"><h3>👥 Demographics</h3></div>
+    <div class="sector-body">
+      <div class="demo-grid">
+        <div class="demo-card"><div class="demo-label">Urbanization</div><div class="demo-val" style="color:var(--accent-blue)">${Math.round(G.urbanization||35)}%</div></div>
+        <div class="demo-card"><div class="demo-label">Literacy</div><div class="demo-val" style="color:var(--accent-purple)">${Math.round(G.literacy||60)}%</div></div>
+        <div class="demo-card"><div class="demo-label">Crime Rate</div><div class="demo-val" style="color:${(G.crime||20)>40?'var(--accent-red)':'var(--accent-green)'}">${Math.round(G.crime||20)}</div></div>
+      </div>
+      <div class="demo-grid">
+        <div class="demo-card"><div class="demo-label">Media Freedom</div><div class="demo-val" style="color:var(--accent-cyan)">${Math.round(G.mediaFreedom||55)}</div></div>
+        <div class="demo-card"><div class="demo-label">Culture</div><div class="demo-val" style="color:#f0abfc">${Math.round(G.culture||30)}</div></div>
+        <div class="demo-card"><div class="demo-label">Leader Age</div><div class="demo-val" style="color:var(--text-secondary)">${G.leaderAge||45}</div></div>
+      </div>
+      ${(G.totalImmigration||0) > 0 ? '<div style="font-size:10px;color:var(--accent-green);margin-top:6px;">📈 Net immigration: +' + fmt(G.totalImmigration) + '</div>' : (G.totalImmigration||0) < 0 ? '<div style="font-size:10px;color:var(--accent-red);margin-top:6px;">📉 Net emigration: ' + fmt(G.totalImmigration) + '</div>' : ''}
     </div>
   </div>
   <div class="sector-content fade-up fade-up-d4">
@@ -1293,7 +1464,7 @@ function applyEffects(effects,instant=false){
   Object.entries(effects).forEach(([k,v])=>{
     if(k==='treasury')G.treasury+=v*(instant?5:10);
     else if(k==='population')G.population=Math.floor(G.population*(1+v/100));
-    else if(['trade','production','energy','tourism','espionage','education','health','environment','equality','corruption','research','happiness','stability','military','diplomacy','economy'].includes(k))G[k]=clamp((G[k]||0)+v);
+    else if(['trade','production','energy','tourism','espionage','education','health','environment','equality','corruption','research','happiness','stability','military','diplomacy','economy','crime','culture','mediaFreedom','literacy','urbanization'].includes(k))G[k]=clamp((G[k]||0)+v);
     else if(G[k]!==undefined)G[k]+=v;
   });
 }
@@ -1555,6 +1726,11 @@ function renderStatsTab(){
     {label:'Equality',val:G.equality,color:'#fbbf24'},{label:'Trade',val:G.trade,color:'var(--accent-blue)'},
     {label:'Production',val:G.production,color:'#a78bfa'},{label:'Energy',val:G.energy,color:'#fde047'},
     {label:'Tourism',val:G.tourism,color:'#f0abfc'},{label:'Espionage',val:G.espionage,color:'#6b7280'},
+    {label:'Crime Rate',val:G.crime||20,color:'var(--accent-red)'},
+    {label:'Urbanization',val:G.urbanization||35,color:'var(--accent-blue)'},
+    {label:'Literacy',val:G.literacy||60,color:'var(--accent-purple)'},
+    {label:'Media Freedom',val:G.mediaFreedom||55,color:'var(--accent-cyan)'},
+    {label:'Cultural Influence',val:G.culture||30,color:'#f0abfc'},
   ];
   let h=`<div class="sector-content fade-up"><div class="sector-header"><h3>📊 Complete National Statistics</h3></div><div class="sector-body">`;
   allStats.forEach(s=>{const c=s.val<25?'var(--accent-red)':s.val<45?'var(--accent-gold)':s.color;h+=`<div class="progress-row"><div class="progress-label"><span class="pl-name">${s.label}</span><span class="pl-val" style="color:${c}">${Math.round(s.val)}/100</span></div><div class="progress-track"><div class="progress-fill" style="width:${Math.min(100,s.val)}%;background:${c}"></div></div></div>`;});
@@ -1563,7 +1739,7 @@ function renderStatsTab(){
   h+=`<div class="sector-content fade-up fade-up-d1"><div class="sector-header"><h3>🏅 Victory Conditions</h3><span style="font-size:11px;color:var(--accent-gold);font-weight:700;">${G.victoriesAchieved.length}/${VICTORY_CONDITIONS.length}</span></div><div class="sector-body">`;
   VICTORY_CONDITIONS.forEach(v=>{
     const achieved=v.check(G);const prog=Math.round(v.progress(G));
-    if(achieved&&!G.victoriesAchieved.includes(v.id)){G.victoriesAchieved.push(v.id);toast('🏅','Victory: '+v.name+'!','success');}
+    if(achieved&&!G.victoriesAchieved.includes(v.id)){G.victoriesAchieved.push(v.id);toast('🏅','Victory: '+v.name+'!','success');if(typeof launchConfetti==='function')launchConfetti();}
     h+=`<div class="victory-card ${achieved?'achieved':''}"><div class="vc-top"><span class="vc-name">${v.icon} ${v.name}</span><span class="vc-status ${achieved?'done':'progress'}">${achieved?'✅ DONE':prog+'%'}</span></div><div class="vc-desc">${v.desc}</div><div class="vc-bar"><div class="vc-bar-fill" style="width:${prog}%"></div></div></div>`;
   });
   h+=`</div></div>`;
@@ -1586,6 +1762,15 @@ function renderStatsTab(){
     <div class="info-row"><span class="info-label">🕵️ Spy Successes</span><span class="info-val">${G.spySuccesses}</span></div>
     <div class="info-row"><span class="info-label">🤝 Allies</span><span class="info-val">${G.allies}</span></div>
     <div class="info-row"><span class="info-label">🌋 Disasters Survived</span><span class="info-val">${G.disastersSurvived}</span></div>
+    <div class="info-row"><span class="info-label">📝 Motto</span><span class="info-val">${G.motto || 'N/A'}</span></div>
+    <div class="info-row"><span class="info-label">👤 Leader Age</span><span class="info-val">${G.leaderAge||45} years</span></div>
+    <div class="info-row"><span class="info-label">🏙️ Urbanization</span><span class="info-val">${Math.round(G.urbanization||35)}%</span></div>
+    <div class="info-row"><span class="info-label">📖 Literacy</span><span class="info-val">${Math.round(G.literacy||60)}%</span></div>
+    <div class="info-row"><span class="info-label">🔒 Crime Rate</span><span class="info-val">${Math.round(G.crime||20)}/100</span></div>
+    <div class="info-row"><span class="info-label">📰 Media Freedom</span><span class="info-val">${Math.round(G.mediaFreedom||55)}/100</span></div>
+    <div class="info-row"><span class="info-label">🎭 Culture</span><span class="info-val">${Math.round(G.culture||30)}/100</span></div>
+    <div class="info-row"><span class="info-label">⛏️ Resources</span><span class="info-val">${(G.naturalResources||[]).map(rid=>{const r=NATURAL_RESOURCES.find(x=>x.id===rid);return r?r.icon+' '+r.name:'';}).join(', ')}</span></div>
+    <div class="info-row"><span class="info-label">✨ Golden Ages</span><span class="info-val">${G.goldenAgeCount||0}${(G.goldenAge||0)>0?' (Active: '+G.goldenAge+'yr)':''}</span></div>
   </div></div>`;
   h+=`<div class="sector-content fade-up fade-up-d3"><div class="sector-header"><h3>🏆 Achievements</h3><span style="font-size:11px;color:var(--accent-gold);font-weight:700;">${G.unlockedAchievements.length}/${ACHIEVEMENTS.length}</span></div><div class="sector-body">
     <div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;margin-bottom:12px;"><div style="height:100%;width:${Math.round(G.unlockedAchievements.length/ACHIEVEMENTS.length*100)}%;background:linear-gradient(90deg,var(--accent-gold),#c97a00);border-radius:2px;transition:width 0.5s;"></div></div>
@@ -1728,6 +1913,7 @@ function nextTurn(){
       <div class="turn-item" style="color:${gdpChange>=0?'#34d399':'#f87171'}">${gdpChange>=0?'▲':'▼'} GDP: $${Math.abs(Math.round(gdpChange))}/capita</div>
       <div class="turn-item" style="color:var(--text-muted)">👥 ${fmt(G.population)} · ⭐ ${fmt(G.prestige)} prestige</div>
       ${G.activeTech?`<div class="turn-item" style="color:var(--accent-purple)">🔬 ${(TECHNOLOGIES.find(t=>t.id===G.activeTech.id)||{name:''}).name}: ${G.activeTech.turnsLeft} yr left</div>`:''}
+      ${(G.goldenAge||0) > 0 ? `<div class="turn-item" style="color:var(--accent-gold)">✨ Golden Age: ${G.goldenAge} years left</div>` : ''}
     `;
     if(!G.gameOver){
       setTimeout(()=>{overlay.classList.add('hidden');_processingTurn=false;renderGame();},1200);
@@ -1779,7 +1965,7 @@ function processTurn(){
   G.trade=clamp(G.trade+(Math.random()-0.45)*1.5+G.aiNations.filter(n=>n.tradeAgreement).length*0.2);
   G.military=clamp(G.military+milBonus*0.2);
   // Approval
-  G.approval=clamp(G.happiness*0.32+G.economy*0.22+G.stability*0.15+G.health*0.10+G.education*0.10+(100-G.corruption)*0.11);
+  G.approval=clamp(G.happiness*0.28+G.economy*0.20+G.stability*0.12+G.health*0.08+G.education*0.08+(100-G.corruption)*0.10+(100-(G.crime||20))*0.05+(G.mediaFreedom||55)*0.03+(G.culture||30)*0.03+(G.literacy||60)*0.03);
   G.approvalHistory.push(G.approval);
   // Tech progress
   if(G.activeTech){
@@ -1812,7 +1998,8 @@ function processTurn(){
     G.warState.turns++;
     const enemy=G.aiNations[G.warState.enemy];
     if(enemy&&G.warState.turns>=3){
-      const myPow=G.military*1.2+(G.hasNukes?25:0)+G.espionage*0.3+Math.random()*15;
+      const allyBonus = G.aiNations.filter(n => n.alliance && !n.atWar).length * 8;
+      const myPow=G.military*1.2+(G.hasNukes?25:0)+G.espionage*0.3+allyBonus+Math.random()*15;
       const enPow=enemy.strength*1.2+Math.random()*20;
       if(myPow>enPow||G.warState.turns>=7){
         const win=myPow>enPow;
@@ -1835,6 +2022,79 @@ function processTurn(){
     addNews('🌅 '+G.name+' enters the '+_newEra+'!');
     setTimeout(()=>toast('🌅','New Era: '+_newEra,'success'),200);
   }
+  // Leader aging
+  G.leaderAge = (G.leaderAge||45) + 1;
+  if(G.leaderAge > 85 && Math.random() < 0.15) {
+    const oldName = G.leaderName;
+    G.leaderName = generateLeaderName();
+    G.leaderAge = 40 + Math.floor(Math.random()*15);
+    G.leaderTrait = LEADER_TRAITS[Math.floor(Math.random()*LEADER_TRAITS.length)].id;
+    addLog('⚰️', oldName + ' passed away. ' + G.leaderName + ' takes power.', G.year);
+    addNews('⚰️ ' + oldName + ' passes. ' + G.leaderName + ' assumes leadership.');
+    G.stability = clamp(G.stability - 8);
+    G.happiness = clamp(G.happiness - 5);
+    toast('⚰️', 'Leader ' + oldName + ' has passed away', 'warn');
+  }
+
+  // Crime rate dynamics
+  G.crime = clamp((G.crime||20) + (Math.random()-0.45)*2 + (G.corruption > 40 ? 1 : 0) + (G.happiness < 30 ? 2 : 0) + (G.equality < 30 ? 1 : 0) - (G.military > 50 ? 0.5 : 0) - (G.education > 50 ? 0.5 : 0));
+  if((G.crime||20) > 60) { G.happiness = clamp(G.happiness - 2); G.economy = clamp(G.economy - 1); G.tourism = clamp(G.tourism - 2); }
+
+  // Urbanization growth
+  G.urbanization = clamp((G.urbanization||35) + (G.economy > 50 ? 0.3 : 0.1) + (Math.random()-0.4)*0.5, 10, 98);
+
+  // Literacy growth
+  G.literacy = clamp((G.literacy||60) + (G.education > 50 ? 0.4 : 0.1) + (Math.random()-0.3)*0.3, 20, 99);
+
+  // Media Freedom drift
+  G.mediaFreedom = clamp((G.mediaFreedom||55) + (Math.random()-0.5)*2 + (G.activePolicies.includes('censorship') ? -2 : 0) + (G.corruption > 50 ? -1 : 0.5));
+
+  // Cultural influence
+  G.culture = clamp((G.culture||30) + (Math.random()-0.4)*1.5 + (G.education > 60 ? 0.3 : 0) + (G.tourism > 40 ? 0.3 : 0) + (G.happiness > 60 ? 0.2 : 0));
+
+  // Immigration/emigration
+  const attractiveness = (G.happiness + G.economy + G.health - (G.crime||20)) / 4;
+  if(attractiveness > 55) {
+    const immigrants = Math.floor(G.population * 0.003 * (attractiveness - 55) / 45);
+    G.population += immigrants;
+    G.totalImmigration = (G.totalImmigration||0) + immigrants;
+  } else if(attractiveness < 35) {
+    const emigrants = Math.floor(G.population * 0.002 * (35 - attractiveness) / 35);
+    G.population = Math.max(100000, G.population - emigrants);
+    G.totalImmigration = (G.totalImmigration||0) - emigrants;
+  }
+
+  // Golden Age mechanic
+  if(G.approval > 75) {
+    G.consecutiveHighApproval = (G.consecutiveHighApproval||0) + 1;
+    if(G.consecutiveHighApproval >= 5 && (G.goldenAge||0) <= 0) {
+      G.goldenAge = 8;
+      G.goldenAgeCount = (G.goldenAgeCount||0) + 1;
+      addLog('🌟', 'A Golden Age begins! Bonuses for 8 years.', G.year);
+      addNews('🌟 ' + G.name + ' enters a glorious Golden Age!');
+      toast('🌟', 'Golden Age begins! +bonuses for 8 years', 'success');
+      if(typeof launchConfetti==='function') launchConfetti();
+    }
+  } else {
+    G.consecutiveHighApproval = 0;
+  }
+
+  if((G.goldenAge||0) > 0) {
+    G.goldenAge--;
+    G.economy = clamp(G.economy + 1);
+    G.happiness = clamp(G.happiness + 1);
+    G.research = clamp(G.research + 0.5);
+    G.culture = clamp((G.culture||30) + 1);
+    G.treasury += 200;
+    if(G.goldenAge <= 0) {
+      addLog('🌅', 'The Golden Age has ended.', G.year);
+      toast('🌅', 'Golden Age ended', 'warn');
+    }
+  }
+
+  // Revolution cooldown
+  if((G.revolutionCooldown||0) > 0) G.revolutionCooldown--;
+
   // Game over checks
   G.prestige=calcPrestige();
   checkAchievements();
@@ -1859,6 +2119,8 @@ function gameOver(reason,isWin){
     <div class="stat-card purple"><div class="stat-label">Prestige Score</div><div class="stat-value">${fmt(G.prestige)}</div></div>
     <div class="stat-card red"><div class="stat-label">Wars Won</div><div class="stat-value">${G.warsWon}</div></div>
     <div class="stat-card cyan"><div class="stat-label">Achievements</div><div class="stat-value">${G.unlockedAchievements.length}/${ACHIEVEMENTS.length}</div></div>
+    <div class="stat-card cyan"><div class="stat-label">Golden Ages</div><div class="stat-value">${G.goldenAgeCount||0}</div></div>
+    <div class="stat-card orange"><div class="stat-label">Technologies</div><div class="stat-value">${G.researchedTechs.length}/${TECHNOLOGIES.length}</div></div>
   </div>`;
 }
 
@@ -1970,10 +2232,12 @@ function showSettings(){
       <div class="event-choice" onclick="saveGame()">💾 Save to Browser</div>
       <div class="event-choice" onclick="exportSave()">📤 Export Save File</div>
       <div class="event-choice" onclick="importSave()">📂 Import Save File</div>
+      <div class="event-choice" onclick="closeModal();showGovernmentChange()">🏛️ Change Government Type</div>
+      <div class="event-choice" onclick="toggleSpeed()">⏩ Turn Speed: ${G.turnSpeed||1}x</div>
       <div class="event-choice" style="border-color:rgba(239,68,68,0.3);color:var(--accent-red);" onclick="closeModal();showSetup();">🔄 New Game</div>
       <div class="event-choice" onclick="closeModal()">❌ Close</div>
     </div>
-    <div style="margin-top:24px;text-align:center;font-size:10px;color:var(--text-muted);letter-spacing:1px;">NATIONFORGE v3.1 · ULTIMATE EDITION</div>
+    <div style="margin-top:24px;text-align:center;font-size:10px;color:var(--text-muted);letter-spacing:1px;">NATIONFORGE v4.0 · MEGA EDITION</div>
   `;
   document.getElementById('modalOverlay').classList.remove('hidden');
 }
@@ -1983,6 +2247,63 @@ function toast(icon,msg,type=''){
   const el=document.createElement('div');el.className='toast'+(type?' toast-'+type:'');
   el.innerHTML=`<span class="toast-icon">${icon}</span><span class="toast-msg">${msg}</span>`;
   container.appendChild(el);setTimeout(()=>el.remove(),3000);
+}
+
+// ---- GOVERNMENT CHANGE ----
+function showGovernmentChange() {
+  if((G.revolutionCooldown||0) > 0) {
+    toast('⚠️', 'Government change cooldown: ' + G.revolutionCooldown + ' years', 'warn');
+    return;
+  }
+  let h = '<div class="modal-title">🏛️ Change Government</div>';
+  h += '<div class="modal-desc">Changing government type costs stability and happiness. Choose wisely.</div>';
+  GOVTS.forEach(g => {
+    if(g.id === G.govt) return;
+    const modHtml = Object.entries(g.modifiers).map(([k,v]) =>
+      '<span class="policy-effect ' + (v>0?'positive':'negative') + '">' + k + ': ' + (v>0?'+':'') + v + '</span>'
+    ).join('');
+    h += '<div class="policy-card" onclick="changeGovernment(\'' + g.id + '\')">' +
+      '<div class="policy-top"><span class="policy-name">' + g.icon + ' ' + g.name + '</span><span class="policy-cost" style="background:rgba(239,68,68,0.12);color:#f87171;border:1px solid rgba(239,68,68,0.25);padding:3px 8px;border-radius:8px;">-15 Stability</span></div>' +
+      '<div class="policy-desc">' + g.desc + '</div>' +
+      '<div class="policy-effects">' + modHtml + '</div>' +
+    '</div>';
+  });
+  document.getElementById('modalContent').innerHTML = h;
+  document.getElementById('modalOverlay').classList.remove('hidden');
+}
+
+function changeGovernment(newGovt) {
+  const g = GOVTS.find(x=>x.id===newGovt);
+  if(!g) return;
+  G.stability = clamp(G.stability - 15);
+  G.happiness = clamp(G.happiness - 10);
+  G.govt = newGovt;
+  G.revolutionCooldown = 15;
+  if(newGovt === 'democracy') G.electionYear = G.year + 4;
+  else G.electionYear = 9999;
+  addLog('🏛️', 'Government changed to ' + g.name, G.year);
+  addNews('🏛️ ' + G.name + ' transitions to ' + g.name + '!');
+  toast('🏛️', 'Government changed to ' + g.name + '!', 'success');
+  closeModal();
+  checkAchievements();
+  renderGame();
+}
+
+function toggleSpeed() {
+  G.turnSpeed = (G.turnSpeed||1) === 1 ? 2 : (G.turnSpeed||1) === 2 ? 5 : 1;
+  closeModal();
+  showSettings();
+  toast('⏩', 'Speed: ' + G.turnSpeed + 'x', 'success');
+}
+
+function launchConfetti(){
+  const colors=['#f0b429','#3b82f6','#10b981','#ef4444','#8b5cf6','#f97316','#06b6d4'];
+  for(let i=0;i<50;i++){
+    const c=document.createElement('div');c.className='confetti-piece';
+    c.style.cssText='left:'+Math.random()*100+'%;top:-10px;background:'+colors[Math.floor(Math.random()*colors.length)]+';--fall-dur:'+(Math.random()*2+2).toFixed(1)+'s;border-radius:'+(Math.random()>0.5?'50%':'2px')+';width:'+(Math.random()*6+4)+'px;height:'+(Math.random()*6+4)+'px;animation-delay:'+(Math.random()*0.5).toFixed(2)+'s;';
+    document.body.appendChild(c);
+    setTimeout(function(){c.remove();},4500);
+  }
 }
 
 // ---- EVENT LISTENERS (no inline onclick issues) ----
