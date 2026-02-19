@@ -789,6 +789,28 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .radar-wrap{background:rgba(255,255,255,0.01);border-radius:var(--radius-xs);padding:10px;}
 /* Turn overlay enhanced */
 .turn-overlay .turn-year{text-shadow:0 0 40px rgba(240,180,41,0.3);}
+
+/* ===== SETTINGS PANEL IMPROVEMENTS ===== */
+/* Speed selector chips */
+.speed-selector{display:flex;gap:6px;margin-bottom:4px;}
+.speed-chip-opt{flex:1;padding:10px 6px;border-radius:var(--radius-xs);border:1.5px solid var(--border-light);background:rgba(255,255,255,0.02);font-size:14px;font-weight:800;font-family:'Space Mono',monospace;cursor:pointer;text-align:center;transition:all 0.2s;color:var(--text-secondary);user-select:none;}
+.speed-chip-opt:hover{background:rgba(255,255,255,0.05);border-color:rgba(59,130,246,0.3);}
+.speed-chip-opt:active{transform:scale(0.95);}
+.speed-chip-opt.active{border-color:var(--accent-blue);background:rgba(59,130,246,0.12);color:#60a5fa;box-shadow:0 0 0 1px rgba(59,130,246,0.2),0 4px 12px rgba(59,130,246,0.15);}
+.speed-chip-opt .sco-label{font-size:8px;font-weight:600;opacity:0.65;margin-top:3px;letter-spacing:0.3px;font-family:'Outfit',sans-serif;}
+.speed-chip-opt.active .sco-label{opacity:1;}
+/* Settings section labels */
+.settings-section-label{font-size:9px;font-weight:800;color:var(--text-muted);text-transform:uppercase;letter-spacing:2px;margin:16px 0 8px;display:flex;align-items:center;gap:8px;}
+.settings-section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+/* Settings action buttons */
+.settings-action-btn{display:flex;align-items:center;gap:10px;padding:11px 14px;border-radius:var(--radius-xs);background:rgba(255,255,255,0.02);border:1px solid var(--border);font-size:12px;font-weight:600;cursor:pointer;transition:all 0.18s;color:var(--text-primary);}
+.settings-action-btn:hover{background:rgba(255,255,255,0.05);border-color:var(--border-light);}
+.settings-action-btn:active{transform:scale(0.98);}
+.settings-action-btn .sab-icon{font-size:16px;width:24px;text-align:center;flex-shrink:0;}
+.settings-action-btn .sab-label{flex:1;}
+.settings-action-btn .sab-badge{font-size:10px;color:var(--text-muted);font-family:'Space Mono',monospace;}
+/* Settings nation card */
+.settings-nation-card{display:flex;align-items:center;gap:12px;padding:12px 14px;background:linear-gradient(145deg,rgba(240,180,41,0.07),rgba(240,180,41,0.02));border:1px solid rgba(240,180,41,0.18);border-radius:var(--radius-xs);margin-bottom:14px;}
 </style>
 
 
@@ -2038,7 +2060,7 @@ function renderGame(){
   renderLeaderBar();renderNewsTicker();renderResourceBar();renderBottomNav();renderGameContent();
   const btn=document.getElementById('nextTurnBtn');
   if(G.pendingEvent){btn.textContent='⚠️ Resolve Event First';btn.classList.add('has-event');}
-  else{btn.textContent='⚡ Advance Year';btn.classList.remove('has-event');}
+  else{const spd=G.turnSpeed||1;btn.textContent=spd>1?`⚡ Advance ${spd} Years`:'⚡ Advance Year';btn.classList.remove('has-event');}
   document.getElementById('logBadge').style.display=G.newNotifications?'flex':'none';
 }
 
@@ -2934,14 +2956,25 @@ function nextTurn(){
   if(_processingTurn)return;
   if(G.pendingEvent){toast('⚠️','Resolve the current event first!','warn');currentNavTab='home';renderBottomNav();renderGameContent();return;}
   _processingTurn=true;
-  G.year++;
+  const speed=G.turnSpeed||1;
+  const startYear=G.year+1;
   const prevGdp=G.gdpPerCapita;
+  G.year++;
   const overlay=document.getElementById('turnOverlay');
-  document.getElementById('turnYear').textContent='Year '+G.year;
+  document.getElementById('turnYear').textContent=speed>1?'Years '+startYear+'–'+(startYear+speed-1):'Year '+G.year;
   overlay.classList.remove('hidden');
   // Process after brief visual delay
   setTimeout(()=>{
     processTurn();
+    // Process additional turns if speed > 1 (stop early if event or game over)
+    if(!G.pendingEvent&&!G.gameOver&&speed>1){
+      for(let i=1;i<speed;i++){
+        if(G.pendingEvent||G.gameOver)break;
+        G.year++;
+        processTurn();
+      }
+    }
+    document.getElementById('turnYear').textContent='Year '+G.year;
     autoSave();
     const net=G.treasuryIncome-G.treasuryExpense;
     const gdpChange=G.gdpPerCapita-prevGdp;
@@ -3525,23 +3558,47 @@ function showAchievements(){
   document.getElementById('modalOverlay').classList.remove('hidden');
 }
 function showSettings(){
+  const spd=G.turnSpeed||1;
+  const govtName=(GOVTS.find(g=>g.id===G.govt)||{}).name||'-';
+  const traitName=(LEADER_TRAITS.find(t=>t.id===G.leaderTrait)||{}).name||'-';
+  const cooldown=G.revolutionCooldown||0;
   document.getElementById('modalContent').innerHTML=`
     <div class="modal-title">⚙️ Settings</div>
-    <div style="color:var(--text-muted);font-size:12px;margin-bottom:16px;">${G.name} · Year ${G.year} · ${getEra()} · ${G.difficulty.toUpperCase()}</div>
-    <div class="info-row"><span class="info-label">Leader</span><span class="info-val">${G.leaderName}</span></div>
-    <div class="info-row"><span class="info-label">Trait</span><span class="info-val">${(LEADER_TRAITS.find(t=>t.id===G.leaderTrait)||{}).name||'-'}</span></div>
-    <div class="info-row"><span class="info-label">Government</span><span class="info-val">${(GOVTS.find(g=>g.id===G.govt)||{}).name}</span></div>
-    <div class="info-row"><span class="info-label">Prestige</span><span class="info-val" style="color:var(--accent-gold)">${fmt(G.prestige)} · ${getPrestigeRank(G.prestige)}</span></div>
-    <div style="display:flex;flex-direction:column;gap:8px;margin-top:16px;">
-      <div class="event-choice" onclick="saveGame()">💾 Save to Browser</div>
-      <div class="event-choice" onclick="exportSave()">📤 Export Save File</div>
-      <div class="event-choice" onclick="importSave()">📂 Import Save File</div>
-      <div class="event-choice" onclick="closeModal();showGovernmentChange()">🏛️ Change Government Type</div>
-      <div class="event-choice" onclick="toggleSpeed()">⏩ Turn Speed: ${G.turnSpeed||1}x</div>
-      <div class="event-choice" style="border-color:rgba(239,68,68,0.3);color:var(--accent-red);" onclick="closeModal();showSetup();">🔄 New Game</div>
-      <div class="event-choice" onclick="closeModal()">❌ Close</div>
+    <div class="settings-nation-card">
+      <div style="font-size:36px;line-height:1;width:44px;text-align:center;">${G.flag}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:15px;font-weight:800;letter-spacing:-0.3px;">${G.name}</div>
+        <div style="font-size:10px;color:var(--text-muted);margin-top:2px;">Year ${G.year} · ${getEra()} · <span style="text-transform:uppercase;letter-spacing:1px;">${G.difficulty}</span></div>
+        <div style="display:flex;gap:5px;margin-top:6px;flex-wrap:wrap;">
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(240,180,41,0.12);color:var(--accent-gold);border:1px solid rgba(240,180,41,0.2);">⭐ ${fmt(G.prestige)} · ${getPrestigeRank(G.prestige)}</span>
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(139,92,246,0.1);color:#a78bfa;border:1px solid rgba(139,92,246,0.2);">🏛️ ${govtName}</span>
+        </div>
+      </div>
     </div>
-    <div style="margin-top:24px;text-align:center;font-size:10px;color:var(--text-muted);letter-spacing:1px;">NATIONFORGE v4.0 · MEGA EDITION</div>
+    <div class="info-row"><span class="info-label">👤 Leader</span><span class="info-val">${G.leaderName}</span></div>
+    <div class="info-row" style="border-bottom:none;"><span class="info-label">🎖️ Trait</span><span class="info-val">${traitName}</span></div>
+    <div class="settings-section-label">Turn Speed</div>
+    <div class="speed-selector">
+      <div class="speed-chip-opt${spd===1?' active':''}" onclick="setSpeed(1)">1×<div class="sco-label">Normal</div></div>
+      <div class="speed-chip-opt${spd===2?' active':''}" onclick="setSpeed(2)">2×<div class="sco-label">Fast</div></div>
+      <div class="speed-chip-opt${spd===5?' active':''}" onclick="setSpeed(5)">5×<div class="sco-label">Turbo</div></div>
+    </div>
+    <div class="settings-section-label">Save &amp; Load</div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div class="settings-action-btn" onclick="saveGame()"><span class="sab-icon">💾</span><span class="sab-label">Save to Browser</span></div>
+      <div class="settings-action-btn" onclick="exportSave()"><span class="sab-icon">📤</span><span class="sab-label">Export Save File</span></div>
+      <div class="settings-action-btn" onclick="importSave()"><span class="sab-icon">📂</span><span class="sab-label">Import Save File</span></div>
+    </div>
+    <div class="settings-section-label">Nation</div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div class="settings-action-btn" onclick="closeModal();showGovernmentChange()"><span class="sab-icon">🏛️</span><span class="sab-label">Change Government Type</span>${cooldown>0?`<span class="sab-badge">${cooldown} yr cooldown</span>`:''}</div>
+    </div>
+    <div class="settings-section-label">Danger Zone</div>
+    <div style="display:flex;flex-direction:column;gap:6px;">
+      <div class="settings-action-btn" style="border-color:rgba(239,68,68,0.22);color:var(--accent-red);" onclick="closeModal();showSetup();"><span class="sab-icon">🔄</span><span class="sab-label">Start New Game</span></div>
+      <div class="settings-action-btn" onclick="closeModal()"><span class="sab-icon">✕</span><span class="sab-label">Close Settings</span></div>
+    </div>
+    <div style="margin-top:20px;text-align:center;font-size:10px;color:var(--text-muted);letter-spacing:1px;">NATIONFORGE v4.0 · MEGA EDITION</div>
   `;
   document.getElementById('modalOverlay').classList.remove('hidden');
 }
@@ -3598,6 +3655,14 @@ function toggleSpeed() {
   closeModal();
   showSettings();
   toast('⏩', 'Speed: ' + G.turnSpeed + 'x', 'success');
+}
+
+function setSpeed(n) {
+  G.turnSpeed = n;
+  showSettings();
+  renderGame();
+  const labels = {1:'Normal (1×)', 2:'Fast (2×)', 5:'Turbo (5×)'};
+  toast('⏩', 'Turn speed: ' + (labels[n]||n+'×'), 'success');
 }
 
 function launchConfetti(){
