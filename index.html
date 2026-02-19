@@ -459,7 +459,191 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .resource-panel{background:linear-gradient(145deg,rgba(240,180,41,0.06),transparent);border:1px solid rgba(240,180,41,0.15);border-radius:var(--radius-xs);padding:12px;margin-bottom:10px;}
 .resource-panel .rp-title{font-size:11px;font-weight:700;color:var(--accent-gold);margin-bottom:8px;text-transform:uppercase;letter-spacing:1px;}
 .resource-panel .rp-grid{display:flex;gap:6px;flex-wrap:wrap;}
+/* Home macro and agenda polish */
+.macro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px;}
+.macro-card{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--radius-xs);padding:9px;text-align:center;}
+.macro-label{font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.8px;}
+.macro-val{font-size:14px;font-family:'Space Mono',monospace;font-weight:800;margin-top:3px;}
+.agenda-panel{background:linear-gradient(145deg,rgba(59,130,246,0.08),rgba(59,130,246,0.02));border:1px solid rgba(59,130,246,0.2);border-radius:var(--radius-sm);padding:12px;margin-bottom:10px;}
+.agenda-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;}
+.agenda-title{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#93c5fd;}
+.agenda-deadline{font-size:10px;color:var(--text-muted);}
+.agenda-item{padding:8px;background:rgba(0,0,0,0.2);border:1px solid var(--border);border-radius:8px;margin-bottom:6px;}
+.agenda-name{font-size:11px;font-weight:700;}
+.agenda-meta{display:flex;justify-content:space-between;font-size:9px;color:var(--text-muted);margin-top:4px;}
+.agenda-track{height:4px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;margin-top:5px;}
+.agenda-fill{height:100%;background:linear-gradient(90deg,#3b82f6,#60a5fa);border-radius:3px;transition:width 0.5s ease;}
+.home-quick-actions{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.home-quick-btn{padding:9px 10px;border-radius:10px;border:1px solid var(--border-light);background:rgba(255,255,255,0.025);font-size:10px;font-weight:700;cursor:pointer;text-align:left;line-height:1.35;transition:all 0.18s;}
+.home-quick-btn:hover{background:rgba(255,255,255,0.045);border-color:rgba(255,255,255,0.18);}
+.home-quick-btn:active{transform:scale(0.98);}
+.home-quick-btn .hqb-cost{display:block;color:var(--accent-gold);font-family:'Space Mono',monospace;font-size:9px;margin-top:4px;}
+.macro-alert{border-color:rgba(239,68,68,0.3);animation:alertPulse 1.3s ease-in-out infinite;}
+.trend-up{color:var(--accent-green);}
+.trend-down{color:var(--accent-red);}
+@keyframes ambientShift{0%,100%{transform:translateX(0) translateY(0);}50%{transform:translateX(8px) translateY(-6px);}}
+#gameScreen::before{content:'';position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 10% 0%,rgba(59,130,246,0.09),transparent 45%),radial-gradient(circle at 100% 100%,rgba(16,185,129,0.08),transparent 40%);animation:ambientShift 14s ease-in-out infinite;z-index:0;}
+#gameScreen>*{position:relative;z-index:1;}
+
+/* ===== PREMIUM UI v5 ADDITIONS ===== */
+/* Advisor Panel */
+.advisor-panel{background:linear-gradient(145deg,rgba(59,130,246,0.09),rgba(59,130,246,0.02));border:1px solid rgba(59,130,246,0.2);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:10px;position:relative;overflow:hidden;}
+.advisor-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-blue),#60a5fa);}
+.advisor-title{font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:#93c5fd;margin-bottom:10px;display:flex;align-items:center;gap:6px;}
+.advisor-tip{display:flex;align-items:flex-start;gap:9px;padding:9px 11px;background:rgba(0,0,0,0.22);border:1px solid rgba(59,130,246,0.12);border-radius:var(--radius-xs);margin-bottom:6px;transition:background 0.2s;}
+.advisor-tip:hover{background:rgba(59,130,246,0.07);}
+.advisor-tip:last-child{margin-bottom:0;}
+.at-icon{font-size:16px;flex-shrink:0;margin-top:1px;}
+.at-text{font-size:11px;color:var(--text-secondary);line-height:1.55;flex:1;}
+/* International Organizations */
+.org-card{padding:14px;background:rgba(255,255,255,0.02);border-radius:var(--radius-xs);border:1px solid var(--border);margin-bottom:8px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.org-card:hover{background:rgba(255,255,255,0.04);border-color:var(--border-light);transform:translateY(-1px);}
+.org-card:active{transform:scale(0.985);}
+.org-card.joined{border-color:rgba(16,185,129,0.28);background:rgba(16,185,129,0.03);}
+.org-card.locked-org{opacity:0.5;cursor:not-allowed;}
+.org-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.org-name{font-size:13px;font-weight:700;display:flex;align-items:center;gap:8px;}
+.org-badge{font-size:9px;font-weight:800;padding:2px 8px;border-radius:6px;letter-spacing:0.5px;}
+.org-badge.member{background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.25);}
+.org-badge.available{background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);}
+.org-badge.locked{background:rgba(255,255,255,0.04);color:var(--text-muted);border:1px solid rgba(255,255,255,0.08);}
+.org-desc{font-size:11px;color:var(--text-secondary);line-height:1.5;}
+.org-effects{display:flex;gap:5px;flex-wrap:wrap;margin-top:8px;}
+.org-count{font-size:10px;font-weight:700;padding:3px 9px;border-radius:8px;background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);}
+/* Chronicle */
+.chronicle-list{padding:2px 0;}
+.chronicle-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid var(--border);align-items:flex-start;}
+.chronicle-item:last-child{border-bottom:none;}
+.ci-year{font-size:10px;font-family:'Space Mono',monospace;color:var(--accent-gold);flex-shrink:0;width:38px;padding-top:2px;text-align:right;}
+.ci-dot{width:8px;height:8px;border-radius:50%;background:rgba(240,180,41,0.4);border:1.5px solid rgba(240,180,41,0.7);flex-shrink:0;margin-top:4px;}
+.ci-body{flex:1;min-width:0;}
+.ci-title{font-size:12px;font-weight:700;line-height:1.4;}
+.ci-sub{font-size:10px;color:var(--text-muted);margin-top:2px;}
+/* Radar Chart */
+.radar-wrap{position:relative;width:100%;margin:8px auto;display:flex;justify-content:center;}
+.radar-wrap canvas{display:block;}
+/* Rating / Game Over */
+.rating-card{text-align:center;padding:26px 20px;background:linear-gradient(145deg,rgba(240,180,41,0.1),rgba(240,180,41,0.03));border:1px solid rgba(240,180,41,0.25);border-radius:var(--radius);margin-bottom:16px;position:relative;overflow:hidden;}
+.rating-card::before{content:'';position:absolute;top:-30px;right:-30px;width:120px;height:120px;border-radius:50%;background:radial-gradient(circle,rgba(240,180,41,0.08),transparent);pointer-events:none;}
+.rating-grade{font-size:88px;font-weight:900;font-family:'Syne',sans-serif;line-height:1;background:linear-gradient(135deg,var(--accent-gold) 30%,#fff 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;}
+.rating-label{font-size:17px;font-weight:800;color:var(--text-primary);margin-top:6px;letter-spacing:-0.4px;}
+.rating-sub{font-size:12px;color:var(--text-muted);margin-top:4px;line-height:1.5;}
+/* Policy search */
+.policy-search-wrap{position:relative;margin-bottom:12px;}
+.policy-search{width:100%;padding:11px 14px 11px 38px;background:var(--bg-card);border:1px solid var(--border-light);border-radius:var(--radius-xs);color:var(--text-primary);font-family:inherit;font-size:14px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;}
+.policy-search:focus{border-color:var(--accent-gold);box-shadow:0 0 0 3px var(--accent-gold-dim);}
+.policy-search::placeholder{color:var(--text-muted);}
+.ps-icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none;color:var(--text-muted);}
+/* Budget breakdown bar */
+.bdb-row{height:9px;display:flex;border-radius:5px;overflow:hidden;gap:2px;margin:8px 0 4px;}
+.bdb-seg{transition:width 0.5s cubic-bezier(0.16,1,0.3,1);min-width:2px;}
+/* Enhanced stat card */
+.stat-card{transition:transform 0.2s ease,border-color 0.2s,box-shadow 0.2s;}
+.stat-card:hover{transform:translateY(-2px)!important;border-color:rgba(255,255,255,0.14);box-shadow:0 10px 40px rgba(0,0,0,0.5);}
+/* Pulsing event button */
+@keyframes eventGlow{0%,100%{box-shadow:0 4px 20px rgba(239,68,68,0.35);}50%{box-shadow:0 6px 30px rgba(239,68,68,0.6);}}
+.next-turn-btn.has-event{animation:eventGlow 1.5s ease-in-out infinite;}
+/* Shimmer on turn button hover */
+@keyframes shimmerFast{0%{transform:translateX(-150%);}100%{transform:translateX(300%);}}
+.next-turn-btn:not(.has-event):hover::after{content:'';position:absolute;top:0;left:0;width:35%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.18),transparent);animation:shimmerFast 0.75s ease;pointer-events:none;}
+/* Better modal sheet */
+.modal-sheet{border-top:2px solid rgba(240,180,41,0.18);}
+/* World summary grid */
+.world-summary-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+.wsb{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--radius-xs);padding:12px;text-align:center;}
+.wsb .wsb-val{font-size:20px;font-weight:800;font-family:'Space Mono',monospace;margin-top:3px;}
+.wsb .wsb-label{font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;}
+/* NSB rows for rating breakdown */
+.nsb-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:12px;}
+.nsb-row:last-child{border-bottom:none;}
+.nsb-label{color:var(--text-secondary);font-weight:500;}
+.nsb-val{font-weight:700;font-family:'Space Mono',monospace;}
+/* Improved empty state */
+.empty-state{text-align:center;padding:24px 12px;color:var(--text-muted);}
+.empty-state .empty-icon{font-size:36px;margin-bottom:10px;opacity:0.3;display:block;}
+/* AI Nations strength indicator */
+.strength-bar-mini{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;margin-top:5px;}
+.strength-bar-mini-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,var(--accent-red),#dc2626);}
+/* Population segment bar */
+.pop-seg-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;gap:1px;margin:8px 0 4px;}
+/* Improved ticker */
+.news-ticker{height:26px;padding:6px 0;}
+.news-ticker-inner{font-size:10.5px;}
+/* Better nav active indicator */
+.nav-item.active .nav-icon{filter:drop-shadow(0 0 6px rgba(240,180,41,0.5));}
+/* Smooth transitions everywhere */
+.sector-content{transition:opacity 0.15s ease;}
+/* Improved game over */
+#gameOverScreen{background:radial-gradient(ellipse at 50% 30%,#120818 0%,#080c18 65%);}
+/* Tech tier badge */
+.tier-badge{font-size:9px;font-weight:800;padding:1px 6px;border-radius:4px;letter-spacing:0.5px;margin-left:6px;}
+.tier-badge.t1{background:rgba(59,130,246,0.12);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);}
+.tier-badge.t2{background:rgba(139,92,246,0.12);color:#a78bfa;border:1px solid rgba(139,92,246,0.2);}
+.tier-badge.t3{background:rgba(240,180,41,0.12);color:var(--accent-gold);border:1px solid rgba(240,180,41,0.2);}
+/* Sticky resource bar shadow */
+.resource-bar{box-shadow:0 2px 8px rgba(0,0,0,0.2);}
+/* Better approval bar fill */
+.approval-bar-fill{background-image:linear-gradient(90deg,rgba(255,255,255,0) 0%,rgba(255,255,255,0.08) 50%,rgba(255,255,255,0) 100%);}
+/* Bottom nav label size */
+.nav-label{font-size:8.5px;}
+
+/* ===== NEW FEATURES v5 ===== */
+/* Political Factions */
+.faction-card{padding:12px;background:rgba(255,255,255,0.02);border-radius:var(--radius-xs);border:1px solid var(--border);margin-bottom:8px;transition:all 0.2s;}
+.faction-card:hover{background:rgba(255,255,255,0.04);}
+.faction-bar{height:6px;background:rgba(255,255,255,0.04);border-radius:3px;overflow:hidden;margin-top:7px;}
+.faction-fill{height:100%;border-radius:3px;transition:width 0.6s cubic-bezier(0.16,1,0.3,1);}
+/* Rebellion Risk Meter */
+.rebellion-panel{padding:10px 12px;background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.18);border-radius:var(--radius-xs);margin-bottom:10px;}
+.rebellion-label{font-size:10px;font-weight:800;color:#f87171;letter-spacing:1px;text-transform:uppercase;margin-bottom:5px;}
+.rebellion-bar{height:8px;background:rgba(255,255,255,0.04);border-radius:4px;overflow:hidden;}
+.rebellion-fill{height:100%;background:linear-gradient(90deg,#f97316,#ef4444);border-radius:4px;transition:width 0.7s cubic-bezier(0.16,1,0.3,1);}
+/* Season Badge */
+.season-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;background:rgba(59,130,246,0.07);border:1px solid rgba(59,130,246,0.15);font-size:9px;font-weight:700;color:#93c5fd;letter-spacing:0.5px;}
+/* Diversification panel */
+.diversification-panel{background:linear-gradient(145deg,rgba(6,182,212,0.07),transparent);border:1px solid rgba(6,182,212,0.15);border-radius:var(--radius-xs);padding:12px;margin-bottom:10px;}
+.div-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin-top:8px;}
+.div-seg{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:7px;padding:7px;text-align:center;}
+.div-seg .ds-val{font-size:13px;font-weight:800;font-family:'Space Mono',monospace;margin-top:2px;}
+.div-seg .ds-label{font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;}
+/* Enhanced home quick actions — 2 cols, 5th item spans full */
+.home-quick-actions-ext{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:10px;}
+.home-quick-actions-ext .home-quick-btn:last-child:nth-child(odd){grid-column:1/-1;}
+/* Faction crisis glow */
+@keyframes factionAlert{0%,100%{border-color:rgba(239,68,68,0.2);}50%{border-color:rgba(239,68,68,0.5);box-shadow:0 0 12px rgba(239,68,68,0.15);}}
+.faction-card.enraged{animation:factionAlert 1.4s ease-in-out infinite;}
+/* Season-specific accent tints */
+.season-spring .top-bar::after{background:linear-gradient(90deg,transparent,rgba(16,185,129,0.2),transparent);}
+.season-summer .top-bar::after{background:linear-gradient(90deg,transparent,rgba(240,180,41,0.25),transparent);}
+.season-autumn .top-bar::after{background:linear-gradient(90deg,transparent,rgba(249,115,22,0.2),transparent);}
+.season-winter .top-bar::after{background:linear-gradient(90deg,transparent,rgba(59,130,246,0.2),transparent);}
+/* Pulse badge for urgent warnings */
+.urgent-badge{font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px;background:rgba(239,68,68,0.15);color:#f87171;border:1px solid rgba(239,68,68,0.3);animation:alertPulse 1.2s ease-in-out infinite;display:inline-block;}
+/* Better world summary */
+.world-stat-row{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);}
+.world-stat-row:last-child{border-bottom:none;}
+/* Score breakdown card */
+.score-breakdown{display:grid;grid-template-columns:repeat(2,1fr);gap:7px;margin-top:12px;}
+.sbd-item{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:8px;padding:9px;text-align:center;}
+.sbd-val{font-size:14px;font-weight:800;font-family:'Space Mono',monospace;margin-top:2px;}
+.sbd-label{font-size:8px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;}
+/* Extended bottom safe area */
+.game-content{padding-bottom:120px;}
+/* Crisis banner with icon */
+.crisis-banner-wrap{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(239,68,68,0.07);border:1px solid rgba(239,68,68,0.2);border-radius:var(--radius-xs);margin-bottom:8px;}
+.crisis-banner-icon{font-size:18px;flex-shrink:0;}
+.crisis-banner-text{font-size:11px;font-weight:700;color:#f87171;}
+/* Trade partner card improvements */
+.trade-partner-card{display:flex;align-items:center;gap:10px;padding:10px 12px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:var(--radius-xs);margin-bottom:6px;transition:all 0.2s;}
+.trade-partner-card:hover{background:rgba(255,255,255,0.04);}
+/* Faction stats row */
+.fac-stat-row{display:flex;align-items:center;justify-content:space-between;font-size:11px;padding:6px 0;}
+/* Enhanced approval section */
+.approval-section::after{content:'';position:absolute;bottom:0;right:0;width:60px;height:60px;background:radial-gradient(circle,rgba(240,180,41,0.04) 0%,transparent 70%);pointer-events:none;}
+/* National motto display */
+.motto-display{font-size:10px;font-style:italic;color:var(--text-muted);text-align:center;padding:6px 0;border-top:1px solid var(--border);margin-top:8px;}
 </style>
+
 </head>
 <body>
 <div id="app">
@@ -510,7 +694,7 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
     <div class="top-bar">
       <div class="nation-info">
         <div class="nation-flag" id="gameFlag">🏴</div>
-        <div><div class="nation-name" id="gameName">Nation</div><div class="nation-year" id="gameYear">Year 1</div></div>
+        <div><div class="nation-name" id="gameName">Nation</div><div class="nation-year" id="gameYear">Year 1</div><div id="gameSeasonBadge" style="font-size:8px;color:var(--text-muted);margin-top:1px;"></div></div>
       </div>
       <div style="display:flex;align-items:center;gap:6px;">
         <div class="prestige-chip" id="prestigeChip"><span class="p-icon">⭐</span><span class="p-val" id="prestigeDisplay">0</span></div>
@@ -590,6 +774,9 @@ const NATURAL_RESOURCES = [
   {id:'silicon',name:'Silicon Deposits',icon:'💻',effects:{research:6,economy:4,production:3}},
   {id:'lithium',name:'Lithium Reserves',icon:'🔋',effects:{research:5,economy:6,trade:4}},
   {id:'coal',name:'Coal Deposits',icon:'⚫',effects:{energy:8,production:5,environment:-8}},
+  {id:'natural_gas',name:'Natural Gas Fields',icon:'🔥',effects:{energy:12,economy:6,environment:-4,trade:5}},
+  {id:'rare_minerals',name:'Rare Mineral Deposits',icon:'💠',effects:{research:7,economy:5,trade:6}},
+  {id:'geothermal',name:'Geothermal Energy',icon:'🌋',effects:{energy:15,environment:8,economy:4}},
 ];
 const TECHNOLOGIES=[
   {id:'agri',name:'Modern Agriculture',icon:'🌾',tier:1,cost:400,turns:2,desc:'Advanced farming techniques.',effects:{health:5,economy:4,environment:-3},requires:[]},
@@ -604,6 +791,14 @@ const TECHNOLOGIES=[
   {id:'fusion_power',name:'Fusion Energy',icon:'☀️',tier:3,cost:1600,turns:5,desc:'Limitless clean energy.',effects:{energy:30,environment:20,economy:15},requires:['renewables','ai_tech']},
   {id:'space_tech',name:'Advanced Space Tech',icon:'🚀',tier:3,cost:1800,turns:5,desc:'Orbital platforms and beyond.',effects:{research:25,military:15,diplomacy:12},requires:['ai_tech','renewables']},
   {id:'quantum',name:'Quantum Computing',icon:'💻',tier:3,cost:1500,turns:4,desc:'Quantum computers solve the unsolvable.',effects:{research:20,economy:12,espionage:15},requires:['ai_tech','cyber_sec']},
+  {id:'climate_modeling',name:'Climate Simulation Network',icon:'🌡️',tier:3,cost:1650,turns:4,desc:'Predict extreme weather and optimize adaptation.',effects:{research:16,environment:10,resilience:12,climateRisk:-8},requires:['renewables','comms']},
+  {id:'robotics',name:'Industrial Robotics',icon:'🤖',tier:3,cost:1500,turns:4,desc:'Autonomous factories and logistics.',effects:{production:18,economy:10,unemployment:-3,inflation:-1},requires:['ai_tech','steel']},
+  {id:'desalination_grid',name:'Desalination Grid',icon:'💧',tier:3,cost:1450,turns:4,desc:'Secure freshwater with large-scale desalination.',effects:{health:10,foodSecurity:12,resilience:8,economy:4},requires:['agri','renewables']},
+  {id:'monetary_ai',name:'AI Monetary Forecasting',icon:'📉',tier:3,cost:1700,turns:4,desc:'Stabilize inflation and labor cycles through predictive policy.',effects:{inflation:-4,unemployment:-2,economy:8,publicTrust:6},requires:['quantum','ai_tech']},
+  {id:'advanced_materials',name:'Advanced Materials Science',icon:'⚗️',tier:2,cost:920,turns:3,desc:'Metamaterials and superconductors unlock revolutionary manufacturing.',effects:{production:12,research:10,military:8},requires:['steel']},
+  {id:'autonomous_vehicles',name:'Autonomous Transport Grid',icon:'🚗',tier:3,cost:1550,turns:4,desc:'Self-driving vehicles transform urban mobility and reduce accidents.',effects:{economy:8,happiness:10,environment:6,trade:6},requires:['ai_tech','renewables']},
+  {id:'carbon_capture',name:'Direct Air Carbon Capture',icon:'🌬️',tier:3,cost:1750,turns:4,desc:'Industrial CO₂ removal from the atmosphere reverses climate damage.',effects:{environment:22,climateRisk:-10,research:8,diplomacy:10},requires:['fusion_power','climate_modeling']},
+  {id:'gene_editing',name:'Gene Editing (CRISPR)',icon:'🧫',tier:3,cost:1620,turns:4,desc:'Precision genetic medicine eradicates hereditary diseases and cancers.',effects:{health:20,research:12,happiness:5},requires:['biotech','nano']},
 ];
 const SPY_MISSIONS=[
   {id:'steal_tech',name:'Steal Technology',icon:'💾',desc:'Infiltrate enemy research labs.',cost:800,risk:'med',success:0.65,effects:{research:12,espionage:5},failEffects:{diplomacy:-15,espionage:-5}},
@@ -614,6 +809,8 @@ const SPY_MISSIONS=[
   {id:'cyber_op',name:'Cyber Operation',icon:'💻',desc:'Hack critical infrastructure.',cost:900,risk:'low',success:0.75,effects:{research:8,espionage:8},failEffects:{diplomacy:-10}},
   {id:'deep_cover',name:'Deep Cover Agent',icon:'🎭',desc:'Establish long-term sleeper agent in rival government.',cost:1500,risk:'high',success:0.45,effects:{espionage:20,diplomacy:5},failEffects:{diplomacy:-25,espionage:-15}},
   {id:'economic_intel',name:'Economic Intelligence',icon:'📊',desc:'Steal economic forecasts and trade secrets.',cost:700,risk:'low',success:0.80,effects:{economy:8,trade:5,research:3},failEffects:{diplomacy:-5,trade:-3}},
+  {id:'asset_network',name:'Agent Network',icon:'👥',desc:'Cultivate a network of informants inside a rival government ministry.',cost:1200,risk:'med',success:0.65,effects:{espionage:18,stability:3},failEffects:{diplomacy:-12,espionage:-5}},
+  {id:'market_manipulation',name:'Market Manipulation',icon:'📉',desc:'Covertly destabilize a rival nation\'s financial markets.',cost:1800,risk:'high',success:0.45,effects:{economy:5,trade:5},failEffects:{diplomacy:-18,trade:-8}},
 ];
 
 // ---- MEGA PROJECTS (global, fixes onclick bug) ----
@@ -627,6 +824,9 @@ const MEGA_PROJECTS=[
   {id:'quantum_net',name:'Quantum Internet',icon:'🔮',cost:9000,desc:'Unhackable quantum communication network spanning the nation.',effects:{research:20,espionage:20,economy:12,military:10}},
   {id:'climate_shield',name:'Climate Shield',icon:'🛡️',cost:11000,desc:'Atmospheric engineering to control regional climate patterns.',effects:{environment:25,health:15,happiness:10,research:15}},
   {id:'sea_colony',name:'Deep Sea Colony',icon:'🌊',cost:13000,desc:'Self-sustaining underwater city for 500,000 residents.',effects:{research:20,population:15,happiness:12,environment:10}},
+  {id:'global_university',name:'World University',icon:'🎓',cost:9500,desc:'The world\'s largest research university — 1M students, 200 Nobel laureates on faculty.',effects:{research:28,education:20,happiness:12,diplomacy:10}},
+  {id:'digital_nation',name:'Digital Government',icon:'💻',cost:8500,desc:'Fully AI-powered governance eliminates bureaucracy, corruption, and delays.',effects:{economy:20,corruption:-20,research:15,publicTrust:15}},
+  {id:'martian_colony',name:'Mars Colony Alpha',icon:'🪐',cost:20000,desc:'Humanity\'s first permanent settlement on Mars — the ultimate national legacy.',effects:{research:45,happiness:25,diplomacy:30}},
 ];
 
 const POLICIES={
@@ -639,6 +839,11 @@ const POLICIES={
     {id:'privatize',name:'Privatize State Assets',desc:'Sell government companies.',cost:0,annualCost:0,effects:{economy:10,treasury:20,equality:-10,corruption:5},oneTime:true},
     {id:'sez',name:'Special Economic Zones',desc:'Low-tax zones for foreign investment.',cost:1500,annualCost:100,effects:{economy:15,trade:12,equality:-5,environment:-5},oneTime:false},
     {id:'minimum_wage',name:'Living Wage Law',desc:'Federal minimum wage.',cost:200,annualCost:40,effects:{happiness:10,equality:12,economy:-3,production:-5},oneTime:false},
+    {id:'price_stability',name:'Price Stability Mandate',desc:'Aggressive anti-inflation monetary controls.',cost:700,annualCost:70,effects:{inflation:-3,economy:-2,publicTrust:4},oneTime:false},
+    {id:'sovereign_fund',name:'Sovereign Wealth Fund',desc:'Invest surplus revenue for future shocks.',cost:2200,annualCost:0,effects:{treasury:12,stability:4,publicTrust:3},oneTime:true},
+    {id:'food_security_program',name:'Food Security Program',desc:'Strategic reserves and farm modernization.',cost:500,annualCost:90,effects:{foodSecurity:12,happiness:6,treasury:-6},oneTime:false},
+    {id:'export_drive',name:'National Export Drive',desc:'State-backed campaign to open new export markets.',cost:600,annualCost:80,effects:{trade:10,economy:6,diplomacy:4},oneTime:false},
+    {id:'small_business',name:'Small Business Support',desc:'Grants and low-interest loans for SMEs.',cost:700,annualCost:90,effects:{economy:8,employment:5,equality:4,unemployment:-2},oneTime:false},
   ],
   social:[
     {id:'healthcare',name:'Universal Healthcare',desc:'Free healthcare for all.',cost:1000,annualCost:200,effects:{happiness:15,health:20,treasury:-12},oneTime:false},
@@ -649,6 +854,11 @@ const POLICIES={
     {id:'welfare',name:'Universal Basic Income',desc:'Monthly payment to all citizens.',cost:1500,annualCost:350,effects:{happiness:20,equality:15,treasury:-20,economy:-5},oneTime:false},
     {id:'drug_reform',name:'Drug Decriminalization',desc:'Focus on treatment over prison.',cost:400,annualCost:60,effects:{happiness:8,health:5,stability:-3},oneTime:true},
     {id:'immigration',name:'Open Immigration',desc:'Welcome skilled workers.',cost:300,annualCost:50,effects:{economy:8,research:5,population:5,happiness:-5,stability:-3},oneTime:false},
+    {id:'affordable_childcare',name:'Affordable Childcare Act',desc:'Subsidize childcare to boost workforce participation.',cost:700,annualCost:110,effects:{unemployment:-3,happiness:8,equality:6},oneTime:false},
+    {id:'police_reform',name:'Police Accountability Reform',desc:'Community policing and oversight councils.',cost:500,annualCost:60,effects:{crime:-8,publicTrust:8,stability:3},oneTime:true},
+    {id:'mental_health',name:'Mental Health Initiative',desc:'Nationwide mental health support and crisis centers.',cost:500,annualCost:70,effects:{happiness:10,health:8,crime:-3},oneTime:false},
+    {id:'sports_program',name:'National Sports Program',desc:'State investment in amateur and elite sports.',cost:400,annualCost:50,effects:{happiness:8,culture:5,diplomacy:4},oneTime:false},
+    {id:'arts_council',name:'National Arts Council',desc:'Public funding for arts, music, film, and culture.',cost:500,annualCost:60,effects:{culture:10,happiness:6,tourism:5},oneTime:false},
   ],
   military:[
     {id:'conscription',name:'Mandatory Service',desc:'All citizens serve 2 years.',cost:400,annualCost:80,effects:{military:20,happiness:-12,stability:5},oneTime:false},
@@ -659,6 +869,9 @@ const POLICIES={
     {id:'peacekeep',name:'UN Peacekeeping',desc:'Send troops on peacekeeping.',cost:600,annualCost:80,effects:{diplomacy:12,military:-3,happiness:5},oneTime:false},
     {id:'special_forces',name:'Special Forces Unit',desc:'Elite rapid-response unit.',cost:1100,annualCost:150,effects:{military:12,espionage:10,stability:5},oneTime:true},
     {id:'missile_defense',name:'Missile Defense System',desc:'Advanced anti-ballistic shield.',cost:2000,annualCost:120,effects:{military:20,stability:15,diplomacy:-5},oneTime:true},
+    {id:'civil_defense',name:'Civil Defense Command',desc:'Disaster drills, shelters, and emergency readiness.',cost:900,annualCost:100,effects:{resilience:10,stability:6,happiness:2},oneTime:false},
+    {id:'veterans_benefits',name:'Veterans Support Act',desc:'Comprehensive care and benefits for military veterans.',cost:600,annualCost:90,effects:{military:5,happiness:6,stability:4},oneTime:false},
+    {id:'border_security',name:'Border Security Upgrade',desc:'Advanced border surveillance and control technology.',cost:1100,annualCost:100,effects:{military:8,stability:5,crime:-4},oneTime:true},
   ],
   research:[
     {id:'space',name:'Space Program',desc:'National space agency.',cost:2000,annualCost:250,effects:{research:20,happiness:10,economy:5},oneTime:true},
@@ -669,6 +882,9 @@ const POLICIES={
     {id:'fusion',name:'Fusion Energy Project',desc:'Pursue clean energy.',cost:3000,annualCost:200,effects:{research:15,environment:25,economy:15},oneTime:true},
     {id:'nanotech',name:'Nanotechnology Lab',desc:'Nano-scale manufacturing.',cost:1800,annualCost:170,effects:{research:18,health:10,production:8},oneTime:true},
     {id:'genomics',name:'National Genome Project',desc:'Map the population genome.',cost:1400,annualCost:130,effects:{research:12,health:18,happiness:5},oneTime:true},
+    {id:'climate_lab',name:'Climate Adaptation Lab',desc:'Forecast and harden against extreme weather.',cost:1500,annualCost:120,effects:{resilience:8,research:12,environment:8,climateRisk:-6},oneTime:true},
+    {id:'patents',name:'National Patent Office',desc:'Protect innovations and license IP for revenue.',cost:700,annualCost:60,effects:{research:8,economy:6,trade:4},oneTime:true},
+    {id:'university_expansion',name:'University Expansion Plan',desc:'Double university capacity with new campuses.',cost:1000,annualCost:120,effects:{research:12,education:10,economy:4},oneTime:true},
   ],
   infrastructure:[
     {id:'highways',name:'Highway Network',desc:'National highway system.',cost:800,annualCost:30,effects:{economy:10,trade:8,environment:-5},oneTime:true},
@@ -679,6 +895,10 @@ const POLICIES={
     {id:'smart_city',name:'Smart City Project',desc:'AI-managed city.',cost:2500,annualCost:80,effects:{happiness:12,economy:15,research:10,environment:5},oneTime:true},
     {id:'water',name:'Clean Water Infrastructure',desc:'Safe drinking water for all.',cost:700,annualCost:45,effects:{health:15,happiness:10,environment:5},oneTime:true},
     {id:'hospital',name:'National Hospital Network',desc:'World-class hospitals.',cost:1300,annualCost:100,effects:{health:20,happiness:12,research:5},oneTime:true},
+    {id:'flood_barriers',name:'Coastal Flood Barriers',desc:'Sea walls and storm-surge defenses.',cost:1700,annualCost:50,effects:{resilience:14,climateRisk:-8,economy:4},oneTime:true},
+    {id:'smart_grid',name:'Smart Grid Upgrade',desc:'Digital balancing for reliable power supply.',cost:1600,annualCost:70,effects:{energy:12,inflation:-2,economy:6},oneTime:true},
+    {id:'national_parks',name:'National Parks Network',desc:'Establish protected natural areas and eco-tourism.',cost:600,annualCost:20,effects:{environment:8,tourism:10,happiness:5},oneTime:true},
+    {id:'recycling_mandate',name:'National Recycling Mandate',desc:'Mandatory recycling and waste reduction programs.',cost:400,annualCost:35,effects:{environment:6,health:3,publicTrust:4},oneTime:false},
   ]
 };
 
@@ -858,7 +1078,133 @@ const EVENTS=[
     {text:'🏗️ Build Innovation Hubs',effects:{research:10,economy:8,treasury:-15},cost:'$150M',tags:[{t:'Research +10',p:true}]},
     {text:'🔒 Exit Restrictions',effects:{stability:-8,happiness:-10,diplomacy:-10,mediaFreedom:-5},tags:[{t:'Controversial',p:false}]},
   ]},
+  {id:'heatwave_grid',type:'disaster',title:'Extreme Heatwave Season',desc:'Record-breaking heat triggers blackouts, crop stress, and hospital overload.',choices:[
+    {text:'⚡ Emergency Cooling & Grid Imports',effects:{treasury:-18,happiness:6,health:5,resilience:4},cost:'$180M',tags:[{t:'Stability shield',p:true}]},
+    {text:'🏭 Keep Industry Running',effects:{economy:6,environment:-8,happiness:-6,inflation:2},tags:[{t:'Economy +6',p:true}]},
+    {text:'🌳 Urban Cooling Program',effects:{environment:8,resilience:8,treasury:-12,climateRisk:-5},cost:'$120M',tags:[{t:'Long-term resilience',p:true}]},
+  ]},
+  {id:'housing_bubble',type:'crisis',title:'Housing Bubble Warning',desc:'Home prices rise too fast, rents surge, and households face mounting pressure.',choices:[
+    {text:'🏘️ Fast-Track Housing Supply',effects:{housingAffordability:12,happiness:6,treasury:-14,inflation:-1},cost:'$140M',tags:[{t:'Housing relief',p:true}]},
+    {text:'📉 Tight Credit Rules',effects:{inflation:-2,economy:-4,stability:4},tags:[{t:'Inflation control',p:true}]},
+    {text:'💸 Let Market Run',effects:{economy:4,housingAffordability:-12,unemployment:2,publicTrust:-6},tags:[{t:'Short-term growth',p:true}]},
+  ]},
+  {id:'food_shock',type:'crisis',title:'Global Food Supply Shock',desc:'International crop failures send food prices soaring and strain imports.',choices:[
+    {text:'🌾 Emergency Grain Subsidy',effects:{foodSecurity:12,happiness:8,treasury:-15,inflation:-1},cost:'$150M',tags:[{t:'Food security',p:true}]},
+    {text:'🤝 Secure Import Corridors',effects:{diplomacy:8,trade:6,foodSecurity:8,treasury:-10},cost:'$100M',tags:[{t:'Balanced',p:true}]},
+    {text:'🛒 Rationing Measures',effects:{foodSecurity:5,stability:4,happiness:-8,publicTrust:-5},tags:[{t:'Stability +4',p:true}]},
+  ]},
+  {id:'productivity_boom',type:'opportunity',title:'Productivity Boom',desc:'Breakthrough management practices and automation sharply raise output.',choices:[
+    {text:'🏭 Scale Nationally',effects:{economy:12,production:14,unemployment:-4,inflation:-1},tags:[{t:'Broad growth',p:true}]},
+    {text:'🎓 Worker Reskilling Push',effects:{education:8,research:8,unemployment:-3,treasury:-8},cost:'$80M',tags:[{t:'Future workforce',p:true}]},
+    {text:'💼 Tax Windfall Capture',effects:{treasury:18,economy:6,publicTrust:-3},tags:[{t:'Treasury +$180M',p:true}]},
+  ]},
+  {id:'credit_downgrade',type:'crisis',title:'Sovereign Credit Downgrade',desc:'Rating agencies downgrade your bonds after fiscal stress.',choices:[
+    {text:'📜 Credible Fiscal Plan',effects:{publicTrust:8,inflation:-2,stability:5,economy:-3},tags:[{t:'Trust rebuild',p:true}]},
+    {text:'🏦 Emergency Bond Issuance',effects:{treasury:20,totalDebt:18,publicTrust:-5,inflation:2},tags:[{t:'Liquidity now',p:true}]},
+    {text:'✂️ Sharp Spending Cuts',effects:{treasury:8,stability:-6,happiness:-10,inflation:-1},tags:[{t:'Immediate savings',p:true}]},
+  ]},
+  {id:'nuclear_meltdown',type:'disaster',title:'Nuclear Plant Meltdown',desc:'A critical failure at the national nuclear facility triggered a partial meltdown. Radiation detected across 3 provinces. The world is watching.',choices:[
+    {text:'🚒 Full Emergency Evacuation',effects:{treasury:-30,happiness:5,health:5,stability:8},cost:'$300M',tags:[{t:'Stability +8',p:true}]},
+    {text:'🔬 Containment & Scientific Response',effects:{treasury:-20,research:5,health:-5,environment:-8},cost:'$200M',tags:[{t:'Research +5',p:true}]},
+    {text:'🤐 Downplay the Incident',effects:{environment:-15,health:-10,publicTrust:-12,stability:-5},tags:[{t:'Stability -5',p:false}]},
+  ]},
+  {id:'cultural_export',type:'opportunity',title:'Global Cultural Phenomenon',desc:'Your nation\'s music, film, and fashion has exploded worldwide. Tourism and cultural exports are booming like never before.',choices:[
+    {text:'🎬 State Investment in Creative Industries',effects:{culture:15,tourism:12,economy:8,treasury:-10},cost:'$100M',tags:[{t:'Culture +15',p:true}]},
+    {text:'🌍 Cultural Diplomacy Campaign',effects:{diplomacy:12,culture:8,happiness:8},tags:[{t:'Diplomacy +12',p:true}]},
+    {text:'💰 Monetize — License & Export',effects:{trade:10,treasury:15,economy:8,culture:-3},tags:[{t:'Revenue focus',p:true}]},
+  ]},
+  {id:'robot_jobs',type:'crisis',title:'Automation Wave',desc:'Rapid automation has displaced 2 million factory and service workers. Mass protests erupt outside closed factories.',choices:[
+    {text:'🎓 National Reskilling Initiative',effects:{education:12,research:5,treasury:-20,unemployment:-3},cost:'$200M',tags:[{t:'Long-term',p:true}]},
+    {text:'🤖 Embrace Automation — Tax Robots',effects:{economy:8,treasury:15,unemployment:4,equality:-8},tags:[{t:'Economy +8',p:true}]},
+    {text:'🚫 Automation Moratorium',effects:{happiness:8,stability:5,economy:-8,research:-5},tags:[{t:'Happiness +8',p:true}]},
+  ]},
+  {id:'tsunami',type:'disaster',title:'Catastrophic Tsunami',desc:'A magnitude 9.1 offshore earthquake triggers a massive tsunami. Entire coastal cities are devastated.',choices:[
+    {text:'🚁 Full National Emergency Response',effects:{treasury:-35,happiness:8,stability:10},cost:'$350M',tags:[{t:'Stability +10',p:true}]},
+    {text:'🌍 International Aid Coalition',effects:{diplomacy:10,treasury:-15,happiness:5,stability:5},cost:'$150M',tags:[{t:'Diplomacy +10',p:true}]},
+    {text:'📋 Local Response Only',effects:{treasury:-10,happiness:-12,stability:-8},cost:'$100M',tags:[{t:'Happiness -12',p:false}]},
+  ]},
+  {id:'ancient_ruins',type:'opportunity',title:'Ancient Civilization Discovered',desc:'Archaeologists uncover a massive buried city — potentially the oldest civilization ever found beneath your soil.',choices:[
+    {text:'🏛️ World Heritage Site',effects:{tourism:20,diplomacy:12,happiness:8,treasury:-8},cost:'$80M',tags:[{t:'Tourism +20',p:true}]},
+    {text:'🔬 Academic Research Center',effects:{research:15,education:10,happiness:5,treasury:-12},cost:'$120M',tags:[{t:'Research +15',p:true}]},
+    {text:'💎 Commercial Tourism Development',effects:{tourism:12,economy:10,treasury:8,environment:-5},tags:[{t:'Revenue focus',p:true}]},
+  ]},
+  {id:'hostage_crisis',type:'diplomacy',title:'Diplomatic Hostage Crisis',desc:'Armed militants have taken 45 foreign diplomats hostage in your capital building. The world demands action.',choices:[
+    {text:'🛡️ Special Forces Rescue',effects:{military:5,stability:10,diplomacy:-5,happiness:8},tags:[{t:'Military +5',p:true}]},
+    {text:'🕊️ Negotiate Release',effects:{diplomacy:12,treasury:-15,stability:5},cost:'$150M',tags:[{t:'Diplomacy +12',p:true}]},
+    {text:'🌍 UN Mediation Request',effects:{diplomacy:8,stability:8,treasury:-8},cost:'$80M',tags:[{t:'Balanced',p:true}]},
+  ]},
+  {id:'financial_fraud',type:'crisis',title:'Massive Financial Fraud',desc:'Investigators expose a $4 billion Ponzi scheme that wiped out the savings of 800,000 families.',choices:[
+    {text:'⚖️ Full Prosecution & Compensation',effects:{corruption:-12,publicTrust:10,treasury:-25,stability:5},cost:'$250M',tags:[{t:'Trust +10',p:true}]},
+    {text:'📋 Investigation & Market Stabilization',effects:{corruption:-6,economy:5,publicTrust:5,treasury:-12},cost:'$120M',tags:[{t:'Balanced',p:true}]},
+    {text:'💼 Quiet Settlement',effects:{corruption:6,publicTrust:-10,economy:5,stability:8},tags:[{t:'Stability +8',p:true}]},
+  ]},
+  {id:'international_games',type:'opportunity',title:'International Athletic Games',desc:'Your nation is selected to host a prestigious international athletics championship.',choices:[
+    {text:'🏟️ Grand Hosting — Full Investment',effects:{happiness:14,tourism:15,diplomacy:10,treasury:-25},cost:'$250M',tags:[{t:'Happiness +14',p:true}]},
+    {text:'🏅 Modest Quality Games',effects:{happiness:8,tourism:8,diplomacy:5,treasury:-12},cost:'$120M',tags:[{t:'Balanced',p:true}]},
+    {text:'📺 Minimal Ceremony',effects:{treasury:3,happiness:3,tourism:3},tags:[{t:'Low cost',p:true}]},
+  ]},
+  {id:'arctic_discovery',type:'opportunity',title:'Arctic Resource Discovery',desc:'Retreating ice sheets reveal extraordinary mineral deposits in your Arctic territories worth trillions.',choices:[
+    {text:'⛏️ Aggressive Extraction',effects:{economy:15,treasury:20,environment:-15,trade:8},tags:[{t:'GDP +15%',p:true}]},
+    {text:'🤝 International Joint Development',effects:{economy:8,diplomacy:12,environment:-5,trade:10},tags:[{t:'Diplomacy +12',p:true}]},
+    {text:'🔒 Protected Reserve',effects:{environment:10,diplomacy:5,research:5},tags:[{t:'Long-term',p:true}]},
+  ]},
+  {id:'disease_outbreak',type:'crisis',title:'Regional Disease Outbreak',desc:'A virulent new disease has emerged in two provinces. Health authorities warn of imminent wider spread.',choices:[
+    {text:'🔒 Immediate Quarantine Measures',effects:{health:8,economy:-8,happiness:-5,stability:5},tags:[{t:'Health +8',p:true}]},
+    {text:'💊 Mass Vaccination Campaign',effects:{treasury:-18,health:15,happiness:3},cost:'$180M',tags:[{t:'Health +15',p:true}]},
+    {text:'🏥 Expand Hospital Capacity',effects:{treasury:-12,health:10,research:5,happiness:3},cost:'$120M',tags:[{t:'Balanced',p:true}]},
+  ]},
+  {id:'ai_singularity',type:'opportunity',title:'AI Breakthrough Achieved',desc:'Your national AI labs announce general artificial intelligence — a historic technological leap for humanity.',choices:[
+    {text:'🤖 Open-Source Release',effects:{research:25,diplomacy:15,economy:10,publicTrust:8},tags:[{t:'Research +25',p:true}]},
+    {text:'🔐 Classified Military Application',effects:{military:20,research:15,espionage:15,diplomacy:-10},tags:[{t:'Military +20',p:true}]},
+    {text:'💹 Commercial Licensing',effects:{economy:20,treasury:30,research:10,equality:-8},tags:[{t:'Treasury +$300M',p:true}]},
+  ]},
+  {id:'political_scandal',type:'crisis',title:'Cabinet Corruption Scandal',desc:'Investigative journalists expose a senior minister accepting $500M in bribes from foreign corporations. The nation is outraged.',choices:[
+    {text:'⚖️ Full Accountability — Resign & Prosecute',effects:{corruption:-12,publicTrust:10,stability:-5,happiness:5},tags:[{t:'Trust +10',p:true}]},
+    {text:'📰 Rapid Damage Control Campaign',effects:{mediaFreedom:-5,stability:5,corruption:2,publicTrust:-5},tags:[{t:'Stability +5',p:true}]},
+    {text:'🔒 Suppress the Investigation',effects:{corruption:8,stability:8,happiness:-10,mediaFreedom:-12,publicTrust:-12},tags:[{t:'Cover up',p:false}]},
+  ]},
+  {id:'economic_miracle',type:'opportunity',title:'Economic Miracle Year',desc:'A perfect storm of strong exports, booming tech, and record tourism has created an extraordinary GDP surge.',choices:[
+    {text:'🏗️ Infrastructure Reinvestment Fund',effects:{economy:5,production:8,environment:4,treasury:-8},cost:'$80M',tags:[{t:'Long-term',p:true}]},
+    {text:'🎉 Tax Cuts for All Citizens',effects:{happiness:15,economy:3,treasury:-12,equality:5},cost:'$120M',tags:[{t:'Happiness +15',p:true}]},
+    {text:'📊 Build National Sovereign Reserve',effects:{treasury:15,stability:5,publicTrust:5},tags:[{t:'Prudent',p:true}]},
+  ]},
+  {id:'sports_championship',type:'opportunity',title:'World Sports Championship Victory',desc:'Against all odds, your national team wins the global championship final. Streets fill with jubilant celebrations.',choices:[
+    {text:'🏆 National Day of Celebration',effects:{happiness:15,culture:8,diplomacy:5,treasury:-5},cost:'$50M',tags:[{t:'Happiness +15',p:true}]},
+    {text:'🏟️ Build National Sports Complex',effects:{happiness:8,tourism:10,culture:5,treasury:-15},cost:'$150M',tags:[{t:'Tourism +10',p:true}]},
+    {text:'📺 Global Broadcast & Licensing Deal',effects:{culture:10,trade:5,economy:5,treasury:8},tags:[{t:'Revenue focus',p:true}]},
+  ]},
+  {id:'diaspora_remittance',type:'opportunity',title:'Diaspora Remittance Surge',desc:'Your diaspora abroad sends record-breaking remittances, injecting billions into the domestic economy.',choices:[
+    {text:'🏦 Channel Through National Bank',effects:{treasury:12,economy:8,trade:5,corruption:2},tags:[{t:'Treasury boost',p:true}]},
+    {text:'🏗️ Local Infrastructure Development',effects:{economy:10,happiness:8,production:5,treasury:5},tags:[{t:'Development',p:true}]},
+    {text:'💳 Incentivize Diaspora Investment',effects:{economy:12,trade:8,research:3,diplomacy:5},tags:[{t:'Long-term growth',p:true}]},
+  ]},
+  {id:'artist_movement',type:'opportunity',title:'National Cultural Renaissance',desc:'Your nation experiences a groundbreaking cultural explosion — your artists, musicians, and filmmakers are redefining global art.',choices:[
+    {text:'🎨 Create the National Arts Fund',effects:{culture:15,happiness:10,tourism:8,treasury:-8},cost:'$80M',tags:[{t:'Culture +15',p:true}]},
+    {text:'🌍 Global Cultural Export Campaign',effects:{culture:10,diplomacy:12,trade:6},tags:[{t:'Diplomacy +12',p:true}]},
+    {text:'💰 Commercialize and Monetize',effects:{treasury:10,economy:8,culture:5},tags:[{t:'Revenue focus',p:true}]},
+  ]},
+  {id:'health_epidemic',type:'crisis',title:'Regional Health Epidemic',desc:'A highly contagious illness is spreading across provinces. Hospitals are overwhelmed and public panic is rising.',choices:[
+    {text:'🏥 Emergency Hospital Surge Capacity',effects:{treasury:-20,health:12,happiness:5,stability:4},cost:'$200M',tags:[{t:'Health +12',p:true}]},
+    {text:'🔒 Regional Quarantine Zones',effects:{health:8,economy:-8,happiness:-6,stability:5},tags:[{t:'Contained',p:true}]},
+    {text:'💊 Mass Vaccination & Treatment Drive',effects:{treasury:-18,health:15,happiness:3,research:3},cost:'$180M',tags:[{t:'Health +15',p:true}]},
+  ]},
+  {id:'press_freedom',type:'diplomacy',title:'International Press Freedom Report',desc:'A major international report ranks your nation on media freedom and transparency.',choices:[
+    {text:'📰 Embrace Full Press Freedom',effects:{mediaFreedom:15,diplomacy:10,happiness:5,stability:-3},tags:[{t:'Diplomacy +10',p:true}]},
+    {text:'⚖️ Balanced Regulation Framework',effects:{mediaFreedom:5,stability:5,diplomacy:5},tags:[{t:'Balanced',p:true}]},
+    {text:'🔒 State Media Consolidation',effects:{mediaFreedom:-12,stability:8,corruption:5,diplomacy:-8},tags:[{t:'Stability +8',p:true}]},
+  ]},
+  {id:'natural_gas_discovery',type:'opportunity',title:'Offshore Natural Gas Discovery',desc:'A massive natural gas field is confirmed offshore — enough clean fuel to power the nation for 50+ years.',choices:[
+    {text:'⚡ Aggressive Development',effects:{energy:15,economy:12,treasury:18,environment:-8},tags:[{t:'Quick revenue',p:true}]},
+    {text:'🌱 Sustainable Phased Development',effects:{energy:10,economy:8,treasury:10,environment:-3,diplomacy:5},tags:[{t:'Balanced',p:true}]},
+    {text:'🔒 Strategic Energy Reserve',effects:{energy:8,stability:6,military:3,research:3},tags:[{t:'Long-term',p:true}]},
+  ]},
+  {id:'education_crisis',type:'crisis',title:'Education System in Crisis',desc:'Test scores plummet, teacher shortages worsen, and university dropout rates hit a 30-year high.',choices:[
+    {text:'🎓 Emergency Education Reform Act',effects:{treasury:-22,education:15,research:5,happiness:3},cost:'$220M',tags:[{t:'Education +15',p:true}]},
+    {text:'🔬 STEM-Focused Curriculum Overhaul',effects:{treasury:-12,research:10,education:8,economy:3},cost:'$120M',tags:[{t:'Research +10',p:true}]},
+    {text:'📱 Digital Education Platform',effects:{treasury:-8,education:6,research:4,literacy:5},cost:'$80M',tags:[{t:'Modern approach',p:true}]},
+  ]},
 ];
+
 
 const ACHIEVEMENTS=[
   {id:'first_policy',name:'First Decree',desc:'Enact your first policy',icon:'📜',check:s=>s.policiesEnacted>=1},
@@ -904,6 +1250,20 @@ const ACHIEVEMENTS=[
   {id:'free_press',name:'Free Press',desc:'Media Freedom exceeds 85',icon:'📰',check:s=>(s.mediaFreedom||0)>=85},
   {id:'resource_king',name:'Resource King',desc:'Have 3+ natural resources',icon:'⛏️',check:s=>s.naturalResources&&s.naturalResources.length>=3},
   {id:'mega_builder',name:'Mega Builder',desc:'Complete 3 mega projects',icon:'🏗️',check:s=>{const megas=['wonder','arcology','orbital','hyperloop','giga_dam','ai_city','quantum_net','climate_shield','sea_colony'];return megas.filter(id=>s.activePolicies.includes(id)).length>=3;}},
+  {id:'price_guardian',name:'Price Guardian',desc:'Reach year 25 with inflation below 6%',icon:'📉',check:s=>s.year>=25&&(s.inflation||99)<6},
+  {id:'full_employment',name:'Full Employment',desc:'Unemployment below 4% with economy above 70',icon:'🧰',check:s=>(s.unemployment||99)<4&&s.economy>=70},
+  {id:'climate_bulwark',name:'Climate Bulwark',desc:'Resilience above 80 and climate risk below 35',icon:'🛡️',check:s=>(s.resilience||0)>=80&&(s.climateRisk||100)<=35},
+  {id:'agenda_master',name:'Agenda Master',desc:'Complete 6 national agenda objectives',icon:'📌',check:s=>(s.agendasCompleted||0)>=6},
+  {id:'first_tech',name:'Curious Mind',desc:'Research your first technology',icon:'🔬',check:s=>s.researchedTechs.length>=1},
+  {id:'near_perfect',name:'Utopian Dream',desc:'All core stats above 80',icon:'⭐',check:s=>s.economy>=80&&s.happiness>=80&&s.military>=80&&s.research>=80&&s.diplomacy>=80},
+  {id:'incorruptible',name:'Incorruptible',desc:'Corruption falls below 2',icon:'💎',check:s=>s.corruption<=2},
+  {id:'all_megas',name:'Builder of Wonders',desc:'Complete all mega projects',icon:'🏗️',check:s=>MEGA_PROJECTS.every(p=>s.activePolicies.includes(p.id))},
+  {id:'year_75',name:'75 Year Dynasty',desc:'Survive 75 years',icon:'📅',check:s=>s.year>=75},
+  {id:'economic_titan',name:'Economic Titan',desc:'GDP per capita exceeds $100,000',icon:'💵',check:s=>s.gdpPerCapita>=100000},
+  {id:'org_founder',name:'World Citizen',desc:'Join 4 international organizations',icon:'🌐',check:s=>(s.joinedOrgs||[]).length>=4},
+  {id:'pop_100m',name:'100 Million Strong',desc:'Reach 100 million population',icon:'🌆',check:s=>s.population>=100000000},
+  {id:'research_titan',name:'Research Titan',desc:'Research score exceeds 95',icon:'🔭',check:s=>s.research>=95},
+  {id:'culture_superpower',name:'Culture Superpower',desc:'Culture and tourism both above 75',icon:'🎭',check:s=>(s.culture||0)>=75&&(s.tourism||0)>=75},
 ];
 
 const VICTORY_CONDITIONS=[
@@ -913,6 +1273,48 @@ const VICTORY_CONDITIONS=[
   {id:'scientific',name:'Scientific Enlightenment',icon:'🔬',desc:'Research 95+ and unlock all technologies',check:s=>s.research>=95&&s.researchedTechs.length>=TECHNOLOGIES.length,progress:s=>Math.min(100,((s.research/95)+(s.researchedTechs.length/TECHNOLOGIES.length))*50)},
   {id:'utopia',name:'Utopian Society',icon:'😊',desc:'Happiness 90+, Equality 80+, Health 80+',check:s=>s.happiness>=90&&s.equality>=80&&s.health>=80,progress:s=>Math.min(100,((s.happiness/90)+(s.equality/80)+(s.health/80))/3*100)},
   {id:'century',name:'Century Nation',icon:'📅',desc:'Survive for 100 years',check:s=>s.year>=100,progress:s=>Math.min(100,(s.year/100)*100)},
+];
+
+const AGENDA_POOL=[
+  {id:'ag_economy',label:'Raise economy to 68+',key:'economy',target:68,mode:'max',reward:{treasury:8,publicTrust:4}},
+  {id:'ag_research',label:'Reach research 70+',key:'research',target:70,mode:'max',reward:{research:5,prestige:120}},
+  {id:'ag_health',label:'Reach health 72+',key:'health',target:72,mode:'max',reward:{happiness:5,publicTrust:4}},
+  {id:'ag_stability',label:'Keep stability above 65',key:'stability',target:65,mode:'max',reward:{stability:4,publicTrust:4}},
+  {id:'ag_corruption',label:'Lower corruption to 22 or less',key:'corruption',target:22,mode:'min',reward:{publicTrust:8,happiness:4}},
+  {id:'ag_unemployment',label:'Lower unemployment below 6%',key:'unemployment',target:6,mode:'min',reward:{economy:5,happiness:4}},
+  {id:'ag_inflation',label:'Keep inflation under 7%',key:'inflation',target:7,mode:'min',reward:{publicTrust:5,economy:4}},
+  {id:'ag_environment',label:'Raise environment to 75+',key:'environment',target:75,mode:'max',reward:{resilience:6,happiness:4}},
+  {id:'ag_resilience',label:'Reach resilience 70+',key:'resilience',target:70,mode:'max',reward:{climateRisk:-8,stability:5}},
+  {id:'ag_food',label:'Raise food security to 72+',key:'foodSecurity',target:72,mode:'max',reward:{happiness:5,health:4}},
+  {id:'ag_housing',label:'Raise housing affordability to 65+',key:'housingAffordability',target:65,mode:'max',reward:{publicTrust:5,equality:5}},
+  {id:'ag_prestige',label:'Reach prestige 3500+',key:'prestige',target:3500,mode:'max',reward:{treasury:10,diplomacy:6}},
+];
+
+const INTERNATIONAL_ORGS=[
+  {id:'un',name:'United Nations',icon:'🌐',cost:500,annualCost:50,desc:'Global peace and security framework. Improves diplomacy and stability.',effects:{diplomacy:10,stability:5,happiness:3},req:null},
+  {id:'wto',name:'World Trade Org.',icon:'💹',cost:800,annualCost:80,desc:'Reduce trade barriers and expand export markets.',effects:{trade:15,economy:8,equality:-3},req:null},
+  {id:'nato',name:'Defense Alliance',icon:'🛡️',cost:1200,annualCost:120,desc:'Mutual defense pact with allied powers. Requires Military 40+.',effects:{military:15,stability:10,diplomacy:5},req:{key:'military',min:40}},
+  {id:'who',name:'World Health Org.',icon:'🏥',cost:600,annualCost:60,desc:'International healthcare cooperation and pandemic prevention.',effects:{health:12,happiness:5,research:3},req:null},
+  {id:'imf',name:'IMF Partnership',icon:'🏦',cost:0,annualCost:30,desc:'Emergency funding and financial stability mechanisms.',effects:{treasury:8,publicTrust:3},req:null},
+  {id:'iaea',name:'Nuclear Energy Agency',icon:'☢️',cost:400,annualCost:40,desc:'Peaceful nuclear energy development and safety standards.',effects:{research:8,military:5,diplomacy:8},req:null},
+  {id:'paris_accord',name:'Climate Accord',icon:'🌱',cost:300,annualCost:30,desc:'International climate commitments for carbon neutrality.',effects:{environment:12,diplomacy:8,economy:-3},req:null},
+  {id:'g20',name:'G20 Summit',icon:'📊',cost:0,annualCost:0,desc:'Major economic power coordination. Requires Economy 60+.',effects:{economy:10,diplomacy:12,trade:8},req:{key:'economy',min:60}},
+  {id:'who_advanced',name:'Advanced Research Consortium',icon:'🔬',cost:1000,annualCost:100,desc:'Elite science collaboration with top research nations.',effects:{research:18,education:8,diplomacy:6},req:{key:'research',min:50}},
+];
+
+const FACTIONS=[
+  {id:'military',name:'Armed Forces',icon:'⚔️',desc:'Defense establishment and security hawks.',wants:['conscription','navy','airforce','nukes','special_forces'],hates:['peacekeep']},
+  {id:'business',name:'Business Elite',icon:'💼',desc:'Corporations, entrepreneurs, and financial sector.',wants:['free_trade','privatize','sez','crypto'],hates:['minimum_wage','welfare','tax_reform']},
+  {id:'workers',name:'Labor Movement',icon:'✊',desc:'Unions, workers, and equality advocates.',wants:['minimum_wage','welfare','healthcare','education','housing'],hates:['privatize','conscription']},
+  {id:'greens',name:'Green Coalition',icon:'🌿',desc:'Environmental advocates and clean-energy activists.',wants:['green','renewable','solar_farm','paris_accord'],hates:['subsidies','highways']},
+  {id:'conservatives',name:'Traditionalists',icon:'🏛️',desc:'Cultural conservatives valuing stability and order.',wants:['censorship','pension','conscription'],hates:['drug_reform','immigration','welfare']},
+];
+
+const SEASONS=[
+  {name:'Spring',emoji:'🌸',modifiers:{happiness:1,environment:1,economy:0.5}},
+  {name:'Summer',emoji:'☀️',modifiers:{happiness:1.5,tourism:2,economy:1}},
+  {name:'Autumn',emoji:'🍂',modifiers:{economy:0.5,trade:1,stability:0.5}},
+  {name:'Winter',emoji:'❄️',modifiers:{happiness:-1,energy:-1,economy:-0.5}},
 ];
 
 // ---- STATE ----
@@ -952,6 +1354,7 @@ function initState(name,flag,govt,cont,diff,leaderName){
     production:clamp(45+(trait.modifiers.production||0)),energy:clamp(40),
     tourism:20,espionage:clamp(10+(trait.modifiers.espionage||0)),
     crime:20,urbanization:35,literacy:60,mediaFreedom:55,culture:30,
+    inflation:4.8,unemployment:8.5,housingAffordability:55,foodSecurity:60,publicTrust:55,resilience:35,climateRisk:45,
     leaderAge:45+Math.floor(Math.random()*15),
     goldenAge:0,goldenAgeCount:0,
     motto:'',totalImmigration:0,consecutiveHighApproval:0,
@@ -972,6 +1375,14 @@ function initState(name,flag,govt,cont,diff,leaderName){
     newNotifications:false,
     prevStats:null,
     currentEra:'Foundation Era',
+    nationalAgendas:[],agendaDeadlineYear:0,agendasCompleted:0,agendaStreak:0,
+    joinedOrgs:[],chronicle:[],
+    factions:{military:50,business:50,workers:50,greens:50,conservatives:50},
+    season:'🌸 Spring',seasonIdx:0,
+    rebellionRisk:0,stabilityLowYears:0,
+    economicDiversification:40,
+    crisisYears:0,boomYears:0,
+    tradeDeficit:0,tradeBalance:0,
   };
   updateRelationLabels();
   // Assign natural resources
@@ -986,15 +1397,90 @@ function initState(name,flag,govt,cont,diff,leaderName){
       else if(G[k]!==undefined) G[k] = clamp((G[k]||0)+v);
     });
   });
+  normalizeState();
+  rollNationalAgenda(true);
 }
 
 function fmtMoney(n){const a=Math.abs(n),s=n<0?'-':'';if(a>=1e9)return s+'$'+(a/1e9).toFixed(2)+'T';if(a>=1e3)return s+'$'+(a/1e3).toFixed(1)+'B';return s+'$'+a.toFixed(0)+'M';}
 function fmtMoneyShort(n){const a=Math.abs(n),s=n<0?'-':'';if(a>=1e9)return s+'$'+(a/1e9).toFixed(1)+'T';if(a>=1e3)return s+'$'+(a/1e3).toFixed(1)+'B';return s+'$'+a.toFixed(0)+'M';}
 function fmt(n){if(n>=1e9)return(n/1e9).toFixed(1)+'B';if(n>=1e6)return(n/1e6).toFixed(1)+'M';if(n>=1e3)return(n/1e3).toFixed(0)+'K';return String(n);}
-function calcPrestige(){return Math.floor(G.economy*2+G.happiness*2+G.military*1.5+G.research*2+G.diplomacy*1.5+G.health*1+G.education*1+G.environment*0.5+G.equality*0.5+(100-G.corruption)*1+G.trade*1+G.warsWon*50+G.allies*30+G.spySuccesses*10+G.unlockedAchievements.length*25+G.researchedTechs.length*40+Math.floor(G.population/1000000)*5+G.year*3+(G.culture||0)*1+(G.literacy||0)*0.5+(G.urbanization||0)*0.3+(100-(G.crime||20))*0.5+(G.mediaFreedom||0)*0.3+(G.goldenAgeCount||0)*100);}
+function calcPrestige(){return Math.floor(G.economy*2+G.happiness*2+G.military*1.5+G.research*2+G.diplomacy*1.5+G.health*1+G.education*1+G.environment*0.5+G.equality*0.5+(100-G.corruption)*1+G.trade*1+G.warsWon*50+G.allies*30+G.spySuccesses*10+G.unlockedAchievements.length*25+G.researchedTechs.length*40+Math.floor(G.population/1000000)*5+G.year*3+(G.culture||0)*1+(G.literacy||0)*0.5+(G.urbanization||0)*0.3+(100-(G.crime||20))*0.5+(G.mediaFreedom||0)*0.3+(G.goldenAgeCount||0)*100+(G.publicTrust||55)*0.5+(G.resilience||35)*0.4+(100-Math.min(100,(G.inflation||5)*3))*0.6+(100-Math.min(100,(G.unemployment||8)*2.5))*0.6+(G.agendasCompleted||0)*35);}
 function getPrestigeRank(p){if(p<500)return'Emerging State';if(p<1500)return'Regional Power';if(p<3000)return'Major Power';if(p<6000)return'Great Power';if(p<10000)return'Superpower';return'World Hegemon';}
 function getGdpTotal(){return Math.floor(G.gdpPerCapita*G.population/1e6);}
 function getEra(){if(G.year<10)return'Foundation Era';if(G.year<25)return'Growth Era';if(G.year<50)return'Industrial Era';if(G.year<75)return'Modern Era';if(G.year<100)return'Information Age';return'Space Age';}
+
+function normalizeState(){
+  const defaults={
+    inflation:4.8,unemployment:8.5,housingAffordability:55,foodSecurity:60,publicTrust:55,resilience:35,climateRisk:45,
+    nationalAgendas:[],agendaDeadlineYear:0,agendasCompleted:0,agendaStreak:0,
+    currentEra:getEra(),totalImmigration:0,goldenAge:0,goldenAgeCount:0,revolutionCooldown:0,turnSpeed:1,
+    factions:{military:50,business:50,workers:50,greens:50,conservatives:50},
+    season:'🌸 Spring',seasonIdx:0,rebellionRisk:0,stabilityLowYears:0,
+    economicDiversification:40,crisisYears:0,boomYears:0,tradeDeficit:0,tradeBalance:0,
+  };
+  Object.entries(defaults).forEach(([k,v])=>{
+    if(G[k]===undefined||G[k]===null)G[k]=Array.isArray(v)?[...v]:v;
+  });
+  if(!Array.isArray(G.nationalAgendas))G.nationalAgendas=[];
+  if(!Array.isArray(G.newsItems))G.newsItems=[];
+  if(!G.factions||typeof G.factions!=='object')G.factions={military:50,business:50,workers:50,greens:50,conservatives:50};
+  if(!Array.isArray(G.unlockedAchievements))G.unlockedAchievements=[];
+  if(!Array.isArray(G.researchedTechs))G.researchedTechs=[];
+  if(!Array.isArray(G.activePolicies))G.activePolicies=[];
+  if(!Array.isArray(G.joinedOrgs))G.joinedOrgs=[];
+  if(!Array.isArray(G.chronicle))G.chronicle=[];
+  if(!Array.isArray(G.aiNations)||G.aiNations.length===0){
+    G.aiNations=AI_NATIONS.map(n=>({...n,relation:Math.floor(Math.random()*40)+30,relationLabel:'neutral',tradeAgreement:false,alliance:false,atWar:false}));
+  }
+  if(!Array.isArray(G.gdpHistory)||G.gdpHistory.length===0)G.gdpHistory=[G.gdpPerCapita||14000];
+  if(!Array.isArray(G.treasuryHistory)||G.treasuryHistory.length===0)G.treasuryHistory=[G.treasury||8000];
+  if(!Array.isArray(G.approvalHistory)||G.approvalHistory.length===0)G.approvalHistory=[G.approval||55];
+}
+
+function agendaProgress(agenda){
+  const value=(G[agenda.key]===undefined||G[agenda.key]===null)?0:G[agenda.key];
+  if(agenda.mode==='min'){
+    if(value<=agenda.target)return 100;
+    return Math.max(0,Math.min(100,100-((value-agenda.target)/Math.max(1,agenda.target))*100));
+  }
+  return Math.max(0,Math.min(100,(value/Math.max(1,agenda.target))*100));
+}
+
+function agendaCompletedNow(agenda){
+  const value=(G[agenda.key]===undefined||G[agenda.key]===null)?0:G[agenda.key];
+  return agenda.mode==='min'?value<=agenda.target:value>=agenda.target;
+}
+
+function rollNationalAgenda(force){
+  if(!force&&G.nationalAgendas&&G.nationalAgendas.length>0&&G.year<G.agendaDeadlineYear)return;
+  const pool=[...AGENDA_POOL].sort(()=>Math.random()-0.5);
+  G.nationalAgendas=pool.slice(0,3).map(a=>({id:a.id,label:a.label,key:a.key,target:a.target,mode:a.mode,reward:a.reward}));
+  G.agendaDeadlineYear=G.year+8;
+  addLog('📌','A new 8-year national agenda has been issued.',G.year);
+  addNews('📌 National agenda updated with strategic targets through Year '+G.agendaDeadlineYear+'.');
+}
+
+function evaluateNationalAgenda(){
+  if(!G.nationalAgendas||G.nationalAgendas.length===0)return;
+  let completed=0;
+  G.nationalAgendas.forEach(a=>{
+    if(agendaCompletedNow(a)){
+      completed++;
+      applyEffects(a.reward,true);
+    }
+  });
+  if(completed>0){
+    G.agendasCompleted=(G.agendasCompleted||0)+completed;
+    addLog('✅','National agenda review: '+completed+'/'+G.nationalAgendas.length+' objectives completed.',G.year);
+    toast('✅','Agenda review: '+completed+'/'+G.nationalAgendas.length+' objectives met','success');
+  } else {
+    addLog('⚠️','National agenda review failed to meet targets.',G.year);
+    toast('⚠️','Agenda review missed targets','warn');
+  }
+  if(completed===G.nationalAgendas.length)G.agendaStreak=(G.agendaStreak||0)+1;
+  else G.agendaStreak=0;
+  rollNationalAgenda(true);
+}
 
 // ---- SAVE / LOAD / EXPORT / IMPORT ----
 const SAVE_KEY='nationforge_v40_save';
@@ -1014,7 +1500,8 @@ function loadGame(silent){
     if(!raw){if(!silent)toast('❌','No save found.','error');return false;}
     const data=JSON.parse(raw);
     if(!data.state){if(!silent)toast('❌','Corrupted save.','error');return false;}
-    G=data.state;updateRelationLabels();
+    G=data.state;normalizeState();updateRelationLabels();
+    if(!G.nationalAgendas||G.nationalAgendas.length===0)rollNationalAgenda(true);
     if(!silent){
       closeModal();
       document.getElementById('splashScreen').classList.add('hidden-left');
@@ -1049,7 +1536,9 @@ function handleImport(file){
     try{
       const data=JSON.parse(e.target.result);
       if(!data.state){toast('❌','Invalid save file.','error');return;}
-      G=data.state;updateRelationLabels();closeModal();
+      G=data.state;normalizeState();updateRelationLabels();
+      if(!G.nationalAgendas||G.nationalAgendas.length===0)rollNationalAgenda(true);
+      closeModal();
       document.getElementById('splashScreen').classList.add('hidden-left');
       document.getElementById('setupScreen').classList.add('hidden');
       document.getElementById('setupScreen').classList.remove('hidden-left');
@@ -1180,6 +1669,9 @@ function renderNewsTicker(){
 function renderResourceBar(){
   const net=G.treasuryIncome-G.treasuryExpense;
   const items=[
+    {icon:'CPI',val:(G.inflation||0).toFixed(1)+'%',positive:(G.inflation||0)<6,critical:(G.inflation||0)>13},
+    {icon:'JOB',val:(G.unemployment||0).toFixed(1)+'%',positive:(G.unemployment||0)<6,critical:(G.unemployment||0)>13},
+    {icon:'CLM',val:String(Math.round(G.climateRisk||45)),positive:(G.climateRisk||45)<45,critical:(G.climateRisk||45)>70},
     {icon:'💵',val:fmtMoneyShort(G.treasury),delta:(net>=0?'+':'')+fmtMoneyShort(net),positive:net>=0,critical:G.treasury<-2000},
     {icon:'👥',val:fmt(G.population),delta:'+'+G.populationGrowth.toFixed(1)+'%',positive:true,critical:false},
     {icon:'📈',val:String(Math.round(G.economy)),positive:G.economy>45,critical:G.economy<20},
@@ -1205,7 +1697,7 @@ function renderGameContent(){
     case 'build':el.innerHTML=renderBuildTab();break;
     case 'world':el.innerHTML=renderWorldTab();break;
     case 'tech':el.innerHTML=renderTechTab();break;
-    case 'stats':el.innerHTML=renderStatsTab();break;
+    case 'stats':el.innerHTML=renderStatsTab();setTimeout(()=>drawRadarChart('radarCanvas'),50);break;
     default:el.innerHTML=renderHome();setTimeout(drawSparkline,50);
   }
 }
@@ -1215,6 +1707,7 @@ function renderGame(){
   document.getElementById('gameFlag').textContent=G.flag;
   document.getElementById('gameName').textContent=G.name;
   document.getElementById('gameYear').textContent='Year '+G.year+' · '+getEra();
+  const _sb=document.getElementById('gameSeasonBadge');if(_sb)_sb.textContent=G.season||'';
   G.prestige=calcPrestige();
   document.getElementById('prestigeDisplay').textContent=fmt(G.prestige);
   renderLeaderBar();renderNewsTicker();renderResourceBar();renderBottomNav();renderGameContent();
@@ -1247,6 +1740,15 @@ function renderHome(){
   if(G.stability<25)warnings+=`<div class="warning-banner">🚨 Critical instability — civil unrest risk</div>`;
   if(G.happiness<20)warnings+=`<div class="warning-banner">😡 Citizens furious — revolution risk high</div>`;
   if(G.corruption>75)warnings+=`<div class="warning-banner">🏴‍☠️ Rampant corruption strangling the nation</div>`;
+  if((G.inflation||0)<6)factors.push({label:'Price Stability',color:'rgba(16,185,129,0.12)',border:'rgba(16,185,129,0.25)',text:'#34d399'});
+  if((G.inflation||0)>10)factors.push({label:'Inflation Pressure',color:'rgba(239,68,68,0.12)',border:'rgba(239,68,68,0.25)',text:'#f87171'});
+  if((G.unemployment||0)<6)factors.push({label:'Strong Job Market',color:'rgba(16,185,129,0.12)',border:'rgba(16,185,129,0.25)',text:'#34d399'});
+  if((G.unemployment||0)>11)factors.push({label:'Labor Market Stress',color:'rgba(239,68,68,0.12)',border:'rgba(239,68,68,0.25)',text:'#f87171'});
+  if((G.climateRisk||45)>65)factors.push({label:'Climate Exposure',color:'rgba(239,68,68,0.12)',border:'rgba(239,68,68,0.25)',text:'#f87171'});
+  if((G.resilience||35)>70)factors.push({label:'High Resilience',color:'rgba(59,130,246,0.12)',border:'rgba(59,130,246,0.25)',text:'#60a5fa'});
+  if((G.inflation||0)>15)warnings+=`<div class="warning-banner">⚠️ Inflation spike detected — purchasing power is eroding</div>`;
+  if((G.unemployment||0)>14)warnings+=`<div class="warning-banner">⚠️ Unemployment crisis — social unrest risk rising</div>`;
+  if((G.climateRisk||45)>72)warnings+=`<div class="warning-banner">⚠️ Climate risk is critical — disaster chance elevated</div>`;
   const factorHtml=factors.map(f=>`<span class="factor-tag" style="background:${f.color};color:${f.text};border-color:${f.border}">${f.label}</span>`).join('');
   let pendingEventHtml='';
   if(G.pendingEvent){
@@ -1294,7 +1796,51 @@ function renderHome(){
       warHtml=`<div class="event-card disaster fade-up" style="margin-bottom:10px;"><div class="event-type">⚔️ ACTIVE WAR · YEAR ${G.warState.turns}</div><div class="event-title">War with ${enemy.flag} ${enemy.name}</div><div class="event-desc">The conflict continues — resolve quickly to minimize economic damage.</div><div class="battle-strength-bar"><div class="bsb-labels"><span style="color:#60a5fa">🛡️ ${G.name} (${myPow})</span><span style="color:#f87171">${enemy.name} ${enemy.flag} (${enPow})</span></div><div class="bsb-track"><div class="bsb-player" style="width:${myPct}%"></div><div class="bsb-enemy" style="width:${enPct}%"></div></div></div><div style="font-size:10px;color:var(--text-muted);margin-top:6px;">⚠️ War costs ${fmtMoneyShort(500)}/yr · Economy -2 · Happiness -3 per turn</div></div>`;
     }
   }
-  return `${warnings}${techWidgetHtml}${goldenAgeHtml}${warHtml}
+  if(!G.nationalAgendas||G.nationalAgendas.length===0)rollNationalAgenda(true);
+  const yearsToAgenda=Math.max(0,(G.agendaDeadlineYear||G.year)-G.year);
+  const macroHtml=`<div class="sector-content fade-up">
+    <div class="sector-header"><h3>Macro Dashboard</h3><span style="font-size:10px;color:var(--text-muted);">Trust ${Math.round(G.publicTrust||55)}%</span></div>
+    <div class="sector-body">
+      <div class="macro-grid">
+        <div class="macro-card ${(G.inflation||0)>12?'macro-alert':''}"><div class="macro-label">Inflation</div><div class="macro-val" style="color:${(G.inflation||0)<6?'var(--accent-green)':(G.inflation||0)<10?'var(--accent-gold)':'var(--accent-red)'}">${(G.inflation||0).toFixed(1)}%</div></div>
+        <div class="macro-card ${(G.unemployment||0)>12?'macro-alert':''}"><div class="macro-label">Unemployment</div><div class="macro-val" style="color:${(G.unemployment||0)<6?'var(--accent-green)':(G.unemployment||0)<10?'var(--accent-gold)':'var(--accent-red)'}">${(G.unemployment||0).toFixed(1)}%</div></div>
+        <div class="macro-card"><div class="macro-label">Public Trust</div><div class="macro-val" style="color:${(G.publicTrust||55)>60?'var(--accent-green)':'var(--accent-gold)'}">${Math.round(G.publicTrust||55)}</div></div>
+      </div>
+      <div class="macro-grid" style="margin-bottom:0;">
+        <div class="macro-card ${(G.climateRisk||45)>70?'macro-alert':''}"><div class="macro-label">Climate Risk</div><div class="macro-val" style="color:${(G.climateRisk||45)<45?'var(--accent-green)':(G.climateRisk||45)<65?'var(--accent-gold)':'var(--accent-red)'}">${Math.round(G.climateRisk||45)}</div></div>
+        <div class="macro-card"><div class="macro-label">Resilience</div><div class="macro-val" style="color:${(G.resilience||35)>65?'var(--accent-green)':'#60a5fa'}">${Math.round(G.resilience||35)}</div></div>
+        <div class="macro-card"><div class="macro-label">Housing/Food</div><div class="macro-val">${Math.round(G.housingAffordability||55)}/${Math.round(G.foodSecurity||60)}</div></div>
+      </div>
+    </div>
+  </div>`;
+  const agendaHtml=`<div class="agenda-panel fade-up">
+    <div class="agenda-head"><div class="agenda-title">National Agenda</div><div class="agenda-deadline">${yearsToAgenda}y left</div></div>
+    ${(G.nationalAgendas||[]).map(a=>{const p=Math.round(agendaProgress(a));const done=agendaCompletedNow(a);return `<div class="agenda-item"><div class="agenda-name">${done?'✅ ':''}${a.label}</div><div class="agenda-track"><div class="agenda-fill" style="width:${p}%;background:${done?'linear-gradient(90deg,var(--accent-green),#34d399)':'linear-gradient(90deg,#3b82f6,#60a5fa)'}"></div></div><div class="agenda-meta"><span>${a.mode==='min'?'Target <= ':'Target >= '}${a.target}</span><span>${p}%</span></div></div>`;}).join('')}
+  </div>`;
+  const quickActionsHtml=`<div class="home-quick-actions fade-up">
+    <button class="home-quick-btn" onclick="issueNationalBonds()">Issue National Bonds<span class="hqb-cost">+${fmtMoneyShort(2500)} / Debt +${fmtMoneyShort(3200)}</span></button>
+    <button class="home-quick-btn" onclick="runAntiCorruptionDrive()">Anti-Corruption Drive<span class="hqb-cost">${fmtMoneyShort(700)}</span></button>
+    <button class="home-quick-btn" onclick="costOfLivingRelief()">Cost-of-Living Relief<span class="hqb-cost">${fmtMoneyShort(900)}</span></button>
+    <button class="home-quick-btn" onclick="climateResiliencePush()">Climate Resilience Push<span class="hqb-cost">${fmtMoneyShort(1100)}</span></button>
+  </div>
+  <div class="home-quick-actions-ext fade-up">
+    <button class="home-quick-btn" onclick="nationalRally()">🎺 National Unity Rally<span class="hqb-cost">${fmtMoneyShort(500)}</span></button>
+    <button class="home-quick-btn" onclick="jobCreationProgram()">🏗️ Job Creation Drive<span class="hqb-cost">${fmtMoneyShort(1200)}</span></button>
+    <button class="home-quick-btn" onclick="taxAmnestyAction()">💸 Tax Amnesty<span class="hqb-cost">+${fmtMoneyShort(1800)}</span></button>
+    <button class="home-quick-btn" onclick="emergencyFoodDist()">🌾 Emergency Food Aid<span class="hqb-cost">${fmtMoneyShort(600)}</span></button>
+    <button class="home-quick-btn" onclick="boostTrade()">🚢 Trade Promotion Drive<span class="hqb-cost">${fmtMoneyShort(800)}</span></button>
+  </div>`;
+  const advisorHtml=renderAdvisorPanel();
+  // Season & rebellion header chips
+  const rebRisk=Math.round(G.rebellionRisk||0);
+  const seasonChipHtml=`<div style="display:flex;align-items:center;gap:6px;padding:8px 12px 4px;flex-wrap:wrap;">
+    <span class="season-badge">${G.season||'🌸 Spring'}</span>
+    ${rebRisk>30?`<span class="urgent-badge">⚠️ Rebellion Risk ${rebRisk}%</span>`:''}
+    ${(G.crisisYears||0)>2?`<span class="urgent-badge">📉 Crisis Period</span>`:''}
+    ${(G.boomYears||0)>3?`<span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px;background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.25);">📈 Boom Period</span>`:''}
+    <span style="font-size:9px;color:var(--text-muted);margin-left:auto;">Div: ${G.economicDiversification||40}/100</span>
+  </div>`;
+  return `${advisorHtml}${seasonChipHtml}${warnings}${techWidgetHtml}${goldenAgeHtml}${warHtml}${macroHtml}${agendaHtml}${quickActionsHtml}
   <div class="prestige-panel fade-up">
     <div class="prestige-title">⭐ National Prestige</div>
     <div class="prestige-score">${fmt(G.prestige)}</div>
@@ -1343,16 +1889,20 @@ function renderHome(){
   <div class="sector-content fade-up fade-up-d2">
     <div class="sector-header"><h3>💵 Federal Budget — Year ${G.year}</h3></div>
     <div class="sector-body">
-      <div class="treasury-bar">
-        <div class="treasury-seg" style="width:35%;background:linear-gradient(90deg,var(--accent-green),#059669);"></div>
-        <div class="treasury-seg" style="width:25%;background:linear-gradient(90deg,var(--accent-blue),#1d4ed8);"></div>
-        <div class="treasury-seg" style="width:20%;background:linear-gradient(90deg,var(--accent-purple),#7c3aed);"></div>
-        <div class="treasury-seg" style="width:20%;background:linear-gradient(90deg,var(--accent-gold),#c97a00);"></div>
+      <div class="bdb-row">
+        <div style="flex:${G.budgetMilitary};background:linear-gradient(90deg,var(--accent-red),#dc2626);border-radius:5px 0 0 5px;" title="Military ${G.budgetMilitary}%"></div>
+        <div style="flex:${G.budgetHealth};background:linear-gradient(90deg,#f472b6,#db2777);" title="Health ${G.budgetHealth}%"></div>
+        <div style="flex:${G.budgetEducation};background:linear-gradient(90deg,var(--accent-purple),#7c3aed);" title="Education ${G.budgetEducation}%"></div>
+        <div style="flex:${G.budgetInfra};background:linear-gradient(90deg,var(--accent-blue),#1d4ed8);" title="Infra ${G.budgetInfra}%"></div>
+        <div style="flex:${G.budgetWelfare};background:linear-gradient(90deg,var(--accent-green),#059669);" title="Welfare ${G.budgetWelfare}%"></div>
+        <div style="flex:${G.budgetResearch};background:linear-gradient(90deg,var(--accent-cyan),#0284c7);border-radius:0 5px 5px 0;" title="Research ${G.budgetResearch}%"></div>
       </div>
-      <div class="legend-row"><div class="legend-dot" style="background:var(--accent-green)"></div><span class="legend-label">Income Tax & Levies</span><span class="legend-val">${fmtMoneyShort(Math.floor(G.treasuryIncome*0.35))}</span></div>
-      <div class="legend-row"><div class="legend-dot" style="background:var(--accent-blue)"></div><span class="legend-label">Trade & Tariff Revenue</span><span class="legend-val">${fmtMoneyShort(Math.floor(G.treasuryIncome*0.25))}</span></div>
-      <div class="legend-row"><div class="legend-dot" style="background:var(--accent-purple)"></div><span class="legend-label">Corporate & Industry</span><span class="legend-val">${fmtMoneyShort(Math.floor(G.treasuryIncome*0.2))}</span></div>
-      <div class="legend-row"><div class="legend-dot" style="background:var(--accent-gold)"></div><span class="legend-label">Other Revenue</span><span class="legend-val">${fmtMoneyShort(Math.floor(G.treasuryIncome*0.2))}</span></div>
+      <div class="legend-row"><div class="legend-dot" style="background:var(--accent-red)"></div><span class="legend-label">Military</span><span class="legend-val">${G.budgetMilitary}% · ${fmtMoneyShort(Math.floor(G.treasuryExpense*G.budgetMilitary/100))}</span></div>
+      <div class="legend-row"><div class="legend-dot" style="background:#f472b6"></div><span class="legend-label">Healthcare</span><span class="legend-val">${G.budgetHealth}% · ${fmtMoneyShort(Math.floor(G.treasuryExpense*G.budgetHealth/100))}</span></div>
+      <div class="legend-row"><div class="legend-dot" style="background:var(--accent-purple)"></div><span class="legend-label">Education</span><span class="legend-val">${G.budgetEducation}% · ${fmtMoneyShort(Math.floor(G.treasuryExpense*G.budgetEducation/100))}</span></div>
+      <div class="legend-row"><div class="legend-dot" style="background:var(--accent-blue)"></div><span class="legend-label">Infrastructure</span><span class="legend-val">${G.budgetInfra}% · ${fmtMoneyShort(Math.floor(G.treasuryExpense*G.budgetInfra/100))}</span></div>
+      <div class="legend-row"><div class="legend-dot" style="background:var(--accent-green)"></div><span class="legend-label">Welfare</span><span class="legend-val">${G.budgetWelfare}% · ${fmtMoneyShort(Math.floor(G.treasuryExpense*G.budgetWelfare/100))}</span></div>
+      <div class="legend-row"><div class="legend-dot" style="background:var(--accent-cyan)"></div><span class="legend-label">Research</span><span class="legend-val">${G.budgetResearch}% · ${fmtMoneyShort(Math.floor(G.treasuryExpense*G.budgetResearch/100))}</span></div>
       <div style="border-top:1px solid var(--border);margin:10px 0;"></div>
       <div class="legend-row"><div class="legend-dot" style="background:var(--accent-red)"></div><span class="legend-label">Expenditures</span><span class="legend-val" style="color:#f87171">-${fmtMoneyShort(G.treasuryExpense)}</span></div>
       <div class="legend-row"><div class="legend-dot" style="background:${netColor}"></div><span class="legend-label" style="font-weight:700;color:var(--text-primary)">Net Balance</span><span class="legend-val" style="color:${netColor};font-size:13px;">${net>=0?'+':''}${fmtMoneyShort(net)}</span></div>
@@ -1424,6 +1974,14 @@ function renderProgressBar(label,key,color,inverted=false){
   }
   return `<div class="progress-row"><div class="progress-label"><span class="pl-name">${label}${deltaHtml}</span><span class="pl-val" style="color:${dc}">${val}/100</span></div><div class="progress-track"><div class="progress-fill" style="width:${val}%;background:${dc}"></div></div></div>`;
 }
+function labelForStat(k){
+  const labels={
+    treasury:'Treasury',publicTrust:'Public Trust',foodSecurity:'Food Security',housingAffordability:'Housing',
+    climateRisk:'Climate Risk',mediaFreedom:'Media Freedom',gdpPerCapita:'GDP/Capita',totalDebt:'Debt',debtGdpRatio:'Debt/GDP',
+  };
+  if(labels[k])return labels[k];
+  return k.replace(/([A-Z])/g,' $1').replace(/^./,s=>s.toUpperCase());
+}
 function findPolicy(id){for(const cat of Object.values(POLICIES)){const p=cat.find(x=>x.id===id);if(p)return p;}return null;}
 
 // ---- POLICY ----
@@ -1433,7 +1991,7 @@ function renderPolicyTab(){
   const policies=POLICIES[currentTab]||POLICIES.economy;
   let ph=policies.map(p=>{
     const isActive=G.activePolicies.includes(p.id);const canAfford=G.treasury>=p.cost;
-    const efh=Object.entries(p.effects).map(([k,v])=>{const lbl=k==='treasury'?'Treasury':k.charAt(0).toUpperCase()+k.slice(1);return`<span class="policy-effect ${v>0?'positive':'negative'}">${lbl}: ${v>0?'+':''}${v}</span>`;}).join('');
+    const efh=Object.entries(p.effects).map(([k,v])=>`<span class="policy-effect ${v>0?'positive':'negative'}">${labelForStat(k)}: ${v>0?'+':''}${v}</span>`).join('');
     const clickAction=isActive?`removePolicy('${p.id}')`:canAfford?`enactPolicy('${p.id}')`:null;
     return `<div class="policy-card ${isActive?'active-policy':''}" ${clickAction?`onclick="${clickAction}"`:''}style="${!canAfford&&!isActive?'opacity:0.5;cursor:not-allowed;':''}">
       <div class="policy-top"><span class="policy-name">${isActive?'✅ ':''} ${p.name}</span><span class="policy-cost" style="background:${isActive?'rgba(16,185,129,0.12)':canAfford?'rgba(240,180,41,0.1)':'rgba(239,68,68,0.12)'};color:${isActive?'#34d399':canAfford?'var(--accent-gold)':'#f87171'};border:1px solid ${isActive?'rgba(16,185,129,0.25)':canAfford?'rgba(240,180,41,0.2)':'rgba(239,68,68,0.25)'};padding:3px 8px;border-radius:8px;">${isActive?'ACTIVE':fmtMoneyShort(p.cost)}</span></div>
@@ -1464,7 +2022,7 @@ function applyEffects(effects,instant=false){
   Object.entries(effects).forEach(([k,v])=>{
     if(k==='treasury')G.treasury+=v*(instant?5:10);
     else if(k==='population')G.population=Math.floor(G.population*(1+v/100));
-    else if(['trade','production','energy','tourism','espionage','education','health','environment','equality','corruption','research','happiness','stability','military','diplomacy','economy','crime','culture','mediaFreedom','literacy','urbanization'].includes(k))G[k]=clamp((G[k]||0)+v);
+    else if(['trade','production','energy','tourism','espionage','education','health','environment','equality','corruption','research','happiness','stability','military','diplomacy','economy','crime','culture','mediaFreedom','literacy','urbanization','inflation','unemployment','housingAffordability','foodSecurity','publicTrust','resilience','climateRisk'].includes(k))G[k]=clamp((G[k]||0)+v);
     else if(G[k]!==undefined)G[k]+=v;
   });
 }
@@ -1475,7 +2033,7 @@ function renderBuildTab(){
   let h=`<div style="font-size:12px;color:var(--text-muted);margin-bottom:14px;line-height:1.5;padding:12px;background:var(--bg-card);border-radius:var(--radius-xs);border:1px solid var(--border);">🏗️ Infrastructure projects are one-time capital investments that permanently improve your nation.</div>`;
   infra.forEach(p=>{
     const isBuilt=G.activePolicies.includes(p.id),canAfford=G.treasury>=p.cost;
-    const efh=Object.entries(p.effects).map(([k,v])=>`<span class="policy-effect ${v>0?'positive':'negative'}">${k.charAt(0).toUpperCase()+k.slice(1)}: ${v>0?'+':''}${v}</span>`).join('');
+    const efh=Object.entries(p.effects).map(([k,v])=>`<span class="policy-effect ${v>0?'positive':'negative'}">${labelForStat(k)}: ${v>0?'+':''}${v}</span>`).join('');
     h+=`<div class="build-card ${!canAfford&&!isBuilt?'locked':''}" onclick="${isBuilt?'':canAfford?`enactPolicy('${p.id}')`:''}" style="${isBuilt?'border-color:rgba(16,185,129,0.25);':''}">
       <div class="build-icon" style="background:${isBuilt?'rgba(16,185,129,0.12)':'rgba(59,130,246,0.1)'};border:1px solid ${isBuilt?'rgba(16,185,129,0.25)':'rgba(59,130,246,0.15)'}">${isBuilt?'✅':'🏗️'}</div>
       <div class="build-info"><div class="build-name">${p.name}</div><div class="build-desc">${p.desc}</div>
@@ -1486,7 +2044,7 @@ function renderBuildTab(){
   h+=`<div class="section-divider">Mega Projects</div>`;
   MEGA_PROJECTS.forEach(p=>{
     const isBuilt=G.activePolicies.includes(p.id),canAfford=G.treasury>=p.cost;
-    const efh=Object.entries(p.effects).map(([k,v])=>`<span class="policy-effect ${v>0?'positive':'negative'}">${k.charAt(0).toUpperCase()+k.slice(1)}: +${v}</span>`).join('');
+    const efh=Object.entries(p.effects).map(([k,v])=>`<span class="policy-effect ${v>0?'positive':'negative'}">${labelForStat(k)}: +${v}</span>`).join('');
     // FIX: use data-id onclick instead of inline JSON
     h+=`<div class="build-card ${!canAfford&&!isBuilt?'locked':''}" onclick="${isBuilt?'':canAfford?`enactMega('${p.id}')`:''}" style="${isBuilt?'border-color:rgba(139,92,246,0.3);':''}">
       <div class="build-icon" style="background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.2);font-size:22px">${isBuilt?'✅':p.icon}</div>
@@ -1510,8 +2068,8 @@ function enactMega(id){
 
 // ---- WORLD ----
 function renderWorldTab(){
-  const tabs=[{id:'diplo',label:'🌍 Diplomacy'},{id:'trade',label:'💵 Trade'},{id:'war',label:'⚔️ Military'},{id:'spy',label:'🕵️ Espionage'},{id:'ranks',label:'🏆 Rankings'}];
-  if(!['diplo','trade','war','spy','ranks'].includes(currentTab))currentTab='diplo';
+  const tabs=[{id:'diplo',label:'🌍 Diplo'},{id:'trade',label:'💵 Trade'},{id:'war',label:'⚔️ Mil'},{id:'spy',label:'🕵️ Spy'},{id:'ranks',label:'🏆 Ranks'},{id:'orgs',label:'🌐 Orgs'},{id:'politics',label:'🗳️ Politics'}];
+  if(!['diplo','trade','war','spy','ranks','orgs','politics'].includes(currentTab))currentTab='diplo';
   let tabsHtml=tabs.map(t=>`<div class="sector-tab ${currentTab===t.id?'active':''}" onclick="setWorldTab('${t.id}')">${t.label}</div>`).join('');
   let bodyHtml='';
   if(currentTab==='diplo')bodyHtml=renderDiplomacy();
@@ -1519,6 +2077,8 @@ function renderWorldTab(){
   else if(currentTab==='war')bodyHtml=renderMilitary();
   else if(currentTab==='spy')bodyHtml=renderSpyPanel();
   else if(currentTab==='ranks')bodyHtml=renderRankings();
+  else if(currentTab==='orgs')bodyHtml=renderOrgPanel();
+  else if(currentTab==='politics')bodyHtml=renderFactionPanel();
   return `<div class="sector-tabs">${tabsHtml}</div>${bodyHtml}<div style="height:80px;"></div>`;
 }
 function renderDiplomacy(){
@@ -1689,7 +2249,7 @@ function renderTechTab(){
       else if(prereqsMet&&canAfford)statusBadge=`<span class="tech-badge avail">Available</span>`;
       else if(!prereqsMet)statusBadge=`<span style="font-size:9px;color:var(--text-muted)">🔒 Req: ${t.requires.join(', ')}</span>`;
       else statusBadge=`<span style="font-size:9px;color:#f87171">Need ${fmtMoneyShort(t.cost)}</span>`;
-      const efh=Object.entries(t.effects).map(([k,v])=>`<span class="policy-effect ${v>0?'positive':'negative'}">${k}: ${v>0?'+':''}${v}</span>`).join('');
+      const efh=Object.entries(t.effects).map(([k,v])=>`<span class="policy-effect ${v>0?'positive':'negative'}">${labelForStat(k)}: ${v>0?'+':''}${v}</span>`).join('');
       const clickable=!isResearched&&!isActive&&prereqsMet&&canAfford&&!G.activeTech;
       h+=`<div class="tech-card ${isResearched?'researched':isActive?'researching':!prereqsMet?'locked':''}" ${clickable?`onclick="startResearch('${t.id}')"`:''}style="${(!prereqsMet||(!canAfford&&!isResearched&&!isActive))?'cursor:not-allowed':''}">
         <div class="tech-icon">${t.icon}</div>
@@ -1731,6 +2291,13 @@ function renderStatsTab(){
     {label:'Literacy',val:G.literacy||60,color:'var(--accent-purple)'},
     {label:'Media Freedom',val:G.mediaFreedom||55,color:'var(--accent-cyan)'},
     {label:'Cultural Influence',val:G.culture||30,color:'#f0abfc'},
+    {label:'Inflation',val:Math.min(100,(G.inflation||0)*4),color:'var(--accent-orange)'},
+    {label:'Unemployment',val:Math.min(100,(G.unemployment||0)*4),color:'var(--accent-red)'},
+    {label:'Public Trust',val:G.publicTrust||55,color:'var(--accent-green)'},
+    {label:'Resilience',val:G.resilience||35,color:'var(--accent-blue)'},
+    {label:'Climate Risk',val:G.climateRisk||45,color:'var(--accent-red)'},
+    {label:'Food Security',val:G.foodSecurity||60,color:'var(--accent-green)'},
+    {label:'Housing Affordability',val:G.housingAffordability||55,color:'var(--accent-gold)'},
   ];
   let h=`<div class="sector-content fade-up"><div class="sector-header"><h3>📊 Complete National Statistics</h3></div><div class="sector-body">`;
   allStats.forEach(s=>{const c=s.val<25?'var(--accent-red)':s.val<45?'var(--accent-gold)':s.color;h+=`<div class="progress-row"><div class="progress-label"><span class="pl-name">${s.label}</span><span class="pl-val" style="color:${c}">${Math.round(s.val)}/100</span></div><div class="progress-track"><div class="progress-fill" style="width:${Math.min(100,s.val)}%;background:${c}"></div></div></div>`;});
@@ -1769,6 +2336,13 @@ function renderStatsTab(){
     <div class="info-row"><span class="info-label">🔒 Crime Rate</span><span class="info-val">${Math.round(G.crime||20)}/100</span></div>
     <div class="info-row"><span class="info-label">📰 Media Freedom</span><span class="info-val">${Math.round(G.mediaFreedom||55)}/100</span></div>
     <div class="info-row"><span class="info-label">🎭 Culture</span><span class="info-val">${Math.round(G.culture||30)}/100</span></div>
+    <div class="info-row"><span class="info-label">Inflation</span><span class="info-val">${(G.inflation||0).toFixed(1)}%</span></div>
+    <div class="info-row"><span class="info-label">Unemployment</span><span class="info-val">${(G.unemployment||0).toFixed(1)}%</span></div>
+    <div class="info-row"><span class="info-label">Public Trust</span><span class="info-val">${Math.round(G.publicTrust||55)}/100</span></div>
+    <div class="info-row"><span class="info-label">Climate Resilience</span><span class="info-val">${Math.round(G.resilience||35)}/100</span></div>
+    <div class="info-row"><span class="info-label">Climate Risk</span><span class="info-val">${Math.round(G.climateRisk||45)}/100</span></div>
+    <div class="info-row"><span class="info-label">Food Security</span><span class="info-val">${Math.round(G.foodSecurity||60)}/100</span></div>
+    <div class="info-row"><span class="info-label">Housing Access</span><span class="info-val">${Math.round(G.housingAffordability||55)}/100</span></div>
     <div class="info-row"><span class="info-label">⛏️ Resources</span><span class="info-val">${(G.naturalResources||[]).map(rid=>{const r=NATURAL_RESOURCES.find(x=>x.id===rid);return r?r.icon+' '+r.name:'';}).join(', ')}</span></div>
     <div class="info-row"><span class="info-label">✨ Golden Ages</span><span class="info-val">${G.goldenAgeCount||0}${(G.goldenAge||0)>0?' (Active: '+G.goldenAge+'yr)':''}</span></div>
   </div></div>`;
@@ -1779,7 +2353,24 @@ function renderStatsTab(){
     const u=G.unlockedAchievements.includes(a.id);
     h+=`<div title="${a.desc}" style="display:inline-flex;align-items:center;gap:5px;padding:5px 10px;border-radius:8px;background:${u?'rgba(240,180,41,0.08)':'rgba(255,255,255,0.02)'};border:1px solid ${u?'rgba(240,180,41,0.2)':'rgba(255,255,255,0.05)'};font-size:10px;font-weight:700;color:${u?'var(--accent-gold)':'var(--text-muted)'};${u?'':'filter:grayscale(1);opacity:0.4;'}">${a.icon} ${a.name}</div>`;
   });
-  h+=`</div></div></div><div style="height:80px;"></div>`;
+  h+=`</div></div></div>`;
+  h+=`<div class="sector-content fade-up fade-up-d4"><div class="sector-header"><h3>🕸️ Nation Radar</h3><span style="font-size:10px;color:var(--text-muted);">Core stats overview</span></div><div class="sector-body"><div class="radar-wrap"><canvas id="radarCanvas"></canvas></div></div></div>`;
+  // Faction satisfaction summary
+  if(G.factions&&typeof G.factions==='object'){
+    h+=`<div class="sector-content fade-up fade-up-d4"><div class="sector-header"><h3>🗳️ Political Factions</h3><span style="font-size:10px;color:var(--text-muted);">Domestic politics</span></div><div class="sector-body">`;
+    FACTIONS.forEach(f=>{
+      const sat=Math.round(G.factions[f.id]||50);
+      const color=sat>65?'var(--accent-green)':sat>35?'var(--accent-gold)':'var(--accent-red)';
+      h+=`<div class="progress-row"><div class="progress-label"><span class="pl-name">${f.icon} ${f.name}</span><span class="pl-val" style="color:${color}">${sat}/100</span></div><div class="progress-track"><div class="progress-fill" style="width:${sat}%;background:${color}"></div></div></div>`;
+    });
+    const rebRisk=Math.round(G.rebellionRisk||0);
+    h+=`<div class="info-row" style="margin-top:6px;"><span class="info-label">⚠️ Rebellion Risk</span><span class="info-val" style="color:${rebRisk>50?'var(--accent-red)':rebRisk>30?'var(--accent-gold)':'var(--accent-green)'}">${rebRisk}%</span></div>`;
+    h+=`<div class="info-row"><span class="info-label">📊 Eco. Diversification</span><span class="info-val" style="color:var(--accent-cyan)">${G.economicDiversification||40}/100</span></div>`;
+    h+=`<div class="info-row"><span class="info-label">🌸 Current Season</span><span class="info-val">${G.season||'Spring'}</span></div>`;
+    h+=`</div></div>`;
+  }
+  h+=`<div class="sector-content fade-up fade-up-d4"><div class="sector-header"><h3>📜 Nation Chronicle</h3><span style="font-size:10px;color:var(--text-muted);">Every 5 years</span></div><div class="sector-body">${renderChronicle()}</div></div>`;
+  h+=`<div style="height:80px;"></div>`;
   return h;
 }
 
@@ -1872,6 +2463,9 @@ function triggerRandomEvent(){
   if(Math.random()<chance){
     let pool=[...EVENTS];
     if(G.environment<30){const d=EVENTS.filter(e=>e.type==='disaster');pool=[...pool,...d,...d];}
+    const climatePressure=(G.climateRisk||45)-((G.resilience||35)*0.45);
+    if(climatePressure>20){const d=EVENTS.filter(e=>e.type==='disaster');pool=[...pool,...d,...d];}
+    if((G.inflation||0)>12||(G.unemployment||0)>12){pool=[...pool,...EVENTS.filter(e=>e.type==='crisis')];}
     if(G.difficulty==='hard')pool=[...pool,...EVENTS.filter(e=>e.type==='crisis')];
     // FIX: filter out last event to prevent repeats
     const filtered=pool.filter(e=>e.id!==G.lastEventId);
@@ -1923,11 +2517,30 @@ function nextTurn(){
   },100);
 }
 
+function processMacroDynamics(deficit){
+  const deficitLoad=deficit<0?Math.min(6,Math.abs(deficit)/1200):0;
+  const debtPressure=(G.debtGdpRatio||0)>90?Math.min(6,((G.debtGdpRatio||0)-90)/20):0;
+  const supplyRelief=((G.energy||40)+(G.trade||40)+(G.production||45))/140;
+  const trustRelief=(G.publicTrust||55)/130;
+  G.inflation=clamp((G.inflation||4.8)+(Math.random()-0.48)*0.9+deficitLoad*0.35+debtPressure*0.25-supplyRelief*0.8-trustRelief*0.35,0,35);
+  const jobStress=(G.warState?1.4:0)+(G.inflation>12?1:0)+((G.climateRisk||45)>72?0.8:0);
+  const jobCreation=((G.economy||50)+(G.production||45)+(G.trade||40)+(G.education||40))/170;
+  G.unemployment=clamp((G.unemployment||8.5)+(Math.random()-0.5)*0.8+jobStress-jobCreation*0.75,1.5,30);
+  G.housingAffordability=clamp((G.housingAffordability||55)+(Math.random()-0.5)*1.2-(G.inflation>8?0.8:0)+(G.activePolicies.includes('housing')?0.7:0)+(G.activePolicies.includes('affordable_childcare')?0.4:0),5,95);
+  G.foodSecurity=clamp((G.foodSecurity||60)+(Math.random()-0.45)*1.1+(G.environment>60?0.4:-0.5)+(G.activePolicies.includes('food_security_program')?0.9:0)+(G.researchedTechs.includes('desalination_grid')?0.6:0),10,100);
+  G.publicTrust=clamp((G.publicTrust||55)+(Math.random()-0.5)*1.4+(G.corruption<25?0.8:-0.8)+(G.approval>60?0.5:-0.5)+(G.mediaFreedom>60?0.4:-0.3),5,100);
+  G.resilience=clamp((G.resilience||35)+(Math.random()-0.48)*1.0+(G.activePolicies.includes('flood_barriers')?0.8:0)+(G.activePolicies.includes('civil_defense')?0.6:0)+(G.researchedTechs.includes('climate_modeling')?0.5:0)+(G.environment>70?0.3:0),5,100);
+  G.climateRisk=clamp((G.climateRisk||45)+(Math.random()-0.52)*1.5+(100-G.environment)/180-(G.resilience||35)/260-(G.activePolicies.includes('green')?0.4:0),5,98);
+  if((G.inflation||0)>18){G.happiness=clamp(G.happiness-2);G.economy=clamp(G.economy-1);}
+  if((G.unemployment||0)>14){G.happiness=clamp(G.happiness-2);G.stability=clamp(G.stability-1);}
+}
+
 function processTurn(){
   // Snapshot stats for delta display (before any modifications)
   const _STAT_KEYS=['happiness','economy','stability','health','education','environment','equality','corruption','research','military','diplomacy'];
   G.prevStats={};_STAT_KEYS.forEach(k=>G.prevStats[k]=G[k]);
   const _prevEra=G.currentEra||getEra();
+  if(!G.nationalAgendas||G.nationalAgendas.length===0)rollNationalAgenda(true);
   // Population growth
   const growthFactor=1+(G.populationGrowth/100)*(G.health/80)*(G.happiness/60);
   G.population=Math.floor(G.population*growthFactor);
@@ -1944,13 +2557,15 @@ function processTurn(){
   const diffMult=G.difficulty==='easy'?1.2:G.difficulty==='hard'?0.75:1;
   G.treasuryIncome=Math.floor((G.economy*15+G.trade*10+G.production*6+G.tourism*4)*popM*diffMult);
   let policyExpenses=G.activePolicies.reduce((s,id)=>{const p=findPolicy(id);return s+(p?(p.annualCost||0):0);},0);
-  G.treasuryExpense=Math.floor(G.military*15*popM*0.3+policyExpenses+popM*20+100+(G.activeTech?200:0));
+  const orgExpenses=(G.joinedOrgs||[]).reduce((s,id)=>{const o=INTERNATIONAL_ORGS.find(x=>x.id===id);return s+(o?(o.annualCost||0):0);},0);
+  G.treasuryExpense=Math.floor(G.military*15*popM*0.3+policyExpenses+orgExpenses+popM*20+100+(G.activeTech?200:0));
   G.treasury+=G.treasuryIncome-G.treasuryExpense;
   G.treasuryHistory.push(G.treasury);if(G.treasuryHistory.length>40)G.treasuryHistory.shift();
   // Debt tracking
   const deficit=G.treasuryIncome-G.treasuryExpense;
   if(deficit<0)G.totalDebt-=deficit;else G.totalDebt=Math.max(0,G.totalDebt-deficit*0.3);
   G.debtGdpRatio=Math.min(999,(G.totalDebt/Math.max(1,getGdpTotal()))*100);
+  processMacroDynamics(deficit);
   // Stat drifts
   const d=G.difficulty==='hard'?1.5:1;
   G.happiness=clamp(G.happiness+(Math.random()-0.5)*4*d+(G.economy>50?1:-1)+(G.corruption>40?-2:0)+(G.health>50?0.5:0)+healthBonus*0.3);
@@ -1965,7 +2580,7 @@ function processTurn(){
   G.trade=clamp(G.trade+(Math.random()-0.45)*1.5+G.aiNations.filter(n=>n.tradeAgreement).length*0.2);
   G.military=clamp(G.military+milBonus*0.2);
   // Approval
-  G.approval=clamp(G.happiness*0.28+G.economy*0.20+G.stability*0.12+G.health*0.08+G.education*0.08+(100-G.corruption)*0.10+(100-(G.crime||20))*0.05+(G.mediaFreedom||55)*0.03+(G.culture||30)*0.03+(G.literacy||60)*0.03);
+  G.approval=clamp(G.happiness*0.24+G.economy*0.18+G.stability*0.12+G.health*0.07+G.education*0.07+(100-G.corruption)*0.09+(100-(G.crime||20))*0.04+(G.mediaFreedom||55)*0.03+(G.culture||30)*0.02+(G.literacy||60)*0.02+(100-Math.min(100,(G.inflation||5)*4))*0.04+(100-Math.min(100,(G.unemployment||8)*4))*0.04+(G.publicTrust||55)*0.03+(G.housingAffordability||55)*0.03+(G.foodSecurity||60)*0.03);
   G.approvalHistory.push(G.approval);
   // Tech progress
   if(G.activeTech){
@@ -2092,9 +2707,81 @@ function processTurn(){
     }
   }
 
+  if((G.agendaDeadlineYear||0)>0&&G.year>=G.agendaDeadlineYear){
+    evaluateNationalAgenda();
+  }
+
   // Revolution cooldown
   if((G.revolutionCooldown||0) > 0) G.revolutionCooldown--;
 
+  // --- SEASON ROTATION ---
+  const _seasons=['🌸 Spring','☀️ Summer','🍂 Autumn','❄️ Winter'];
+  G.seasonIdx=(G.seasonIdx||0);
+  G.season=_seasons[G.seasonIdx%4];
+  G.seasonIdx++;
+  // Seasonal modifiers
+  if(G.season==='☀️ Summer'){G.tourism=clamp(G.tourism+1.5);G.happiness=clamp(G.happiness+1);}
+  else if(G.season==='❄️ Winter'){G.happiness=clamp(G.happiness-0.5);G.energy=clamp(G.energy-0.5);}
+  else if(G.season==='🌸 Spring'){G.environment=clamp(G.environment+0.3);G.foodSecurity=clamp((G.foodSecurity||60)+0.5);}
+  else if(G.season==='🍂 Autumn'){G.economy=clamp(G.economy+0.5);G.trade=clamp(G.trade+0.5);}
+
+  // --- FACTION SATISFACTION ---
+  if(!G.factions||typeof G.factions!=='object')G.factions={military:50,business:50,workers:50,greens:50,conservatives:50};
+  G.factions.military=clamp((G.factions.military||50)+(G.military>60?1.2:-0.8)+(G.warState?2:0)+(G.activePolicies.includes('conscription')?0.8:0)+(G.activePolicies.includes('veterans_benefits')?0.5:0)+(Math.random()-0.45)*4,0,100);
+  G.factions.business=clamp((G.factions.business||50)+(G.economy>60?1.2:-0.8)+(G.activePolicies.includes('privatize')?2:0)+(G.activePolicies.includes('sez')?0.8:0)+(G.activePolicies.includes('free_trade')?0.6:0)+(G.activePolicies.includes('export_drive')?0.5:0)+(G.activePolicies.includes('small_business')?0.8:0)+(Math.random()-0.5)*4,0,100);
+  G.factions.workers=clamp((G.factions.workers||50)+(G.equality>55?1:-0.8)+(G.activePolicies.includes('minimum_wage')?1.2:0)+(G.activePolicies.includes('welfare')?1.5:0)+(G.activePolicies.includes('healthcare')?0.8:0)+(G.activePolicies.includes('mental_health')?0.5:0)+(Math.random()-0.5)*4,0,100);
+  G.factions.greens=clamp((G.factions.greens||50)+(G.environment>60?1:-0.8)+(G.activePolicies.includes('green')?1.5:0)+(G.activePolicies.includes('national_parks')?0.8:0)+(G.activePolicies.includes('recycling_mandate')?0.6:0)+(G.researchedTechs.includes('renewables')?1:0)-(G.activePolicies.includes('subsidies')?0.3:0)+(Math.random()-0.5)*4,0,100);
+  G.factions.conservatives=clamp((G.factions.conservatives||50)+(G.stability>60?1:-0.8)+(G.govt==='monarchy'||G.govt==='theocracy'?1:0)+(G.corruption<25?0.5:-0.5)+(G.activePolicies.includes('pension')?0.6:0)+(Math.random()-0.5)*4,0,100);
+  // Faction crisis trigger
+  const _angerFaction=FACTIONS.find(f=>(G.factions[f.id]||50)<18);
+  if(_angerFaction&&Math.random()<0.4&&!G.pendingEvent){
+    G.pendingEvent={id:'faction_crisis_'+_angerFaction.id,type:'crisis',title:_angerFaction.name+' Uprising',desc:'The '+_angerFaction.name+' has reached a breaking point. Mass demonstrations threaten to destabilize the government.',choices:[
+      {text:'🤝 Negotiate — Grant Key Demands',effects:{stability:-5,happiness:5,equality:5},tags:[{t:'Concessions',p:true}]},
+      {text:'🔒 Hold Firm — No Surrender',effects:{stability:10,happiness:-8,corruption:3},tags:[{t:'Stability +10',p:true}]},
+      {text:'💰 Financial Placation — Buy Their Silence',effects:{treasury:-15,stability:5,corruption:5},cost:'$150M',tags:[{t:'Costly',p:false}]},
+    ]};
+    G.newNotifications=true;
+  }
+
+  // --- REBELLION MECHANIC ---
+  if(G.stability<20){
+    G.stabilityLowYears=(G.stabilityLowYears||0)+1;
+    G.rebellionRisk=Math.min(100,(G.rebellionRisk||0)+15);
+  } else if(G.stability<35){
+    G.stabilityLowYears=0;
+    G.rebellionRisk=Math.min(100,(G.rebellionRisk||0)+5);
+  } else {
+    G.stabilityLowYears=0;
+    G.rebellionRisk=Math.max(0,(G.rebellionRisk||0)-8);
+  }
+  if((G.rebellionRisk||0)>75&&Math.random()<0.55&&!G.pendingEvent){
+    G.pendingEvent={id:'armed_rebellion',type:'crisis',title:'Armed Rebellion Erupts',desc:'Armed rebel factions have seized key infrastructure. The government faces its gravest test.',choices:[
+      {text:'⚔️ Military Crackdown',effects:{military:5,stability:15,happiness:-15,diplomacy:-8},tags:[{t:'Stability +15',p:true}]},
+      {text:'🕊️ Negotiate for Peace',effects:{stability:8,happiness:8,corruption:3},tags:[{t:'Balanced',p:true}]},
+      {text:'🚨 Declare State of Emergency',effects:{stability:22,happiness:-22,mediaFreedom:-15,corruption:6},tags:[{t:'Emergency powers',p:true}]},
+    ]};
+    G.rebellionRisk=20;
+    G.newNotifications=true;
+    addLog('🚨','Armed rebellion erupts across the nation!',G.year);
+    addNews('🚨 CRISIS: Armed rebellion forces the government to respond!');
+  }
+
+  // --- ECONOMIC DIVERSIFICATION SCORE ---
+  G.economicDiversification=Math.round(((G.economy||50)+(G.trade||40)+(G.production||45)+(G.research||20)+(G.tourism||20)+(G.energy||40))/6);
+  // Trade balance
+  const _exportRev=Math.floor((G.economy*12+G.trade*10+G.production*6+G.tourism*4)*(G.population/1000000));
+  const _importCost=Math.floor((G.population/1000000)*80+G.activePolicies.length*10);
+  G.tradeBalance=_exportRev-_importCost;
+  // Crisis/Boom year tracking
+  if(G.happiness<35&&G.economy<35)G.crisisYears=(G.crisisYears||0)+1;
+  if(G.happiness>70&&G.economy>70)G.boomYears=(G.boomYears||0)+1;
+
+  // Chronicle entry every 5 years
+  if(G.year%5===0){
+    if(!Array.isArray(G.chronicle))G.chronicle=[];
+    G.chronicle.unshift({year:G.year,prestige:G.prestige,economy:Math.round(G.economy),happiness:Math.round(G.happiness),treasury:G.treasury,pop:G.population,era:getEra(),season:G.season});
+    if(G.chronicle.length>20)G.chronicle.pop();
+  }
   // Game over checks
   G.prestige=calcPrestige();
   checkAchievements();
@@ -2102,6 +2789,8 @@ function processTurn(){
   if(G.stability<4){gameOver('Civil war erupts! Your government collapses under extreme instability.',false);return;}
   if(G.happiness<4){gameOver('Revolution! The people rise up — your government is overthrown.',false);return;}
   if(G.approval<4){gameOver('With '+Math.round(G.approval)+'% approval, '+G.leaderName+' is removed in a constitutional crisis.',false);return;}
+  if((G.inflation||0)>30&&(G.stability||0)<30){gameOver('Hyperinflation spirals out of control and the currency collapses.',false);return;}
+  if((G.unemployment||0)>28&&(G.happiness||0)<25){gameOver('Mass unemployment triggers nationwide unrest and systemic breakdown.',false);return;}
   if(G.year>=200){gameOver('After '+G.year+' years, '+G.name+' stands as a timeless civilization.',true);return;}
 }
 
@@ -2112,7 +2801,14 @@ function gameOver(reason,isWin){
   document.getElementById('goIcon').textContent=isWin?'🎉':'💀';
   document.getElementById('goTitle').textContent=isWin?'Legendary Civilization!':'Nation Collapsed';
   document.getElementById('goReason').textContent=reason;
-  document.getElementById('goStats').innerHTML=`<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;margin-top:16px;">
+  const _rating=getNationRating();
+  document.getElementById('goStats').innerHTML=`<div class="rating-card" style="margin-bottom:16px;">
+    <div class="rating-grade" style="color:${_rating.color}">${_rating.grade}</div>
+    <div style="font-size:14px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">${_rating.label}</div>
+    <div style="font-size:11px;color:var(--text-muted);">${G.name} · ${G.year} years · ${getPrestigeRank(G.prestige)}</div>
+    <div style="font-size:10px;color:var(--text-muted);margin-top:6px;">⭐ ${fmt(G.prestige)} Prestige · ${G.unlockedAchievements.length}/${ACHIEVEMENTS.length} Achievements · ${G.researchedTechs.length}/${TECHNOLOGIES.length} Technologies</div>
+  </div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;text-align:center;margin-top:16px;">
     <div class="stat-card gold"><div class="stat-label">Years Survived</div><div class="stat-value">${G.year}</div></div>
     <div class="stat-card blue"><div class="stat-label">Final Population</div><div class="stat-value">${fmt(G.population)}</div></div>
     <div class="stat-card green"><div class="stat-label">Peak GDP/Capita</div><div class="stat-value">$${fmt(Math.max(...G.gdpHistory))}</div></div>
@@ -2121,6 +2817,10 @@ function gameOver(reason,isWin){
     <div class="stat-card cyan"><div class="stat-label">Achievements</div><div class="stat-value">${G.unlockedAchievements.length}/${ACHIEVEMENTS.length}</div></div>
     <div class="stat-card cyan"><div class="stat-label">Golden Ages</div><div class="stat-value">${G.goldenAgeCount||0}</div></div>
     <div class="stat-card orange"><div class="stat-label">Technologies</div><div class="stat-value">${G.researchedTechs.length}/${TECHNOLOGIES.length}</div></div>
+    <div class="stat-card blue"><div class="stat-label">Inflation</div><div class="stat-value">${(G.inflation||0).toFixed(1)}%</div></div>
+    <div class="stat-card red"><div class="stat-label">Unemployment</div><div class="stat-value">${(G.unemployment||0).toFixed(1)}%</div></div>
+    <div class="stat-card green"><div class="stat-label">Resilience</div><div class="stat-value">${Math.round(G.resilience||35)}</div></div>
+    <div class="stat-card purple"><div class="stat-label">Agenda Goals</div><div class="stat-value">${G.agendasCompleted||0}</div></div>
   </div>`;
 }
 
@@ -2188,6 +2888,124 @@ function mkSlider(label,key,min,max,color){
 function updateSliderStyle(input,key){}
 
 function emergencyLoan(){G.treasury+=5000;G.totalDebt+=6000;G.debtGdpRatio+=10;closeModal();toast('🏦','IMF loan of '+fmtMoneyShort(5000)+' received.','warn');renderGame();}
+
+function issueNationalBonds(){
+  G.treasury+=2500;
+  G.totalDebt+=3200;
+  G.inflation=clamp((G.inflation||5)+0.8,0,35);
+  G.publicTrust=clamp((G.publicTrust||55)-2);
+  addLog('📜','Government issued national bonds for emergency liquidity.',G.year);
+  toast('📜','Bonds issued: +'+fmtMoneyShort(2500),'warn');
+  renderGame();
+}
+function runAntiCorruptionDrive(){
+  if(G.treasury<700){toast('❌','Need '+fmtMoneyShort(700),'error');return;}
+  G.treasury-=700;
+  G.corruption=clamp(G.corruption-9);
+  G.publicTrust=clamp((G.publicTrust||55)+8);
+  G.stability=clamp(G.stability-2);
+  addLog('⚖️','Anti-corruption drive launched nationwide.',G.year);
+  toast('⚖️','Anti-corruption operation underway','success');
+  renderGame();
+}
+function costOfLivingRelief(){
+  if(G.treasury<900){toast('❌','Need '+fmtMoneyShort(900),'error');return;}
+  G.treasury-=900;
+  G.happiness=clamp(G.happiness+7);
+  G.inflation=clamp((G.inflation||5)-1.2,0,35);
+  G.publicTrust=clamp((G.publicTrust||55)+4);
+  addLog('🛒','Cost-of-living relief package approved.',G.year);
+  toast('🛒','Relief package deployed','success');
+  renderGame();
+}
+function climateResiliencePush(){
+  if(G.treasury<1100){toast('❌','Need '+fmtMoneyShort(1100),'error');return;}
+  G.treasury-=1100;
+  G.resilience=clamp((G.resilience||35)+10);
+  G.climateRisk=clamp((G.climateRisk||45)-6);
+  G.environment=clamp(G.environment+3);
+  addLog('🛡️','Climate resilience construction accelerated.',G.year);
+  toast('🛡️','Resilience infrastructure expanded','success');
+  renderGame();
+}
+
+// ---- NEW QUICK ACTIONS ----
+function nationalRally(){
+  if(G.treasury<500){toast('❌','Need '+fmtMoneyShort(500),'error');return;}
+  G.treasury-=500;G.happiness=clamp(G.happiness+8);G.stability=clamp(G.stability+4);G.culture=clamp((G.culture||30)+3);
+  addLog('🎺','National Unity Rally: citizens galvanized.',G.year);
+  toast('🎺','Unity rally! +Happiness, +Stability','success');renderGame();
+}
+function jobCreationProgram(){
+  if(G.treasury<1200){toast('❌','Need '+fmtMoneyShort(1200),'error');return;}
+  G.treasury-=1200;G.unemployment=clamp((G.unemployment||8.5)-3,0,30);G.economy=clamp(G.economy+4);G.happiness=clamp(G.happiness+3);
+  addLog('🏗️','National job creation program launched.',G.year);
+  toast('🏗️','Job program: Unemployment -3%','success');renderGame();
+}
+function taxAmnestyAction(){
+  G.treasury+=1800;G.corruption=clamp(G.corruption+4);G.publicTrust=clamp((G.publicTrust||55)-5);G.economy=clamp(G.economy+3);
+  addLog('💸','Tax amnesty program collected unpaid arrears.',G.year);
+  toast('💸','Tax amnesty: +'+fmtMoneyShort(1800),'warn');renderGame();
+}
+function emergencyFoodDist(){
+  if(G.treasury<600){toast('❌','Need '+fmtMoneyShort(600),'error');return;}
+  G.treasury-=600;G.foodSecurity=clamp((G.foodSecurity||60)+10);G.happiness=clamp(G.happiness+4);G.health=clamp(G.health+3);
+  addLog('🌾','Emergency food distribution activated.',G.year);
+  toast('🌾','Food program: +FoodSecurity, +Health','success');renderGame();
+}
+function boostTrade(){
+  if(G.treasury<800){toast('❌','Need '+fmtMoneyShort(800),'error');return;}
+  G.treasury-=800;G.trade=clamp(G.trade+8);G.economy=clamp(G.economy+3);G.diplomacy=clamp(G.diplomacy+4);
+  addLog('🚢','Trade promotion campaign launched internationally.',G.year);
+  toast('🚢','Trade drive: Trade +8, Diplomacy +4','success');renderGame();
+}
+
+// ---- FACTION PANEL ----
+function renderFactionPanel(){
+  if(!G.factions||typeof G.factions!=='object')G.factions={military:50,business:50,workers:50,greens:50,conservatives:50};
+  const avgSat=Math.round(Object.values(G.factions).reduce((a,b)=>a+b,0)/5);
+  const rebRisk=Math.round(G.rebellionRisk||0);
+  let h=`<div class="diversification-panel"><div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:8px;">
+    <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Political Landscape</div>
+    <div style="font-size:24px;font-weight:900;color:var(--accent-purple);font-family:'Space Mono',monospace;">${avgSat}<span style="font-size:12px;font-weight:400;color:var(--text-muted);">/100</span></div>
+    <div style="font-size:10px;color:var(--text-muted);">Average faction satisfaction</div></div>
+    <div style="text-align:right;"><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;">Season</div>
+    <div style="font-size:20px;">${G.season||'🌸'}</div>
+    <div style="font-size:9px;color:var(--text-muted);">Year ${G.year}</div></div>
+  </div>
+  ${rebRisk>20?`<div style="margin-top:6px;"><div style="display:flex;justify-content:space-between;font-size:10px;font-weight:700;margin-bottom:4px;"><span style="color:#f87171;">⚠️ Rebellion Risk</span><span style="color:#f87171;font-family:'Space Mono',monospace;">${rebRisk}%</span></div><div class="rebellion-bar"><div class="rebellion-fill" style="width:${rebRisk}%"></div></div></div>`:''}
+  </div>`;
+  h+=`<div class="section-divider">Faction Satisfaction</div>`;
+  FACTIONS.forEach(f=>{
+    const sat=Math.round(G.factions[f.id]||50);
+    const color=sat>65?'var(--accent-green)':sat>35?'var(--accent-gold)':'var(--accent-red)';
+    const status=sat>75?'Very Supportive':sat>65?'Supportive':sat>45?'Neutral':sat>30?'Frustrated':sat>18?'Enraged':'🔥 Hostile';
+    const isEnraged=sat<18;
+    h+=`<div class="faction-card${isEnraged?' enraged':''}">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <span style="font-size:13px;font-weight:700;">${f.icon} ${f.name}</span>
+        <span style="font-size:11px;font-weight:800;color:${color};font-family:'Space Mono',monospace;">${sat}% · ${status}</span>
+      </div>
+      <div style="font-size:10px;color:var(--text-muted);margin-top:3px;">${f.desc}</div>
+      <div class="faction-bar"><div class="faction-fill" style="width:${sat}%;background:${color}"></div></div>
+    </div>`;
+  });
+  h+=`<div class="section-divider">Economic Diversification</div>
+  <div class="diversification-panel"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+    <div><div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Diversification Score</div>
+    <div style="font-size:22px;font-weight:900;font-family:'Space Mono',monospace;color:var(--accent-cyan);">${G.economicDiversification||40}</div></div>
+    <div style="text-align:right;"><div style="font-size:10px;color:var(--text-muted)">Trade Balance</div><div style="font-size:14px;font-weight:800;color:${(G.tradeBalance||0)>=0?'var(--accent-green)':'var(--accent-red)'};font-family:'Space Mono',monospace;">${(G.tradeBalance||0)>=0?'+':''}${fmtMoneyShort(G.tradeBalance||0)}/yr</div></div>
+  </div>
+  <div class="div-grid">
+    <div class="div-seg"><div class="ds-label">Economy</div><div class="ds-val" style="color:var(--accent-gold)">${Math.round(G.economy)}</div></div>
+    <div class="div-seg"><div class="ds-label">Trade</div><div class="ds-val" style="color:var(--accent-blue)">${Math.round(G.trade)}</div></div>
+    <div class="div-seg"><div class="ds-label">Production</div><div class="ds-val" style="color:#a78bfa">${Math.round(G.production)}</div></div>
+    <div class="div-seg"><div class="ds-label">Research</div><div class="ds-val" style="color:var(--accent-purple)">${Math.round(G.research)}</div></div>
+    <div class="div-seg"><div class="ds-label">Tourism</div><div class="ds-val" style="color:#f0abfc">${Math.round(G.tourism)}</div></div>
+    <div class="div-seg"><div class="ds-label">Energy</div><div class="ds-val" style="color:#fde047">${Math.round(G.energy)}</div></div>
+  </div></div>`;
+  return h+'<div style="height:20px;"></div>';
+}
 
 function addLog(icon,text,year){G.eventLog.unshift({icon,text,year});if(G.eventLog.length>60)G.eventLog.pop();G.newNotifications=true;}
 function addNews(text){G.newsItems.push(text);if(G.newsItems.length>25)G.newsItems.shift();}
@@ -2318,6 +3136,172 @@ function injectStars(){
     wrap.appendChild(s);
   }
   splash.appendChild(wrap);
+}
+
+// ---- ADVISOR PANEL ----
+function renderAdvisorPanel(){
+  const tips=[];
+  if(G.treasury<2000)tips.push({icon:'⚠️',color:'var(--accent-red)',text:'Treasury is critically low. Consider issuing bonds or boosting trade.'});
+  if(G.corruption>55)tips.push({icon:'🏴‍☠️',color:'var(--accent-red)',text:'Corruption is damaging growth. Run an anti-corruption campaign.'});
+  if(G.happiness<35)tips.push({icon:'😡',color:'#f87171',text:'Citizens are furious. Improve welfare and healthcare spending urgently.'});
+  if(G.research<25&&G.researchedTechs.length===0)tips.push({icon:'🔬',color:'var(--accent-purple)',text:'Start researching a technology to unlock powerful nation bonuses.'});
+  if(G.allies===0)tips.push({icon:'🤝',color:'var(--accent-blue)',text:'You have no allies. Visit the World tab to build diplomatic alliances.'});
+  if((G.inflation||0)>14)tips.push({icon:'📈',color:'var(--accent-orange)',text:'Inflation is dangerously high. Cut spending or raise interest rates.'});
+  if((G.unemployment||0)>13)tips.push({icon:'💼',color:'var(--accent-orange)',text:'High unemployment. Invest in education and economic policy.'});
+  if(G.diplomacy>65&&G.allies<2)tips.push({icon:'💡',color:'var(--accent-cyan)',text:'Your diplomacy is strong — now is a great time to forge alliances.'});
+  if(G.economy>70&&G.trade<40)tips.push({icon:'💡',color:'var(--accent-gold)',text:'Strong economy but low trade. Open trade routes to maximize revenue.'});
+  if((G.joinedOrgs||[]).length===0)tips.push({icon:'🌐',color:'var(--accent-blue)',text:'Join international organizations to gain global influence and bonuses.'});
+  if((G.rebellionRisk||0)>50)tips.push({icon:'🚨',color:'var(--accent-red)',text:'Rebellion risk is critical! Raise stability immediately or face civil war.'});
+  if(G.factions&&Object.values(G.factions).some(v=>v<20))tips.push({icon:'⚠️',color:'#f87171',text:'A political faction is on the verge of revolt. Visit the Politics tab immediately.'});
+  if((G.economicDiversification||40)<30)tips.push({icon:'📊',color:'var(--accent-orange)',text:'Economy is dangerously specialized. Diversify trade, research, and production.'});
+  if(tips.length===0)tips.push({icon:'✅',color:'var(--accent-green)',text:'Nation is stable. Keep the momentum — aim for a Golden Age!'});
+  const tip=tips[Math.floor(G.year*7%tips.length)];
+  return `<div class="advisor-panel fade-up">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:8px;">
+      <span style="font-size:18px;">🧭</span>
+      <div><div style="font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);">Chief Advisor</div>
+      <div style="font-size:10px;color:var(--text-muted);">${G.leaderName ? 'Reporting to '+G.leaderName : 'Strategic counsel'}</div></div>
+    </div>
+    <div style="display:flex;gap:10px;align-items:flex-start;padding:10px;background:rgba(0,0,0,0.2);border-radius:8px;">
+      <span style="font-size:20px;flex-shrink:0;">${tip.icon}</span>
+      <div style="font-size:12px;line-height:1.5;color:var(--text-secondary);">${tip.text}</div>
+    </div>
+    ${tips.length>1?`<div style="font-size:9px;color:var(--text-muted);margin-top:6px;text-align:right;">${tips.length} active advisories · Yr ${G.year}</div>`:''}
+  </div>`;
+}
+
+// ---- INTERNATIONAL ORGS ----
+function renderOrgPanel(){
+  let h=`<div style="margin-bottom:12px;padding:12px;background:linear-gradient(145deg,rgba(59,130,246,0.08),transparent);border:1px solid rgba(59,130,246,0.18);border-radius:var(--radius-xs);">
+    <div style="font-size:10px;color:var(--text-muted);text-transform:uppercase;letter-spacing:1px;">Membership Status</div>
+    <div style="font-size:22px;font-weight:900;color:var(--accent-blue);font-family:'Space Mono',monospace;">${(G.joinedOrgs||[]).length}<span style="font-size:13px;color:var(--text-muted);font-weight:400;">/${INTERNATIONAL_ORGS.length} orgs</span></div>
+    <div style="font-size:11px;color:var(--text-muted);">Annual dues: ${fmtMoneyShort((G.joinedOrgs||[]).reduce((s,id)=>{const o=INTERNATIONAL_ORGS.find(x=>x.id===id);return s+(o?o.annualCost:0);},0))}/yr</div>
+  </div>`;
+  INTERNATIONAL_ORGS.forEach(org=>{
+    const joined=(G.joinedOrgs||[]).includes(org.id);
+    const meetsReq=!org.req||((G[org.req.key]||0)>=org.req.min);
+    const fxHtml=Object.entries(org.effects).map(([k,v])=>`<span style="font-size:9px;padding:2px 6px;border-radius:4px;background:${v>0?'rgba(16,185,129,0.1)':'rgba(239,68,68,0.1)'};color:${v>0?'#34d399':'#f87171'};border:1px solid ${v>0?'rgba(16,185,129,0.2)':'rgba(239,68,68,0.2)'};">${k} ${v>0?'+':''}${v}</span>`).join('');
+    h+=`<div class="org-card ${joined?'joined':''}">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:6px;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span style="font-size:22px;">${org.icon}</span>
+          <div>
+            <div style="font-size:13px;font-weight:700;">${org.name}</div>
+            <div style="font-size:10px;color:var(--text-muted);">Annual dues: ${org.annualCost>0?fmtMoneyShort(org.annualCost)+'/yr':'Free'}</div>
+          </div>
+        </div>
+        ${joined?`<button onclick="leaveOrg('${org.id}')" style="padding:5px 10px;border-radius:6px;background:rgba(239,68,68,0.12);border:1px solid rgba(239,68,68,0.25);color:#f87171;font-size:10px;font-weight:700;cursor:pointer;">Leave</button>`
+        :meetsReq?`<button onclick="joinOrg('${org.id}')" style="padding:5px 10px;border-radius:6px;background:rgba(59,130,246,0.12);border:1px solid rgba(59,130,246,0.25);color:#60a5fa;font-size:10px;font-weight:700;cursor:pointer;">Join${org.cost>0?' ('+fmtMoneyShort(org.cost)+')':''}</button>`
+        :`<span style="font-size:9px;color:var(--text-muted);padding:5px 8px;border-radius:6px;border:1px solid var(--border);">Req: ${org.req.key} ≥${org.req.min}</span>`}
+      </div>
+      <div style="font-size:11px;color:var(--text-muted);margin-bottom:8px;">${org.desc}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;">${fxHtml}</div>
+    </div>`;
+  });
+  return h;
+}
+function joinOrg(id){
+  const org=INTERNATIONAL_ORGS.find(x=>x.id===id);if(!org)return;
+  if((G.joinedOrgs||[]).includes(id)){toast('ℹ️','Already a member.','warn');return;}
+  if(org.req&&(G[org.req.key]||0)<org.req.min){toast('❌','Requirements not met.','error');return;}
+  if(org.cost>0&&G.treasury<org.cost){toast('❌','Insufficient treasury.','error');return;}
+  if(org.cost>0)G.treasury-=org.cost;
+  if(!Array.isArray(G.joinedOrgs))G.joinedOrgs=[];
+  G.joinedOrgs.push(id);
+  applyEffects(org.effects,true);
+  toast(org.icon,'Joined '+org.name+'!','success');
+  addLog(org.icon,'Joined '+org.name,G.year);
+  addNews(org.icon+' '+G.name+' joins the '+org.name+'.');
+  setWorldTab('orgs');
+}
+function leaveOrg(id){
+  const org=INTERNATIONAL_ORGS.find(x=>x.id===id);if(!org)return;
+  G.joinedOrgs=(G.joinedOrgs||[]).filter(x=>x!==id);
+  const reverseEff={};Object.entries(org.effects).forEach(([k,v])=>{reverseEff[k]=-v;});
+  applyEffects(reverseEff,true);
+  toast('📤','Left '+org.name,'warn');
+  addLog('📤','Left '+org.name,G.year);
+  setWorldTab('orgs');
+}
+
+// ---- CHRONICLE ----
+function renderChronicle(){
+  const ch=(G.chronicle||[]);
+  if(ch.length===0)return`<div class="empty-state"><div class="empty-icon">📜</div>Chronicle records appear every 5 years.</div>`;
+  return ch.map(e=>`<div class="chronicle-item">
+    <div class="ci-year">Yr ${e.year}</div>
+    <div class="ci-dot"></div>
+    <div class="ci-body">
+      <div class="ci-title">${e.era}</div>
+      <div class="ci-sub" style="display:flex;flex-wrap:wrap;gap:6px;margin-top:3px;">
+        <span style="color:var(--accent-gold)">Eco ${e.economy}</span>
+        <span style="color:var(--accent-green)">😊 ${e.happiness}</span>
+        <span style="color:#a78bfa">⭐ ${fmt(e.prestige)}</span>
+        <span style="color:var(--accent-cyan)">👥 ${fmt(e.pop)}</span>
+        <span style="color:${e.treasury>=0?'#34d399':'#f87171'}">💰 ${fmtMoneyShort(e.treasury)}</span>
+        ${e.season?`<span style="color:var(--text-muted)">${e.season}</span>`:''}
+      </div>
+    </div>
+  </div>`).join('');
+}
+
+// ---- RADAR CHART ----
+function drawRadarChart(canvasId){
+  const canvas=document.getElementById(canvasId);if(!canvas)return;
+  const size=Math.min(canvas.parentElement.offsetWidth||240,240);
+  canvas.width=size;canvas.height=size;
+  const ctx=canvas.getContext('2d');
+  const cx=size/2,cy=size/2,r=size*0.38;
+  const axes=[
+    {label:'Economy',val:G.economy/100},
+    {label:'Military',val:G.military/100},
+    {label:'Research',val:G.research/100},
+    {label:'Diplomacy',val:G.diplomacy/100},
+    {label:'Happiness',val:G.happiness/100},
+    {label:'Health',val:G.health/100},
+  ];
+  const n=axes.length;
+  const angle=i=>(Math.PI*2*i/n)-Math.PI/2;
+  // Draw grid rings
+  [0.25,0.5,0.75,1].forEach(ring=>{
+    ctx.beginPath();
+    axes.forEach((_,i)=>{const a=angle(i);const x=cx+Math.cos(a)*r*ring;const y=cy+Math.sin(a)*r*ring;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+    ctx.closePath();ctx.strokeStyle='rgba(255,255,255,0.06)';ctx.lineWidth=1;ctx.stroke();
+  });
+  // Draw axis lines
+  axes.forEach((_,i)=>{const a=angle(i);ctx.beginPath();ctx.moveTo(cx,cy);ctx.lineTo(cx+Math.cos(a)*r,cy+Math.sin(a)*r);ctx.strokeStyle='rgba(255,255,255,0.08)';ctx.lineWidth=1;ctx.stroke();});
+  // Draw data polygon
+  ctx.beginPath();
+  axes.forEach((ax,i)=>{const a=angle(i);const x=cx+Math.cos(a)*r*ax.val;const y=cy+Math.sin(a)*r*ax.val;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y);});
+  ctx.closePath();
+  const grad=ctx.createRadialGradient(cx,cy,0,cx,cy,r);
+  grad.addColorStop(0,'rgba(240,180,41,0.35)');grad.addColorStop(1,'rgba(59,130,246,0.15)');
+  ctx.fillStyle=grad;ctx.fill();
+  ctx.strokeStyle='rgba(240,180,41,0.7)';ctx.lineWidth=2;ctx.stroke();
+  // Draw dots and labels
+  axes.forEach((ax,i)=>{
+    const a=angle(i);
+    const x=cx+Math.cos(a)*r*ax.val;const y=cy+Math.sin(a)*r*ax.val;
+    ctx.beginPath();ctx.arc(x,y,3.5,0,Math.PI*2);ctx.fillStyle='#f0b429';ctx.fill();
+    const lx=cx+Math.cos(a)*(r+18);const ly=cy+Math.sin(a)*(r+18);
+    ctx.fillStyle='rgba(200,215,235,0.8)';ctx.font=`bold 9px Outfit,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillText(ax.label,lx,ly);
+  });
+}
+
+// ---- NATION RATING ----
+function getNationRating(){
+  const score=(G.economy+G.happiness+G.military+G.research+G.diplomacy+G.health+G.education+(100-G.corruption))/8;
+  const bonuses=G.unlockedAchievements.length*0.5+G.warsWon*1+G.year*0.1+G.researchedTechs.length*0.8+(G.joinedOrgs||[]).length*0.5;
+  const total=Math.min(100,score+bonuses*0.3);
+  if(total>=96)return{grade:'S+',color:'#ffd700',label:'Legendary Civilization'};
+  if(total>=90)return{grade:'S',color:'#f0b429',label:'Elite World Power'};
+  if(total>=82)return{grade:'A+',color:'#a78bfa',label:'Great Power'};
+  if(total>=74)return{grade:'A',color:'#60a5fa',label:'Strong Nation'};
+  if(total>=65)return{grade:'B+',color:'#34d399',label:'Developing Power'};
+  if(total>=55)return{grade:'B',color:'#6b7280',label:'Average Nation'};
+  if(total>=40)return{grade:'C',color:'#f97316',label:'Struggling State'};
+  return{grade:'D',color:'#ef4444',label:'Failed State'};
 }
 
 document.addEventListener('DOMContentLoaded',()=>{
