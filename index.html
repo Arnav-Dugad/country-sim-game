@@ -642,7 +642,155 @@ body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;bac
 .approval-section::after{content:'';position:absolute;bottom:0;right:0;width:60px;height:60px;background:radial-gradient(circle,rgba(240,180,41,0.04) 0%,transparent 70%);pointer-events:none;}
 /* National motto display */
 .motto-display{font-size:10px;font-style:italic;color:var(--text-muted);text-align:center;padding:6px 0;border-top:1px solid var(--border);margin-top:8px;}
+
+/* ===== ENHANCED v6 — NEW FEATURES ===== */
+/* Economic Cycle */
+.cycle-banner{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:var(--radius-xs);margin-bottom:10px;border:1px solid;position:relative;overflow:hidden;}
+.cycle-banner::before{content:'';position:absolute;inset:0;opacity:0.04;background:currentColor;}
+.cycle-icon{font-size:20px;flex-shrink:0;}
+.cycle-info{flex:1;min-width:0;}
+.cycle-name{font-size:11px;font-weight:800;letter-spacing:0.5px;}
+.cycle-desc{font-size:9px;margin-top:1px;opacity:0.75;}
+.cycle-progress{height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;margin-top:5px;}
+.cycle-fill{height:100%;border-radius:2px;transition:width 0.7s cubic-bezier(0.16,1,0.3,1);}
+/* Constitutional Rights */
+.rights-panel{background:linear-gradient(145deg,rgba(6,182,212,0.07),transparent);border:1px solid rgba(6,182,212,0.18);border-radius:var(--radius-xs);padding:12px 14px;margin-bottom:10px;position:relative;overflow:hidden;}
+.rights-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-cyan),#22d3ee);}
+.rights-title{font-size:10px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent-cyan);margin-bottom:10px;}
+.rights-score{font-size:26px;font-weight:900;font-family:'Space Mono',monospace;color:var(--accent-cyan);}
+.rights-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:8px;}
+.rights-item{background:rgba(0,0,0,0.2);border:1px solid rgba(6,182,212,0.12);border-radius:7px;padding:7px;}
+.ri-icon{font-size:12px;}
+.ri-name{font-size:9px;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin:2px 0;}
+.ri-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;}
+.ri-fill{height:100%;border-radius:2px;transition:width 0.5s;}
+/* Innovation Panel */
+.innovation-panel{background:linear-gradient(145deg,rgba(249,115,22,0.08),transparent);border:1px solid rgba(249,115,22,0.2);border-radius:var(--radius-xs);padding:12px 14px;margin-bottom:10px;position:relative;overflow:hidden;}
+.innovation-panel::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(90deg,var(--accent-orange),#fb923c);}
+.inn-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-orange);margin-bottom:4px;}
+.inn-val{font-size:28px;font-weight:900;font-family:'Space Mono',monospace;color:var(--accent-orange);}
+.inn-bar{height:5px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;margin:6px 0 4px;}
+.inn-fill{height:100%;background:linear-gradient(90deg,var(--accent-orange),#fb923c);border-radius:3px;transition:width 0.6s cubic-bezier(0.16,1,0.3,1);}
+.inn-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;}
+.inn-tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(249,115,22,0.12);color:#fb923c;border:1px solid rgba(249,115,22,0.2);}
+/* Energy Mix */
+.energy-mix-panel{background:linear-gradient(145deg,rgba(16,185,129,0.06),transparent);border:1px solid rgba(16,185,129,0.18);border-radius:var(--radius-xs);padding:12px 14px;margin-bottom:10px;}
+.energy-mix-title{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent-green);margin-bottom:8px;}
+.energy-mix-bar{height:14px;display:flex;border-radius:7px;overflow:hidden;gap:1px;margin:8px 0;}
+.em-seg{transition:width 0.7s cubic-bezier(0.16,1,0.3,1);}
+.energy-legend{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:6px;}
+.em-leg{display:flex;align-items:center;gap:5px;font-size:10px;}
+.em-dot{width:7px;height:7px;border-radius:2px;flex-shrink:0;}
+.em-label{color:var(--text-muted);}
+.em-pct{font-weight:800;font-family:'Space Mono',monospace;margin-left:auto;}
+/* National Projects */
+.nat-project-card{display:flex;gap:10px;padding:11px;background:rgba(255,255,255,0.02);border-radius:var(--radius-xs);border:1px solid var(--border);margin-bottom:7px;cursor:pointer;transition:all 0.2s;position:relative;overflow:hidden;}
+.nat-project-card:hover{background:rgba(255,255,255,0.04);border-color:var(--border-light);transform:translateY(-1px);}
+.nat-project-card:active{transform:scale(0.98);}
+.nat-project-card.built{border-color:rgba(16,185,129,0.28);background:rgba(16,185,129,0.03);}
+.nat-project-card.locked-proj{opacity:0.5;cursor:not-allowed;}
+.np-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;background:rgba(59,130,246,0.1);border:1px solid rgba(59,130,246,0.18);}
+.nat-project-card.built .np-icon{background:rgba(16,185,129,0.1);border-color:rgba(16,185,129,0.25);}
+.np-info{flex:1;min-width:0;}
+.np-name{font-size:12px;font-weight:700;}
+.np-desc{font-size:10px;color:var(--text-muted);margin-top:2px;line-height:1.4;}
+.np-bottom{display:flex;justify-content:space-between;align-items:center;margin-top:5px;}
+.np-cost{font-size:11px;font-weight:700;font-family:'Space Mono',monospace;color:var(--accent-blue);}
+.nat-project-card.built .np-cost{color:#34d399;}
+/* Crisis Mode */
+.crisis-mode-banner{display:flex;align-items:center;gap:10px;padding:12px 14px;background:linear-gradient(135deg,rgba(239,68,68,0.12),rgba(239,68,68,0.04));border:1px solid rgba(239,68,68,0.35);border-radius:var(--radius-xs);margin-bottom:10px;}
+.cmb-icon{font-size:22px;flex-shrink:0;}
+.cmb-body{flex:1;}
+.cmb-title{font-size:11px;font-weight:800;color:#f87171;letter-spacing:0.3px;}
+.cmb-desc{font-size:9px;color:var(--text-muted);margin-top:2px;}
+/* Military Branches */
+.mil-branch{display:flex;align-items:center;gap:10px;padding:9px 12px;background:rgba(255,255,255,0.02);border-radius:8px;margin-bottom:5px;border:1px solid var(--border);transition:all 0.2s;}
+.mil-branch:hover{background:rgba(255,255,255,0.04);}
+.mb-icon{font-size:20px;flex-shrink:0;}
+.mb-info{flex:1;min-width:0;}
+.mb-name{font-size:11px;font-weight:700;}
+.mb-sub{font-size:9px;color:var(--text-muted);margin-top:1px;}
+.mb-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;margin-top:4px;}
+.mb-fill{height:100%;border-radius:2px;transition:width 0.6s cubic-bezier(0.16,1,0.3,1);}
+.mb-val{font-size:11px;font-weight:800;font-family:'Space Mono',monospace;flex-shrink:0;}
+/* Referendum card */
+.referendum-card{padding:14px;background:linear-gradient(145deg,rgba(240,180,41,0.09),transparent);border:1px solid rgba(240,180,41,0.25);border-radius:var(--radius-sm);margin-bottom:12px;}
+.ref-title{font-size:13px;font-weight:800;color:var(--accent-gold);margin-bottom:4px;}
+.ref-desc{font-size:11px;color:var(--text-secondary);margin-bottom:10px;line-height:1.5;}
+/* Score change tooltip */
+.trend-chip{display:inline-flex;align-items:center;gap:2px;font-size:9px;font-weight:800;padding:1px 5px;border-radius:4px;margin-left:4px;vertical-align:middle;}
+.trend-chip.up{background:rgba(16,185,129,0.15);color:#34d399;}
+.trend-chip.down{background:rgba(239,68,68,0.15);color:#f87171;}
+/* Better chart labels */
+.chart-period-label{font-size:8px;color:var(--text-muted);text-align:center;margin-top:2px;letter-spacing:0.5px;}
+/* Economic boom/recession top bar tints */
+@keyframes boomPulse{0%,100%{border-bottom-color:var(--border);}50%{border-bottom-color:rgba(16,185,129,0.4);}}
+@keyframes recessionPulse{0%,100%{border-bottom-color:var(--border);}50%{border-bottom-color:rgba(239,68,68,0.4);}}
+.top-bar.economic-boom{animation:boomPulse 2.5s ease-in-out infinite;}
+.top-bar.economic-recession{animation:recessionPulse 2s ease-in-out infinite;}
+/* National project section divider */
+.section-divider.blue::after{background:var(--accent-blue);}
+.section-divider.green::after{background:var(--accent-green);}
+.section-divider.orange::after{background:var(--accent-orange);}
+/* Improved rank item hover */
+.rank-item{cursor:default;}
+/* Tech era badge */
+.era-tag{font-size:9px;font-weight:700;padding:2px 8px;border-radius:5px;letter-spacing:0.5px;}
+.era-tag.foundation{background:rgba(59,130,246,0.1);color:#60a5fa;border:1px solid rgba(59,130,246,0.2);}
+.era-tag.modern{background:rgba(139,92,246,0.1);color:#a78bfa;border:1px solid rgba(139,92,246,0.2);}
+.era-tag.future{background:rgba(240,180,41,0.1);color:var(--accent-gold);border:1px solid rgba(240,180,41,0.2);}
+/* Population bar */
+.pop-segment-bar{display:flex;height:10px;border-radius:5px;overflow:hidden;gap:1px;margin:6px 0;}
+/* Smooth stat hover transitions */
+.stat-card{transform:translateY(0);transition:transform 0.2s ease,border-color 0.2s,box-shadow 0.2s;}
+/* Enhanced bottom nav */
+.nav-item .nav-icon{transition:transform 0.2s cubic-bezier(0.34,1.56,0.64,1);}
+.nav-item.active .nav-icon{transform:scale(1.15);}
+/* Policy category pill */
+.policy-cat-pill{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:9px;font-weight:700;background:rgba(255,255,255,0.04);border:1px solid var(--border-light);color:var(--text-muted);margin-bottom:10px;}
+/* World events feed */
+.world-feed-item{display:flex;align-items:flex-start;gap:8px;padding:8px 0;border-bottom:1px solid var(--border);font-size:11px;color:var(--text-secondary);}
+.world-feed-item:last-child{border-bottom:none;}
+.wfi-icon{font-size:14px;flex-shrink:0;margin-top:1px;}
+/* Enhanced splash features */
+.splash-feature{transition:all 0.2s ease;cursor:default;}
+/* Referendum vote bars */
+.vote-bar-row{display:flex;gap:3px;height:24px;border-radius:8px;overflow:hidden;margin:10px 0;}
+.vb-yes{background:linear-gradient(90deg,var(--accent-green),#34d399);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#000;transition:width 0.7s cubic-bezier(0.16,1,0.3,1);}
+.vb-no{background:linear-gradient(90deg,var(--accent-red),#dc2626);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:800;color:#fff;transition:width 0.7s cubic-bezier(0.16,1,0.3,1);}
+/* AI Nation interaction card improvements */
+.diplo-card{transition:transform 0.18s,border-color 0.2s;}
+.diplo-card:hover{transform:translateY(-2px);}
+/* Better build locked state */
+.build-card.locked{cursor:not-allowed;}
+.build-card.locked:hover{transform:none!important;}
+/* Improved sparkline container */
+.gdp-chart{border-radius:8px;overflow:hidden;background:rgba(255,255,255,0.01);}
+/* Top bar prestige chip enhanced */
+.prestige-chip{transition:all 0.2s;border-radius:14px;}
+.prestige-chip:hover{background:rgba(240,180,41,0.15);border-color:rgba(240,180,41,0.35);}
+/* Policy search icon color */
+.ps-icon{color:var(--text-muted);}
+/* Chronicle timeline dot enhanced */
+.ci-dot{transition:all 0.2s;}
+.chronicle-item:hover .ci-dot{background:var(--accent-gold);border-color:var(--accent-gold);box-shadow:0 0 8px rgba(240,180,41,0.5);}
+/* Better modal title */
+.modal-title{background:linear-gradient(135deg,#fff 30%,rgba(255,255,255,0.7) 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;}
+/* Policy card hover shimmer */
+.policy-card:hover::after{content:'';position:absolute;top:0;left:0;width:30%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.02),transparent);animation:shimmerSlide 1.5s ease infinite;pointer-events:none;}
+/* Improved toast styling */
+.toast{border-radius:var(--radius-sm);}
+/* Quick action icon */
+.qa-icon{opacity:0.85;}
+.quick-action:hover .qa-icon{opacity:1;}
+/* Better empty state icons */
+.empty-icon{display:block;opacity:0.25;margin-bottom:10px;}
+/* Stats tab radar enhanced */
+.radar-wrap{background:rgba(255,255,255,0.01);border-radius:var(--radius-xs);padding:10px;}
+/* Turn overlay enhanced */
+.turn-overlay .turn-year{text-shadow:0 0 40px rgba(240,180,41,0.3);}
 </style>
+
 
 </head>
 <body>
@@ -799,6 +947,13 @@ const TECHNOLOGIES=[
   {id:'autonomous_vehicles',name:'Autonomous Transport Grid',icon:'🚗',tier:3,cost:1550,turns:4,desc:'Self-driving vehicles transform urban mobility and reduce accidents.',effects:{economy:8,happiness:10,environment:6,trade:6},requires:['ai_tech','renewables']},
   {id:'carbon_capture',name:'Direct Air Carbon Capture',icon:'🌬️',tier:3,cost:1750,turns:4,desc:'Industrial CO₂ removal from the atmosphere reverses climate damage.',effects:{environment:22,climateRisk:-10,research:8,diplomacy:10},requires:['fusion_power','climate_modeling']},
   {id:'gene_editing',name:'Gene Editing (CRISPR)',icon:'🧫',tier:3,cost:1620,turns:4,desc:'Precision genetic medicine eradicates hereditary diseases and cancers.',effects:{health:20,research:12,happiness:5},requires:['biotech','nano']},
+  {id:'precision_agri',name:'Precision Agriculture AI',icon:'🌾',tier:2,cost:880,turns:3,desc:'AI-guided sensors and drones optimize crop yield and water use with zero waste.',effects:{foodSecurity:15,environment:6,economy:6,research:4},requires:['agri','comms']},
+  {id:'hydrogen_energy',name:'Hydrogen Energy Grid',icon:'⚗️',tier:3,cost:1680,turns:4,desc:'Green hydrogen fuel cells replace fossil fuels in heavy industry and transport.',effects:{energy:22,environment:18,economy:8,trade:6},requires:['renewables','advanced_materials']},
+  {id:'blockchain_gov',name:'Blockchain Governance',icon:'🔗',tier:2,cost:960,turns:3,desc:'Immutable ledger technology eliminates corruption in contracts and public spending.',effects:{corruption:-15,publicTrust:12,economy:5,research:5},requires:['comms','cyber_sec']},
+  {id:'anti_aging',name:'Longevity Medicine',icon:'🧬',tier:3,cost:1900,turns:5,desc:'Breakthrough treatments extend healthy life expectancy to 120+ years.',effects:{health:25,happiness:15,research:15,population:5},requires:['gene_editing','biotech']},
+  {id:'neural_interface',name:'Neural Interface Technology',icon:'🧠',tier:3,cost:1850,turns:5,desc:'Brain-computer interfaces transform medicine, communication, and human potential.',effects:{research:22,health:10,happiness:8,military:8,innovation:15},requires:['nano','ai_tech']},
+  {id:'smart_manufacturing',name:'Smart Manufacturing (Industry 4.0)',icon:'🏭',tier:2,cost:940,turns:3,desc:'Cyber-physical factory systems with self-optimizing production and predictive maintenance.',effects:{production:18,economy:10,research:6,unemployment:-2},requires:['steel','comms']},
+  {id:'ocean_farming',name:'Ocean Aquaculture Systems',icon:'🌊',tier:2,cost:870,turns:3,desc:'Large-scale offshore fish farms and seaweed cultivation ensure food security.',effects:{foodSecurity:18,health:8,environment:5,trade:6},requires:['agri','medicine']},
 ];
 const SPY_MISSIONS=[
   {id:'steal_tech',name:'Steal Technology',icon:'💾',desc:'Infiltrate enemy research labs.',cost:800,risk:'med',success:0.65,effects:{research:12,espionage:5},failEffects:{diplomacy:-15,espionage:-5}},
@@ -811,6 +966,48 @@ const SPY_MISSIONS=[
   {id:'economic_intel',name:'Economic Intelligence',icon:'📊',desc:'Steal economic forecasts and trade secrets.',cost:700,risk:'low',success:0.80,effects:{economy:8,trade:5,research:3},failEffects:{diplomacy:-5,trade:-3}},
   {id:'asset_network',name:'Agent Network',icon:'👥',desc:'Cultivate a network of informants inside a rival government ministry.',cost:1200,risk:'med',success:0.65,effects:{espionage:18,stability:3},failEffects:{diplomacy:-12,espionage:-5}},
   {id:'market_manipulation',name:'Market Manipulation',icon:'📉',desc:'Covertly destabilize a rival nation\'s financial markets.',cost:1800,risk:'high',success:0.45,effects:{economy:5,trade:5},failEffects:{diplomacy:-18,trade:-8}},
+  {id:'counter_intel',name:'Counter-Intelligence Sweep',icon:'🛡️',desc:'Identify and neutralize foreign agents operating in your nation.',cost:900,risk:'low',success:0.82,effects:{espionage:12,stability:6,security:5},failEffects:{espionage:-3,stability:-2}},
+  {id:'climate_data_theft',name:'Climate Data Heist',icon:'🌡️',desc:'Steal rival nation\'s classified climate adaptation research.',cost:750,risk:'low',success:0.78,effects:{research:10,environment:4,resilience:5},failEffects:{diplomacy:-6,research:-2}},
+  {id:'election_monitor',name:'Election Intelligence',icon:'🗳️',desc:'Monitor a rival nation\'s election for corruption and influence opportunities.',cost:850,risk:'med',success:0.70,effects:{diplomacy:8,espionage:10,stability:4},failEffects:{diplomacy:-12,espionage:-4}},
+  {id:'industrial_espionage',name:'Industrial Espionage',icon:'🏭',desc:'Steal next-generation manufacturing and production secrets.',cost:1100,risk:'med',success:0.62,effects:{production:12,economy:6,innovation:8},failEffects:{diplomacy:-15,trade:-5}},
+];
+
+// ---- ECONOMIC CYCLES ----
+const ECONOMIC_CYCLES=[
+  {id:'boom',name:'Economic Boom',emoji:'🚀',color:'#10b981',bgColor:'rgba(16,185,129,0.1)',borderColor:'rgba(16,185,129,0.3)',desc:'Surging GDP, low unemployment, rising prosperity.',gdpMult:1.04,happBonus:2,econBonus:2,inflRisk:0.4},
+  {id:'growth',name:'Growth Phase',emoji:'📈',color:'#f0b429',bgColor:'rgba(240,180,41,0.1)',borderColor:'rgba(240,180,41,0.25)',desc:'Healthy expansion and solid job creation.',gdpMult:1.025,happBonus:1,econBonus:1,inflRisk:0.15},
+  {id:'stable',name:'Stable Phase',emoji:'⚖️',color:'#60a5fa',bgColor:'rgba(59,130,246,0.08)',borderColor:'rgba(59,130,246,0.2)',desc:'Balanced growth with controlled inflation.',gdpMult:1.01,happBonus:0,econBonus:0,inflRisk:0},
+  {id:'slowdown',name:'Slowdown',emoji:'📉',color:'#f97316',bgColor:'rgba(249,115,22,0.1)',borderColor:'rgba(249,115,22,0.28)',desc:'Growth decelerating. Act now to prevent recession.',gdpMult:0.998,happBonus:-1,econBonus:-1,inflRisk:-0.15},
+  {id:'recession',name:'Recession',emoji:'🔻',color:'#ef4444',bgColor:'rgba(239,68,68,0.1)',borderColor:'rgba(239,68,68,0.32)',desc:'Economic contraction. Urgent stimulus needed.',gdpMult:0.985,happBonus:-3,econBonus:-2,inflRisk:-0.4},
+];
+
+// ---- NATIONAL PROJECTS (medium-scale) ----
+const NATIONAL_PROJECTS=[
+  {id:'science_park',name:'Innovation Science Park',icon:'🔬',cost:1800,desc:'State-of-the-art research campus attracting global talent.',effects:{research:8,innovation:12,economy:4,education:5}},
+  {id:'national_library',name:'Grand National Library',icon:'📚',cost:900,desc:'Repository of human knowledge — open to all citizens.',effects:{culture:8,education:10,tourism:5,literacy:4}},
+  {id:'green_corridor',name:'Urban Green Corridor',icon:'🌳',cost:1200,desc:'Reforestation and urban green zones across major cities.',effects:{environment:10,happiness:6,health:4,tourism:3}},
+  {id:'public_wifi',name:'Free National Wi-Fi Grid',icon:'📶',cost:800,desc:'Broadband access for every citizen, urban and rural.',effects:{education:8,economy:6,happiness:5,research:3}},
+  {id:'community_centers',name:'Community Centers Network',icon:'🏘️',cost:700,desc:'Neighborhood hubs for sports, arts, and social services.',effects:{happiness:10,culture:5,crime:-5,health:3}},
+  {id:'flood_warning',name:'Early Warning Network',icon:'🚨',cost:1100,desc:'National disaster detection and real-time alert systems.',effects:{resilience:12,climateRisk:-6,stability:4}},
+  {id:'public_markets',name:'National Market Network',icon:'🏪',cost:600,desc:'Regulated public markets boosting local trade and food security.',effects:{trade:7,economy:5,foodSecurity:6,happiness:3}},
+  {id:'national_stadium',name:'National Sports Stadium',icon:'🏟️',cost:1500,desc:'World-class multi-purpose arena for sports and major events.',effects:{tourism:12,happiness:8,culture:5,economy:4}},
+  {id:'food_bank_network',name:'National Food Bank System',icon:'🍽️',cost:500,desc:'Federated food bank network eliminating food insecurity.',effects:{foodSecurity:10,happiness:6,health:4,equality:5}},
+  {id:'citizen_science',name:'Citizen Science Program',icon:'🧪',cost:800,desc:'Crowdsourced research engaging millions of citizens.',effects:{research:7,education:6,happiness:4,innovation:5}},
+  {id:'innovation_hub',name:'National Innovation District',icon:'💡',cost:2000,desc:'Silicon Valley-style hub with VC ecosystem and accelerators.',effects:{innovation:15,economy:10,research:8,trade:5}},
+  {id:'cultural_heritage',name:'Heritage Site Restoration',icon:'🏛️',cost:1000,desc:'Preserve and restore 50 national heritage monuments.',effects:{tourism:10,culture:12,diplomacy:5,happiness:5}},
+  {id:'renewable_heating',name:'District Renewable Heating',icon:'♨️',cost:1300,desc:'Geothermal and biomass district heating for all major cities.',effects:{energy:10,environment:8,happiness:4,economy:3}},
+  {id:'digital_gov_portal',name:'Digital Government Portal',icon:'🖥️',cost:1100,desc:'Unified digital platform for all government services.',effects:{corruption:-8,publicTrust:8,happiness:5,economy:4}},
+  {id:'free_transit',name:'Free Public Transit',icon:'🚌',cost:1600,desc:'Universal free public transportation in all cities.',effects:{happiness:10,environment:7,equality:8,economy:4}},
+];
+
+// ---- CONSTITUTIONAL RIGHTS ----
+const RIGHTS_LIST=[
+  {id:'press',name:'Press Freedom',icon:'📰',key:'mediaFreedom',desc:'Independent media and press freedom.'},
+  {id:'speech',name:'Free Speech',icon:'🗣️',key:'speechFreedom',desc:'Citizens right to express political views.'},
+  {id:'religion',name:'Religious Freedom',icon:'🕌',key:'religionFreedom',desc:'Freedom to practice any or no religion.'},
+  {id:'assembly',name:'Right to Assembly',icon:'✊',key:'assemblyRight',desc:'Right to peaceful protest and organization.'},
+  {id:'privacy',name:'Privacy Rights',icon:'🔐',key:'privacyRight',desc:'Protection from government surveillance.'},
+  {id:'education',name:'Education Rights',icon:'📖',key:'educationRight',desc:'Universal right to quality education.'},
 ];
 
 // ---- MEGA PROJECTS (global, fixes onclick bug) ----
@@ -1203,6 +1400,106 @@ const EVENTS=[
     {text:'🔬 STEM-Focused Curriculum Overhaul',effects:{treasury:-12,research:10,education:8,economy:3},cost:'$120M',tags:[{t:'Research +10',p:true}]},
     {text:'📱 Digital Education Platform',effects:{treasury:-8,education:6,research:4,literacy:5},cost:'$80M',tags:[{t:'Modern approach',p:true}]},
   ]},
+  {id:'pension_crisis',type:'crisis',title:'Pension System Crisis',desc:'Actuaries confirm the national pension fund will be insolvent within 5 years. An aging population demands immediate reform.',choices:[
+    {text:'🏦 Comprehensive Reform — Raise Retirement Age',effects:{treasury:12,stability:-8,happiness:-10,equality:-5},tags:[{t:'Long-term fix',p:true}]},
+    {text:'💰 Emergency Government Injection',effects:{treasury:-30,stability:8,happiness:5},cost:'$300M',tags:[{t:'Short-term relief',p:true}]},
+    {text:'📊 Gradual Phase-In Reform',effects:{treasury:5,happiness:-5,stability:3,equality:3},tags:[{t:'Balanced',p:true}]},
+  ]},
+  {id:'crypto_crash',type:'crisis',title:'Cryptocurrency Market Collapse',desc:'A $3 trillion crypto crash wipes out savings of 8 million citizens who invested heavily in digital assets.',choices:[
+    {text:'🏦 Emergency Investor Protection Fund',effects:{treasury:-18,happiness:8,stability:6,publicTrust:5},cost:'$180M',tags:[{t:'Protect citizens',p:true}]},
+    {text:'📋 Regulatory Crackdown',effects:{corruption:-5,economy:-3,publicTrust:8,stability:5},tags:[{t:'Regulation',p:true}]},
+    {text:'🤷 Let Markets Self-Correct',effects:{happiness:-12,economy:-5,stability:-5,publicTrust:-8},tags:[{t:'Free market',p:false}]},
+  ]},
+  {id:'youth_boom',type:'opportunity',title:'Gen Z Startup Revolution',desc:'Your nation\'s under-30 population launches 50,000 startups in one year, disrupting every major industry.',choices:[
+    {text:'🚀 National Startup Accelerator Program',effects:{innovation:15,economy:10,research:8,treasury:-15},cost:'$150M',tags:[{t:'Innovation +15',p:true}]},
+    {text:'💼 Light-Touch Regulation Framework',effects:{innovation:8,economy:6,trade:5},tags:[{t:'Business-friendly',p:true}]},
+    {text:'💰 Tax Revenue Focus',effects:{treasury:18,economy:5,innovation:-3},tags:[{t:'Revenue first',p:true}]},
+  ]},
+  {id:'water_privatization',type:'diplomacy',title:'Water Rights Dispute',desc:'A foreign corporation proposes to privatize the national water supply. Activists are furious.',choices:[
+    {text:'🌊 Nationalize All Water Infrastructure',effects:{happiness:12,equality:10,economy:-5,treasury:-20},cost:'$200M',tags:[{t:'Public ownership',p:true}]},
+    {text:'🤝 Regulated Privatization with Caps',effects:{economy:10,treasury:15,happiness:-5,equality:-5},tags:[{t:'Market approach',p:true}]},
+    {text:'🚫 Reject Outright — Water is a Right',effects:{happiness:15,diplomacy:-8,economy:-3},tags:[{t:'Populist',p:true}]},
+  ]},
+  {id:'brain_gain',type:'opportunity',title:'Diaspora Return Wave',desc:'A global recession abroad sends 800,000 skilled diaspora members home. Your nation gains talented workers.',choices:[
+    {text:'🏠 Welcome Home Package',effects:{treasury:-12,population:8,research:10,economy:6,innovation:8},cost:'$120M',tags:[{t:'Talent boost',p:true}]},
+    {text:'🏭 Direct to Priority Industries',effects:{production:10,economy:8,research:6},tags:[{t:'Strategic',p:true}]},
+    {text:'📋 Managed Integration',effects:{economy:5,stability:4,happiness:4},tags:[{t:'Cautious',p:true}]},
+  ]},
+  {id:'climate_migration',type:'crisis',title:'Internal Climate Migration',desc:'Rising sea levels and extreme heat force 2 million coastal citizens to relocate inland, straining urban infrastructure.',choices:[
+    {text:'🏙️ Emergency Urban Expansion Fund',effects:{treasury:-25,housing:8,stability:5,environment:3},cost:'$250M',tags:[{t:'Infrastructure',p:true}]},
+    {text:'🌾 Develop New Inland Settlements',effects:{treasury:-18,economy:5,environment:8,equality:5},cost:'$180M',tags:[{t:'Long-term',p:true}]},
+    {text:'🚌 Relocation Voucher Program',effects:{treasury:-10,happiness:5,stability:3,publicTrust:5},cost:'$100M',tags:[{t:'Flexible',p:true}]},
+  ]},
+  {id:'military_scandal',type:'crisis',title:'Defense Procurement Scandal',desc:'Investigators uncover $1.5B in overpriced weapons contracts with kickbacks to senior defense officials.',choices:[
+    {text:'⚖️ Full Criminal Prosecution',effects:{corruption:-15,military:-8,stability:5,publicTrust:12},tags:[{t:'Accountability',p:true}]},
+    {text:'🔄 Silent Reshuffle',effects:{corruption:-5,stability:8,publicTrust:-5},tags:[{t:'Quiet cleanup',p:true}]},
+    {text:'🔒 Classify the Investigation',effects:{corruption:8,stability:10,publicTrust:-12,mediaFreedom:-8},tags:[{t:'Cover-up',p:false}]},
+  ]},
+  {id:'foreign_investment',type:'opportunity',title:'Mega Foreign Investment Surge',desc:'Three multinational giants announce a combined $800B investment in your nation over the next decade.',choices:[
+    {text:'✅ Full Welcome — Open Doors',effects:{economy:18,trade:15,treasury:25,equality:-8},tags:[{t:'Max growth',p:true}]},
+    {text:'⚖️ Structured Deals with Conditions',effects:{economy:12,trade:10,diplomacy:8,treasury:15},tags:[{t:'Balanced',p:true}]},
+    {text:'🛡️ Selective National Security Review',effects:{economy:6,stability:8,military:3,diplomacy:3},tags:[{t:'Cautious',p:true}]},
+  ]},
+  {id:'bank_run',type:'crisis',title:'National Bank Run',desc:'Social media panic causes millions of citizens to withdraw savings simultaneously. ATMs run dry within hours.',choices:[
+    {text:'📺 Emergency Presidential Address',effects:{stability:12,happiness:5,publicTrust:8},tags:[{t:'Communication',p:true}]},
+    {text:'🏦 Guarantee All Deposits',effects:{treasury:-22,stability:10,happiness:8,economy:5},cost:'$220M',tags:[{t:'Trust restored',p:true}]},
+    {text:'⏸️ Temporary Withdrawal Limits',effects:{stability:8,happiness:-8,trade:-5,mediaFreedom:-3},tags:[{t:'Control',p:true}]},
+  ]},
+  {id:'anti_trust',type:'opportunity',title:'Corporate Monopoly Broken Up',desc:'Courts rule that your nation\'s largest telecom conglomerate must be broken into 5 competing companies.',choices:[
+    {text:'⚖️ Enforce Fully — No Compromises',effects:{corruption:-8,equality:10,economy:-3,trade:5,publicTrust:10},tags:[{t:'Competitive market',p:true}]},
+    {text:'🤝 Negotiate a Settlement',effects:{corruption:-4,economy:3,equality:5,treasury:10},tags:[{t:'Pragmatic',p:true}]},
+    {text:'💰 Block — Support National Champions',effects:{corruption:5,economy:8,equality:-8,publicTrust:-8,diplomacy:-5},tags:[{t:'Protectionist',p:false}]},
+  ]},
+  {id:'sovereign_debt',type:'crisis',title:'Sovereign Debt Restructuring',desc:'International creditors demand immediate debt restructuring or will trigger a ratings collapse.',choices:[
+    {text:'📜 Accept IMF Restructuring Terms',effects:{treasury:20,equality:-10,happiness:-8,stability:5,economy:-5},tags:[{t:'Stability',p:true}]},
+    {text:'🚫 Partial Default — Restructure Unilaterally',effects:{diplomacy:-15,trade:-10,economy:-8,stability:-5,treasury:10},tags:[{t:'Independence',p:true}]},
+    {text:'🏦 Emergency Bond Issuance',effects:{treasury:25,totalDebt:20,inflation:2,publicTrust:-6},tags:[{t:'Short-term fix',p:true}]},
+  ]},
+  {id:'digital_divide',type:'crisis',title:'Digital Divide Widens',desc:'Rural regions fall 15 years behind urban centers in tech adoption. Economic inequality accelerating.',choices:[
+    {text:'📡 National Rural Broadband Initiative',effects:{treasury:-18,education:8,economy:6,equality:10,happiness:6},cost:'$180M',tags:[{t:'Equality +10',p:true}]},
+    {text:'🏫 Mobile Digital Schools',effects:{treasury:-10,education:10,literacy:6,equality:6},cost:'$100M',tags:[{t:'Education focus',p:true}]},
+    {text:'🤝 Public-Private Partnership',effects:{economy:5,equality:5,trade:4,treasury:-5},cost:'$50M',tags:[{t:'Efficient',p:true}]},
+  ]},
+  {id:'innovation_surge',type:'opportunity',title:'National Innovation Surge',desc:'Your nation\'s patent applications triple in one year. International companies race to license your technologies.',choices:[
+    {text:'🔬 National Innovation Fund',effects:{innovation:15,economy:10,research:8,treasury:-12},cost:'$120M',tags:[{t:'Innovation +15',p:true}]},
+    {text:'💹 License IP Globally',effects:{treasury:20,trade:10,economy:8,diplomacy:6},tags:[{t:'Revenue focus',p:true}]},
+    {text:'🌍 Open Source Release',effects:{diplomacy:15,research:12,happiness:8,publicTrust:8},tags:[{t:'Global good',p:true}]},
+  ]},
+  {id:'trade_corridor',type:'opportunity',title:'New International Trade Corridor',desc:'A new rail and shipping corridor connects your nation to three major economies, cutting trade costs by 35%.',choices:[
+    {text:'🚂 Full Investment — Lead the Corridor',effects:{trade:18,economy:12,diplomacy:10,treasury:-20},cost:'$200M',tags:[{t:'Trade hub',p:true}]},
+    {text:'🤝 Equal Partnership Deal',effects:{trade:12,economy:8,diplomacy:12},tags:[{t:'Collaborative',p:true}]},
+    {text:'📋 Minimal Participation',effects:{trade:5,economy:3},tags:[{t:'Low risk',p:true}]},
+  ]},
+  {id:'mass_exodus',type:'crisis',title:'Billionaire Capital Flight',desc:'Your wealthiest 200 citizens renounce citizenship and move assets abroad after a controversial tax proposal.',choices:[
+    {text:'🏦 Introduce Exit Tax',effects:{treasury:15,corruption:-5,equality:8,diplomacy:-8},tags:[{t:'Reclaim wealth',p:true}]},
+    {text:'🤝 Negotiate to Retain Them',effects:{economy:5,corruption:5,equality:-8,treasury:8},tags:[{t:'Pragmatic',p:true}]},
+    {text:'📋 Let Them Go — Strengthen Middle Class',effects:{equality:12,publicTrust:10,economy:-3,treasury:-5},tags:[{t:'Populist',p:true}]},
+  ]},
+  {id:'universal_basic_pilot',type:'opportunity',title:'Universal Basic Income Pilot',desc:'A successful 3-year UBI pilot in two provinces shows stunning results: poverty down 40%, startups up 60%.',choices:[
+    {text:'💸 Roll Out Nationally',effects:{treasury:-40,happiness:20,equality:15,innovation:8,economy:-5},cost:'$400M',tags:[{t:'Bold reform',p:true}]},
+    {text:'📊 Expand Pilot to More Regions',effects:{treasury:-15,happiness:8,equality:8,research:5},cost:'$150M',tags:[{t:'Careful expansion',p:true}]},
+    {text:'❌ Cancel — Too Costly',effects:{treasury:5,equality:-5,happiness:-5,publicTrust:-5},tags:[{t:'Fiscal caution',p:false}]},
+  ]},
+  {id:'sports_doping',type:'crisis',title:'National Sports Doping Scandal',desc:'A WADA investigation reveals your national athletics program used systematic doping for 8 years. International ban threatened.',choices:[
+    {text:'⚖️ Full Cooperation — Clean House',effects:{diplomacy:8,culture:-8,happiness:-8,publicTrust:8,corruption:-5},tags:[{t:'Integrity',p:true}]},
+    {text:'🛡️ Defend Athletes — Challenge Finding',effects:{diplomacy:-12,happiness:5,stability:4},tags:[{t:'Defiant',p:true}]},
+    {text:'🔄 Quiet Reforms — Minimal Admission',effects:{diplomacy:-3,culture:-3,publicTrust:-3,corruption:-3},tags:[{t:'Damage control',p:true}]},
+  ]},
+  {id:'aging_population',type:'crisis',title:'Demographic Time Bomb',desc:'Your birth rate hits a historic low of 1.1 per woman. Population projections show a 20% decline by 2060.',choices:[
+    {text:'👶 Pro-Natalist Policy Package',effects:{treasury:-20,happiness:5,population:6,equality:3},cost:'$200M',tags:[{t:'Birth incentives',p:true}]},
+    {text:'🌍 Open Immigration for Young Workers',effects:{population:10,economy:8,trade:5,happiness:-3,stability:-3},tags:[{t:'Immigration',p:true}]},
+    {text:'🤖 Automation & Productivity Strategy',effects:{production:12,research:8,economy:6,equality:-5},tags:[{t:'Tech solution',p:true}]},
+  ]},
+  {id:'economic_referendum',type:'election',title:'National Economic Referendum',desc:'Citizens demand a direct vote on a proposed major economic overhaul that would reshape tax and welfare systems.',choices:[
+    {text:'✅ Accept the Referendum',effects:{democracy:8,stability:5,happiness:8,publicTrust:12},tags:[{t:'Democratic',p:true}]},
+    {text:'⚖️ Modified Referendum with Guardrails',effects:{stability:8,happiness:3,publicTrust:5},tags:[{t:'Controlled',p:true}]},
+    {text:'❌ Reject — Executive Authority',effects:{stability:10,happiness:-12,mediaFreedom:-5,publicTrust:-10},tags:[{t:'Authoritarian',p:false}]},
+  ]},
+  {id:'pandemic_prep',type:'opportunity',title:'WHO Pandemic Preparedness Award',desc:'The World Health Organization ranks your nation #1 globally for pandemic response systems. International prestige surges.',choices:[
+    {text:'🏥 Invest in Global Health Leadership',effects:{diplomacy:15,health:8,research:8,treasury:-10},cost:'$100M',tags:[{t:'Diplomacy +15',p:true}]},
+    {text:'🌍 Share Systems with Developing Nations',effects:{diplomacy:20,publicTrust:10,happiness:6,treasury:-8},cost:'$80M',tags:[{t:'Global good',p:true}]},
+    {text:'📺 Domestic PR Campaign',effects:{happiness:10,approval:8,publicTrust:8},tags:[{t:'Internal focus',p:true}]},
+  ]},
 ];
 
 
@@ -1264,6 +1561,24 @@ const ACHIEVEMENTS=[
   {id:'pop_100m',name:'100 Million Strong',desc:'Reach 100 million population',icon:'🌆',check:s=>s.population>=100000000},
   {id:'research_titan',name:'Research Titan',desc:'Research score exceeds 95',icon:'🔭',check:s=>s.research>=95},
   {id:'culture_superpower',name:'Culture Superpower',desc:'Culture and tourism both above 75',icon:'🎭',check:s=>(s.culture||0)>=75&&(s.tourism||0)>=75},
+  {id:'economic_boom',name:'Boom Economy',desc:'Achieve Economic Boom cycle status',icon:'🚀',check:s=>s.economicCycle==='boom'},
+  {id:'innovation_nation',name:'Innovation Nation',desc:'Innovation score exceeds 75',icon:'💡',check:s=>(s.innovation||0)>=75},
+  {id:'rights_guardian',name:'Rights Guardian',desc:'All civil liberties above 70',icon:'⚖️',check:s=>(s.speechFreedom||50)>=70&&(s.religionFreedom||60)>=70&&(s.assemblyRight||50)>=70&&(s.privacyRight||40)>=70&&(s.educationRight||60)>=70},
+  {id:'clean_energy_hero',name:'Clean Energy Hero',desc:'Renewable energy mix above 60%',icon:'⚡',check:s=>(s.energyRenewable||20)>=60},
+  {id:'pop_200m',name:'200 Million Strong',desc:'Reach 200 million population',icon:'🏙️',check:s=>s.population>=200000000},
+  {id:'project_builder',name:'Project Builder',desc:'Complete 8 national projects',icon:'🏗️',check:s=>(s.completedNatProjects||[]).length>=8},
+  {id:'org_master',name:'World Organization Leader',desc:'Join all international organizations',icon:'🌐',check:s=>INTERNATIONAL_ORGS.every(o=>(s.joinedOrgs||[]).includes(o.id))},
+  {id:'welfare_paradise',name:'Welfare Paradise',desc:'Equality above 90 and happiness above 85',icon:'🌈',check:s=>s.equality>=90&&s.happiness>=85},
+  {id:'free_press_hero',name:'Free Press Hero',desc:'Media freedom and speech rights both above 85',icon:'📰',check:s=>s.mediaFreedom>=85&&(s.speechFreedom||50)>=85},
+  {id:'anti_corruption_hero',name:'Corruption Purge',desc:'Corruption falls to 0',icon:'✊',check:s=>s.corruption<=0},
+  {id:'food_secure',name:'Zero Hunger',desc:'Food security above 90',icon:'🌾',check:s=>(s.foodSecurity||60)>=90},
+  {id:'cyber_power',name:'Cyber Superpower',desc:'Espionage above 85 and 10+ spy successes',icon:'💻',check:s=>s.espionage>=85&&s.spySuccesses>=10},
+  {id:'climate_champion',name:'Climate Champion',desc:'Environment above 90 and climate risk below 25',icon:'🌱',check:s=>s.environment>=90&&(s.climateRisk||45)<=25},
+  {id:'millennial_innovation',name:'Innovation Century',desc:'Survive 50 years with innovation above 65',icon:'🔬',check:s=>s.year>=50&&(s.innovation||0)>=65},
+  {id:'nation_projects_all',name:'Grand Builder',desc:'Complete all national projects',icon:'🏗️',check:s=>(s.completedNatProjects||[]).length>=NATIONAL_PROJECTS.length},
+  {id:'spy_elite',name:'Elite Intelligence',desc:'Achieve 25 successful spy missions',icon:'🕵️',check:s=>s.spySuccesses>=25},
+  {id:'all_techs_v2',name:'Technology Titan',desc:'Research all 20 technologies',icon:'🔭',check:s=>s.researchedTechs.length>=20},
+  {id:'recession_survivor',name:'Crisis Survivor',desc:'Survive 3 years of recession without collapsing',icon:'📉',check:s=>(s.recessionYears||0)>=3&&!s.gameOver},
 ];
 
 const VICTORY_CONDITIONS=[
@@ -1359,6 +1674,10 @@ function initState(name,flag,govt,cont,diff,leaderName){
     goldenAge:0,goldenAgeCount:0,
     motto:'',totalImmigration:0,consecutiveHighApproval:0,
     turnSpeed:1,naturalResources:[],revolutionCooldown:0,
+    innovation:35,economicCycle:'stable',cycleScore:50,cycleYears:0,recessionYears:0,
+    speechFreedom:60,religionFreedom:70,assemblyRight:55,privacyRight:45,educationRight:65,
+    energyCoal:45,energyGas:22,energyRenewable:20,energyNuclear:8,energyOther:5,
+    youthPct:28,elderlyPct:12,referendumCooldown:0,crisisCount:0,
     approval:55,prestige:0,
     activePolicies:[],researchedTechs:[],activeTech:null,
     policiesEnacted:0,warsWon:0,warsLost:0,hasNukes:false,hasSpace:false,
@@ -1417,6 +1736,11 @@ function normalizeState(){
     factions:{military:50,business:50,workers:50,greens:50,conservatives:50},
     season:'🌸 Spring',seasonIdx:0,rebellionRisk:0,stabilityLowYears:0,
     economicDiversification:40,crisisYears:0,boomYears:0,tradeDeficit:0,tradeBalance:0,
+    innovation:35,economicCycle:'stable',cycleScore:50,cycleYears:0,recessionYears:0,
+    speechFreedom:60,religionFreedom:70,assemblyRight:55,privacyRight:45,educationRight:65,
+    energyCoal:45,energyGas:22,energyRenewable:20,energyNuclear:8,energyOther:5,
+    youthPct:28,elderlyPct:12,referendumCooldown:0,crisisCount:0,
+    completedNatProjects:[],
   };
   Object.entries(defaults).forEach(([k,v])=>{
     if(G[k]===undefined||G[k]===null)G[k]=Array.isArray(v)?[...v]:v;
@@ -1432,6 +1756,7 @@ function normalizeState(){
   if(!Array.isArray(G.aiNations)||G.aiNations.length===0){
     G.aiNations=AI_NATIONS.map(n=>({...n,relation:Math.floor(Math.random()*40)+30,relationLabel:'neutral',tradeAgreement:false,alliance:false,atWar:false}));
   }
+  if(!Array.isArray(G.completedNatProjects))G.completedNatProjects=[];
   if(!Array.isArray(G.gdpHistory)||G.gdpHistory.length===0)G.gdpHistory=[G.gdpPerCapita||14000];
   if(!Array.isArray(G.treasuryHistory)||G.treasuryHistory.length===0)G.treasuryHistory=[G.treasury||8000];
   if(!Array.isArray(G.approvalHistory)||G.approvalHistory.length===0)G.approvalHistory=[G.approval||55];
@@ -1833,14 +2158,29 @@ function renderHome(){
   const advisorHtml=renderAdvisorPanel();
   // Season & rebellion header chips
   const rebRisk=Math.round(G.rebellionRisk||0);
+  // Economic Cycle Banner
+  const _cycleData=ECONOMIC_CYCLES.find(c=>c.id===(G.economicCycle||'stable'))||ECONOMIC_CYCLES[2];
+  const cycleBannerHtml=`<div class="cycle-banner" style="background:${_cycleData.bgColor};border-color:${_cycleData.borderColor};">
+    <span style="font-size:20px;">${_cycleData.emoji}</span>
+    <div style="flex:1;">
+      <div style="font-size:12px;font-weight:800;color:${_cycleData.color};text-transform:uppercase;letter-spacing:1px;">${_cycleData.name}</div>
+      <div style="font-size:10px;color:var(--text-muted);">${_cycleData.desc}</div>
+    </div>
+    <div style="text-align:right;">
+      <div style="font-size:10px;color:var(--text-muted);">Cycle Score</div>
+      <div style="font-size:13px;font-weight:700;color:${_cycleData.color};">${Math.round(G.cycleScore||50)}</div>
+    </div>
+  </div>`;
   const seasonChipHtml=`<div style="display:flex;align-items:center;gap:6px;padding:8px 12px 4px;flex-wrap:wrap;">
     <span class="season-badge">${G.season||'🌸 Spring'}</span>
     ${rebRisk>30?`<span class="urgent-badge">⚠️ Rebellion Risk ${rebRisk}%</span>`:''}
     ${(G.crisisYears||0)>2?`<span class="urgent-badge">📉 Crisis Period</span>`:''}
     ${(G.boomYears||0)>3?`<span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px;background:rgba(16,185,129,0.12);color:#34d399;border:1px solid rgba(16,185,129,0.25);">📈 Boom Period</span>`:''}
-    <span style="font-size:9px;color:var(--text-muted);margin-left:auto;">Div: ${G.economicDiversification||40}/100</span>
+    ${(G.economicCycle||'stable')==='recession'?`<span class="urgent-badge">📉 Recession</span>`:''}
+    ${(G.economicCycle||'stable')==='boom'?`<span style="font-size:9px;font-weight:800;padding:2px 7px;border-radius:6px;background:rgba(240,180,41,0.12);color:var(--accent-gold);border:1px solid rgba(240,180,41,0.25);">💰 Economic Boom</span>`:''}
+    <span style="font-size:9px;color:var(--text-muted);margin-left:auto;">Inno: ${Math.round(G.innovation||35)}</span>
   </div>`;
-  return `${advisorHtml}${seasonChipHtml}${warnings}${techWidgetHtml}${goldenAgeHtml}${warHtml}${macroHtml}${agendaHtml}${quickActionsHtml}
+  return `${advisorHtml}${seasonChipHtml}${cycleBannerHtml}${warnings}${techWidgetHtml}${goldenAgeHtml}${warHtml}${macroHtml}${agendaHtml}${quickActionsHtml}
   <div class="prestige-panel fade-up">
     <div class="prestige-title">⭐ National Prestige</div>
     <div class="prestige-score">${fmt(G.prestige)}</div>
@@ -1935,6 +2275,11 @@ function renderHome(){
         <div class="demo-card"><div class="demo-label">Leader Age</div><div class="demo-val" style="color:var(--text-secondary)">${G.leaderAge||45}</div></div>
       </div>
       ${(G.totalImmigration||0) > 0 ? '<div style="font-size:10px;color:var(--accent-green);margin-top:6px;">📈 Net immigration: +' + fmt(G.totalImmigration) + '</div>' : (G.totalImmigration||0) < 0 ? '<div style="font-size:10px;color:var(--accent-red);margin-top:6px;">📉 Net emigration: ' + fmt(G.totalImmigration) + '</div>' : ''}
+      <div class="demo-grid" style="margin-top:8px;">
+        <div class="demo-card"><div class="demo-label">🧒 Youth</div><div class="demo-val" style="color:var(--accent-orange)">${Math.round(G.youthPct||28)}%</div></div>
+        <div class="demo-card"><div class="demo-label">👴 Elderly</div><div class="demo-val" style="color:#a78bfa">${Math.round(G.elderlyPct||12)}%</div></div>
+        <div class="demo-card"><div class="demo-label">💡 Innovation</div><div class="demo-val" style="color:var(--accent-orange)">${Math.round(G.innovation||35)}</div></div>
+      </div>
     </div>
   </div>
   <div class="sector-content fade-up fade-up-d4">
@@ -2053,6 +2398,20 @@ function renderBuildTab(){
       <div class="build-bottom" style="margin-top:6px;"><span class="build-cost" style="color:${isBuilt?'#34d399':canAfford?'var(--accent-purple)':'#f87171'}">${isBuilt?'COMPLETED':fmtMoneyShort(p.cost)}</span><span class="build-time">Mega project</span></div></div>
     </div>`;
   });
+  h+=`<div class="section-divider">National Projects</div>`;
+  h+=`<div style="font-size:11px;color:var(--text-muted);margin-bottom:10px;padding:10px 12px;background:var(--bg-card);border-radius:var(--radius-xs);border:1px solid var(--border);">🏛️ National Projects are mid-scale investments that boost specific sectors. Completed: ${(G.completedNatProjects||[]).length}/${NATIONAL_PROJECTS.length}</div>`;
+  NATIONAL_PROJECTS.forEach(p=>{
+    const isDone=(G.completedNatProjects||[]).includes(p.id),canAfford=G.treasury>=p.cost;
+    const efh=Object.entries(p.effects).map(([k,v])=>`<span class="policy-effect ${v>0?'positive':'negative'}">${labelForStat(k)}: ${v>0?'+':''}${v}</span>`).join('');
+    h+=`<div class="nat-project-card ${!canAfford&&!isDone?'locked':''}" style="${isDone?'border-color:rgba(6,182,212,0.3);background:linear-gradient(145deg,rgba(6,182,212,0.07),transparent);':''}">
+      <div class="build-icon" style="background:${isDone?'rgba(6,182,212,0.12)':'rgba(6,182,212,0.06)'};border:1px solid ${isDone?'rgba(6,182,212,0.3)':'rgba(6,182,212,0.15)'};">${isDone?'✅':p.icon}</div>
+      <div class="build-info"><div class="build-name" style="color:${isDone?'var(--accent-cyan)':'var(--text-primary)'}">${p.name}</div><div class="build-desc">${p.desc}</div>
+      <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:5px;">${efh}</div>
+      <div class="build-bottom"><span class="build-cost" style="color:${isDone?'#22d3ee':canAfford?'var(--accent-cyan)':'#f87171'}">${isDone?'✅ DONE':fmtMoneyShort(p.cost)}</span>
+      ${!isDone?`<button style="font-size:10px;padding:4px 12px;margin-left:auto;background:${canAfford?'rgba(6,182,212,0.15)':'rgba(255,255,255,0.04)'};border:1px solid ${canAfford?'rgba(6,182,212,0.35)':'var(--border)'};color:${canAfford?'var(--accent-cyan)':'var(--text-muted)'};border-radius:6px;cursor:${canAfford?'pointer':'not-allowed'};font-weight:700;font-family:inherit;" onclick="${canAfford?`enactNatProject('${p.id}')`:''}" ${canAfford?'':'disabled'}>${canAfford?'🏗️ Build':'Need '+fmtMoneyShort(p.cost)}</button>`:''}</div>
+      </div>
+    </div>`;
+  });
   return h+'<div style="height:80px;"></div>';
 }
 // FIX: enactMega takes only id now, looks up from global MEGA_PROJECTS
@@ -2066,6 +2425,19 @@ function enactMega(id){
   toast('🏗️',p.name+' completed!','success');checkAchievements();renderGame();
 }
 
+function enactNatProject(id){
+  const p=NATIONAL_PROJECTS.find(x=>x.id===id);if(!p)return;
+  if((G.completedNatProjects||[]).includes(id))return;
+  if(G.treasury<p.cost){toast('❌','Need '+fmtMoneyShort(p.cost)+'!','error');return;}
+  G.treasury-=p.cost;
+  if(!Array.isArray(G.completedNatProjects))G.completedNatProjects=[];
+  G.completedNatProjects.push(id);
+  applyEffects(p.effects,true);
+  addLog('🏛️','National project: '+p.name,G.year);
+  addNews('🏛️ '+G.name+' completes the '+p.name+'!');
+  toast('🏛️',p.name+' completed!','success');
+  checkAchievements();renderGame();
+}
 // ---- WORLD ----
 function renderWorldTab(){
   const tabs=[{id:'diplo',label:'🌍 Diplo'},{id:'trade',label:'💵 Trade'},{id:'war',label:'⚔️ Mil'},{id:'spy',label:'🕵️ Spy'},{id:'ranks',label:'🏆 Ranks'},{id:'orgs',label:'🌐 Orgs'},{id:'politics',label:'🗳️ Politics'}];
@@ -2298,6 +2670,10 @@ function renderStatsTab(){
     {label:'Climate Risk',val:G.climateRisk||45,color:'var(--accent-red)'},
     {label:'Food Security',val:G.foodSecurity||60,color:'var(--accent-green)'},
     {label:'Housing Affordability',val:G.housingAffordability||55,color:'var(--accent-gold)'},
+    {label:'Innovation',val:G.innovation||35,color:'var(--accent-orange)'},
+    {label:'Speech Freedom',val:G.speechFreedom||60,color:'var(--accent-cyan)'},
+    {label:'Privacy Rights',val:G.privacyRight||45,color:'var(--accent-cyan)'},
+    {label:'Renewable Energy',val:G.energyRenewable||20,color:'#4ade80'},
   ];
   let h=`<div class="sector-content fade-up"><div class="sector-header"><h3>📊 Complete National Statistics</h3></div><div class="sector-body">`;
   allStats.forEach(s=>{const c=s.val<25?'var(--accent-red)':s.val<45?'var(--accent-gold)':s.color;h+=`<div class="progress-row"><div class="progress-label"><span class="pl-name">${s.label}</span><span class="pl-val" style="color:${c}">${Math.round(s.val)}/100</span></div><div class="progress-track"><div class="progress-fill" style="width:${Math.min(100,s.val)}%;background:${c}"></div></div></div>`;});
@@ -2345,6 +2721,11 @@ function renderStatsTab(){
     <div class="info-row"><span class="info-label">Housing Access</span><span class="info-val">${Math.round(G.housingAffordability||55)}/100</span></div>
     <div class="info-row"><span class="info-label">⛏️ Resources</span><span class="info-val">${(G.naturalResources||[]).map(rid=>{const r=NATURAL_RESOURCES.find(x=>x.id===rid);return r?r.icon+' '+r.name:'';}).join(', ')}</span></div>
     <div class="info-row"><span class="info-label">✨ Golden Ages</span><span class="info-val">${G.goldenAgeCount||0}${(G.goldenAge||0)>0?' (Active: '+G.goldenAge+'yr)':''}</span></div>
+    <div class="info-row"><span class="info-label">💡 Innovation</span><span class="info-val" style="color:var(--accent-orange)">${Math.round(G.innovation||35)}/100</span></div>
+    <div class="info-row"><span class="info-label">📊 Econ. Cycle</span><span class="info-val" style="text-transform:capitalize;">${G.economicCycle||'stable'}</span></div>
+    <div class="info-row"><span class="info-label">🌿 Renewable Energy</span><span class="info-val" style="color:#4ade80">${Math.round(G.energyRenewable||20)}%</span></div>
+    <div class="info-row"><span class="info-label">🏛️ Nat. Projects</span><span class="info-val">${(G.completedNatProjects||[]).length}/${NATIONAL_PROJECTS.length}</span></div>
+    <div class="info-row"><span class="info-label">⚖️ Rights Index</span><span class="info-val">${Math.round(((G.speechFreedom||60)+(G.religionFreedom||70)+(G.assemblyRight||55)+(G.privacyRight||45)+(G.educationRight||65))/5)}/100</span></div>
   </div></div>`;
   h+=`<div class="sector-content fade-up fade-up-d3"><div class="sector-header"><h3>🏆 Achievements</h3><span style="font-size:11px;color:var(--accent-gold);font-weight:700;">${G.unlockedAchievements.length}/${ACHIEVEMENTS.length}</span></div><div class="sector-body">
     <div style="height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;margin-bottom:12px;"><div style="height:100%;width:${Math.round(G.unlockedAchievements.length/ACHIEVEMENTS.length*100)}%;background:linear-gradient(90deg,var(--accent-gold),#c97a00);border-radius:2px;transition:width 0.5s;"></div></div>
@@ -2370,6 +2751,68 @@ function renderStatsTab(){
     h+=`</div></div>`;
   }
   h+=`<div class="sector-content fade-up fade-up-d4"><div class="sector-header"><h3>📜 Nation Chronicle</h3><span style="font-size:10px;color:var(--text-muted);">Every 5 years</span></div><div class="sector-body">${renderChronicle()}</div></div>`;
+  // Innovation Panel
+  const _innov=Math.round(G.innovation||35);
+  const _innovColor=_innov>=70?'var(--accent-orange)':_innov>=45?'var(--accent-gold)':'var(--text-muted)';
+  h+=`<div class="innovation-panel fade-up"><div class="sector-header"><h3>💡 Innovation Index</h3><span style="color:${_innovColor};font-weight:700;font-size:13px;">${_innov}/100</span></div><div class="sector-body">
+    <div class="progress-track" style="height:8px;margin-bottom:10px;"><div class="progress-fill" style="width:${_innov}%;background:linear-gradient(90deg,var(--accent-orange),#fed7aa);"></div></div>
+    <div class="macro-grid">
+      <div class="macro-card"><div class="macro-label">Research Base</div><div class="macro-val" style="color:var(--accent-purple)">${Math.round(G.research)}</div></div>
+      <div class="macro-card"><div class="macro-label">Active Techs</div><div class="macro-val" style="color:var(--accent-cyan)">${G.researchedTechs.length}</div></div>
+      <div class="macro-card"><div class="macro-label">Cycle Phase</div><div class="macro-val" style="font-size:10px;text-transform:capitalize;">${G.economicCycle||'stable'}</div></div>
+    </div>
+    <div class="info-row" style="margin-top:8px;"><span class="info-label">Recession Years</span><span class="info-val" style="color:${(G.recessionYears||0)>0?'var(--accent-red)':'var(--accent-green)'}">${G.recessionYears||0}</span></div>
+    <div class="info-row"><span class="info-label">Boom Years</span><span class="info-val" style="color:var(--accent-gold)">${G.boomYears||0}</span></div>
+    <div class="info-row"><span class="info-label">Cycle Score</span><span class="info-val">${Math.round(G.cycleScore||50)}/100</span></div>
+  </div></div>`;
+  // Constitutional Rights Panel
+  const rights=[
+    {label:'🗣️ Free Speech',val:Math.round(G.speechFreedom||60)},
+    {label:'🕌 Religion',val:Math.round(G.religionFreedom||70)},
+    {label:'✊ Assembly',val:Math.round(G.assemblyRight||55)},
+    {label:'🔒 Privacy',val:Math.round(G.privacyRight||45)},
+    {label:'📚 Education',val:Math.round(G.educationRight||65)},
+  ];
+  h+=`<div class="rights-panel fade-up"><div class="sector-header"><h3>⚖️ Constitutional Rights</h3></div><div class="sector-body">`;
+  rights.forEach(r=>{const c=r.val>=70?'var(--accent-cyan)':r.val>=45?'var(--accent-gold)':'var(--accent-red)';h+=`<div class="progress-row"><div class="progress-label"><span class="pl-name">${r.label}</span><span class="pl-val" style="color:${c}">${r.val}/100</span></div><div class="progress-track"><div class="progress-fill" style="width:${r.val}%;background:${c}"></div></div></div>`;});
+  h+=`</div></div>`;
+  // Energy Mix Panel
+  const eCoal=Math.round(G.energyCoal||45),eGas=Math.round(G.energyGas||22),eRenew=Math.round(G.energyRenewable||20),eNuc=Math.round(G.energyNuclear||8);
+  const eOther=Math.max(0,100-eCoal-eGas-eRenew-eNuc);
+  h+=`<div class="energy-mix-panel fade-up"><div class="sector-header"><h3>⚡ Energy Mix</h3><span style="font-size:10px;color:${eRenew>=50?'var(--accent-green)':'var(--text-muted)'};">${eRenew>=50?'🌿 Clean majority':'🏭 Fossil heavy'}</span></div><div class="sector-body">
+    <div class="bdb-row" style="height:14px;border-radius:7px;overflow:hidden;margin-bottom:10px;">
+      <div style="flex:${eCoal};background:#78716c;" title="Coal ${eCoal}%"></div>
+      <div style="flex:${eGas};background:#3b82f6;" title="Gas ${eGas}%"></div>
+      <div style="flex:${eRenew};background:#22c55e;" title="Renewable ${eRenew}%"></div>
+      <div style="flex:${eNuc};background:#a855f7;" title="Nuclear ${eNuc}%"></div>
+      <div style="flex:${eOther};background:#6b7280;" title="Other ${eOther}%"></div>
+    </div>
+    <div class="macro-grid">
+      <div class="macro-card"><div class="macro-label">🪨 Coal</div><div class="macro-val" style="color:#a8a29e">${eCoal}%</div></div>
+      <div class="macro-card"><div class="macro-label">💧 Gas</div><div class="macro-val" style="color:#60a5fa">${eGas}%</div></div>
+      <div class="macro-card"><div class="macro-label">🌿 Renewable</div><div class="macro-val" style="color:#4ade80">${eRenew}%</div></div>
+    </div>
+    <div class="macro-grid" style="margin-top:6px;">
+      <div class="macro-card"><div class="macro-label">⚛️ Nuclear</div><div class="macro-val" style="color:#c084fc">${eNuc}%</div></div>
+      <div class="macro-card"><div class="macro-label">🔋 Other</div><div class="macro-val" style="color:var(--text-muted)">${eOther}%</div></div>
+      <div class="macro-card"><div class="macro-label">Efficiency</div><div class="macro-val" style="color:var(--accent-gold)">${Math.round(G.energy||40)}</div></div>
+    </div>
+  </div></div>`;
+  // Age Structure Panel
+  const _youth=Math.round(G.youthPct||28),_elderly=Math.round(G.elderlyPct||12),_working=Math.max(0,100-_youth-_elderly);
+  h+=`<div class="sector-content fade-up"><div class="sector-header"><h3>👥 Population Age Structure</h3></div><div class="sector-body">
+    <div class="bdb-row" style="height:12px;border-radius:6px;overflow:hidden;margin-bottom:8px;">
+      <div style="flex:${_youth};background:linear-gradient(90deg,#fb923c,#f97316);" title="Youth ${_youth}%"></div>
+      <div style="flex:${_working};background:linear-gradient(90deg,#3b82f6,#60a5fa);" title="Working ${_working}%"></div>
+      <div style="flex:${_elderly};background:linear-gradient(90deg,#a78bfa,#8b5cf6);" title="Elderly ${_elderly}%"></div>
+    </div>
+    <div class="macro-grid">
+      <div class="macro-card"><div class="macro-label">🧒 Youth</div><div class="macro-val" style="color:var(--accent-orange)">${_youth}%</div></div>
+      <div class="macro-card"><div class="macro-label">💼 Working</div><div class="macro-val" style="color:var(--accent-blue)">${_working}%</div></div>
+      <div class="macro-card"><div class="macro-label">👴 Elderly</div><div class="macro-val" style="color:#a78bfa">${_elderly}%</div></div>
+    </div>
+    <div class="info-row" style="margin-top:6px;"><span class="info-label">Dependency Ratio</span><span class="info-val" style="color:${(_youth+_elderly)>50?'var(--accent-red)':'var(--accent-green)'}">${_youth+_elderly}%</span></div>
+  </div></div>`;
   h+=`<div style="height:80px;"></div>`;
   return h;
 }
@@ -2775,6 +3218,49 @@ function processTurn(){
   // Crisis/Boom year tracking
   if(G.happiness<35&&G.economy<35)G.crisisYears=(G.crisisYears||0)+1;
   if(G.happiness>70&&G.economy>70)G.boomYears=(G.boomYears||0)+1;
+
+  // --- ECONOMIC CYCLE SYSTEM ---
+  G.cycleScore=clamp((G.cycleScore||50)+(G.economy-50)*0.3+(G.trade-40)*0.15-(G.inflation||5)*0.4-(G.unemployment||8)*0.3+(G.gdpPerCapita>20000?5:0)+(G.researchedTechs.length>5?2:0)+(Math.random()-0.5)*8,0,100);
+  G.cycleYears=(G.cycleYears||0)+1;
+  const _prevCycle=G.economicCycle;
+  if((G.cycleScore||50)>=82)G.economicCycle='boom';
+  else if((G.cycleScore||50)>=65)G.economicCycle='growth';
+  else if((G.cycleScore||50)>=45)G.economicCycle='stable';
+  else if((G.cycleScore||50)>=28)G.economicCycle='slowdown';
+  else G.economicCycle='recession';
+  if(G.economicCycle!==_prevCycle){G.cycleYears=0;addLog('📊','Economic cycle: '+G.economicCycle,G.year);addNews('📊 '+G.name+' enters '+G.economicCycle+' phase!');}
+  if(G.economicCycle==='recession'){G.recessionYears=(G.recessionYears||0)+1;G.economy=clamp(G.economy-1.5);G.happiness=clamp(G.happiness-1);G.unemployment=clamp((G.unemployment||8)+0.8);}
+  else{G.recessionYears=Math.max(0,(G.recessionYears||0)-1);}
+  if(G.economicCycle==='boom'){G.economy=clamp(G.economy+1);G.happiness=clamp(G.happiness+0.5);G.treasury+=400;}
+
+  // --- INNOVATION INDEX ---
+  G.innovation=clamp((G.innovation||35)+(G.research-40)*0.12+(G.education-40)*0.08+(G.researchedTechs.length||0)*0.3+(G.activeTech?0.5:0)-(G.corruption>50?1:0)+(G.activePolicies.includes('innovation')?0.8:0)+(Math.random()-0.45)*1.2,0,100);
+
+  // --- CONSTITUTIONAL RIGHTS DRIFT ---
+  G.speechFreedom=clamp((G.speechFreedom||60)+(G.activePolicies.includes('censorship')?-2:0.3)+(G.mediaFreedom>60?0.4:-0.2)+(Math.random()-0.5)*0.8,0,100);
+  G.religionFreedom=clamp((G.religionFreedom||70)+(G.govt==='theocracy'?-1.5:0.3)+(Math.random()-0.5)*0.6,0,100);
+  G.assemblyRight=clamp((G.assemblyRight||55)+(G.stability<30?-1:0.3)+(G.happiness>60?0.3:0)+(Math.random()-0.5)*0.7,0,100);
+  G.privacyRight=clamp((G.privacyRight||45)+(G.activePolicies.includes('surveillance')?-1.5:0.3)+(G.espionage>60?-0.5:0.2)+(Math.random()-0.5)*0.7,0,100);
+  G.educationRight=clamp((G.educationRight||65)+(G.education>60?0.5:0)+(G.budgetEducation>15?0.3:0)+(Math.random()-0.5)*0.6,0,100);
+
+  // --- ENERGY MIX EVOLUTION ---
+  const _renewBonus=(G.researchedTechs.includes('renewables')?0.5:0)+(G.researchedTechs.includes('hydrogen_energy')?0.4:0)+(G.activePolicies.includes('green')?0.4:0);
+  G.energyRenewable=clamp((G.energyRenewable||20)+_renewBonus+(Math.random()-0.45)*0.6,0,90);
+  G.energyCoal=clamp((G.energyCoal||45)-_renewBonus*0.6+(G.production>60?0.2:-0.1)+(Math.random()-0.55)*0.5,0,80);
+  G.energyGas=clamp((G.energyGas||22)+(Math.random()-0.5)*0.5,5,50);
+  G.energyNuclear=clamp((G.energyNuclear||8)+(G.researchedTechs.includes('nuclear_shield')?0.3:0)+(Math.random()-0.5)*0.3,0,40);
+  const _eTotal=Math.max(1,(G.energyCoal||0)+(G.energyGas||0)+(G.energyRenewable||0)+(G.energyNuclear||0));
+  G.energyOther=Math.max(0,Math.round(100-_eTotal));
+
+  // --- POPULATION AGE STRUCTURE ---
+  G.youthPct=clamp((G.youthPct||28)+(G.populationGrowth>1.5?0.3:-0.2)+(G.health>60?0.1:0)+(Math.random()-0.5)*0.4,10,45);
+  G.elderlyPct=clamp((G.elderlyPct||12)+(G.health>60?0.2:0.1)+(G.researchedTechs.includes('anti_aging')?0.1:0)+(Math.random()-0.48)*0.3,5,40);
+
+  // --- REFERENDUM COOLDOWN ---
+  if((G.referendumCooldown||0)>0)G.referendumCooldown--;
+
+  // --- CRISIS COUNT ---
+  if(G.pendingEvent&&(G.pendingEvent.type==='crisis'||G.pendingEvent.type==='disaster'))G.crisisCount=(G.crisisCount||0)+1;
 
   // Chronicle entry every 5 years
   if(G.year%5===0){
